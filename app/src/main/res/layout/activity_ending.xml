@@ -1,0 +1,206 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="form"
+            type="edu.aku.hassannaqvi.tpvicsround2listing.models.Form" />
+
+        <variable
+            name="callback"
+            type="edu.aku.hassannaqvi.tpvicsround2listing.ui.sections.FamilyListingActivity" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/app_bg_gray"
+        android:orientation="vertical">
+
+        <!-- CUSTOM TOOLBAR -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@null"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/CustomToolbarTheme"
+            app:popupTheme="@style/CustomPopupTheme"
+            app:subtitleTextAppearance="@style/Toolbar.SubtitleText"
+            app:title="@string/listitle"
+            app:titleTextAppearance="@style/Toolbar.TitleText" />
+
+        <FrameLayout
+            android:id="@+id/frame_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:id="@+id/GrpName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <!-- istatus  Radio   -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/fldGrpCVistatus"
+                        style="@style/cardView">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bottom"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    style="@style/quesNum"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="@string/Q_istatus" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:text="@string/istatus" />
+
+                            </LinearLayout>
+
+                            <RadioGroup
+                                android:id="@+id/istatus"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <RadioButton
+                                    android:id="@+id/istatusa"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/istatusa" />
+
+                                <RadioButton
+                                    android:id="@+id/istatusb"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/istatusb" />
+
+                                <RadioButton
+                                    android:id="@+id/istatusc"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/istatusc" />
+
+                                <RadioButton
+                                    android:id="@+id/istatusd"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/istatusd" />
+
+                                <RadioButton
+                                    android:id="@+id/istatuse"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/istatuse" />
+
+                                <RadioButton
+                                    android:id="@+id/istatusf"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/istatusf" />
+
+                                <RadioButton
+                                    android:id="@+id/istatus96"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/istatus96" />
+
+                                <EditText
+                                    android:id="@+id/istatus96x"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:digits="AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789,. "
+                                    android:hint="@string/istatus96"
+                                    android:tag="istatus96"
+                                    android:text='@{istatus96.checked ? istatus96x.getText().toString() : ""}'
+                                    android:visibility='@{istatus96.checked? View.VISIBLE : View.GONE}' />
+
+                            </RadioGroup>
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <!--EndButton LinearLayout-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="24dp"
+                        android:layout_weight="1"
+                        android:gravity="bottom"
+                        android:orientation="horizontal">
+                        <!--
+                                            <Button
+
+                                                android:id="@+id/btn_End"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:background="@android:color/transparent"
+                                                android:onClick="btnEnd"
+                                                android:text="Delete Household"
+                                                android:textColor="@color/colorPrimary"
+                                                android:textSize="18sp"
+                                                android:textStyle="bold" />-->
+
+                        <!--            <Button
+                                        android:id="@+id/addFamily"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/capsule"
+                                        android:backgroundTint="@color/colorAccent"
+                                        android:backgroundTintMode="src_atop"
+                                        android:onClick="btnContinue"
+                                        android:text="Add MWRA"
+                                        android:textColor="@color/white"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold" />-->
+
+                        <Button
+                            android:id="@+id/btn_End"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/capsule"
+                            android:backgroundTint="@color/colorAccent"
+                            android:backgroundTintMode="src_atop"
+                            android:onClick="btnContinue"
+                            android:text="Continue"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                    <!--EndButton LinearLayout-->
+                </LinearLayout>
+            </ScrollView>
+        </FrameLayout>
+    </LinearLayout>
+</layout><!--  {"hh01":"900000001","hh02":"","hh03":"","hh04":"TEST","hh05":"TEST","hh06":"villages "}
+    {"hh07":"1","hh08":"","hh0717x":"","hh09":"1","hh10":"2","hh20":"1"}
+    {"hh11":"Head One","hh12":"Father One","hh13":"Caste One","hh13a":"5","hh14":"1","hh15":"2","hh21":"1"}
+    {"hh11":"Head Two","hh12":"Father Two","hh13":"Caste Two","hh13a":"6","hh14":"1","hh15":"1","hh21":"2"}-->
