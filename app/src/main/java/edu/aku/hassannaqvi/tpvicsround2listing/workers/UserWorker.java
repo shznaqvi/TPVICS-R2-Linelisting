@@ -204,7 +204,7 @@ public class UserWorker extends Worker {
         try {
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             AssetManager assetManager = mContext.getAssets();
-            caInput = assetManager.open("star_aku_edu.crt");
+            caInput = assetManager.open("vcoe1_aku_edu.cer");
 
 
             ca = cf.generateCertificate(caInput);
@@ -339,7 +339,7 @@ public class UserWorker extends Worker {
             Log.d(TAG, "doWork (IO Error): " + e.getMessage());
             displayNotification(nTitle, "IO Error: " + e.getMessage());
             data = new Data.Builder()
-                    .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
+                    .putString("error", "IO Error: " + e.getMessage())
                     .build();
 
             return Result.failure(data);
@@ -349,48 +349,15 @@ public class UserWorker extends Worker {
         }
         try {
             result = new StringBuilder(CipherSecure.decrypt(result.toString()));
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | InvalidAlgorithmParameterException | InvalidKeyException e) {
+            Log.d(TAG, "doWork (Encryption Error): " + e.getMessage());
+            displayNotification(nTitle, "Encryption Error: " + e.getMessage());
             data = new Data.Builder()
-                    .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
+                    .putString("error", "Encryption Error: " + e.getMessage())
                     .build();
 
             return Result.failure(data);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            data = new Data.Builder()
-                    .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
-                    .build();
 
-            return Result.failure(data);
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-            data = new Data.Builder()
-                    .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
-                    .build();
-
-            return Result.failure(data);
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-            data = new Data.Builder()
-                    .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
-                    .build();
-
-            return Result.failure(data);
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-            data = new Data.Builder()
-                    .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
-                    .build();
-
-            return Result.failure(data);
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-            data = new Data.Builder()
-                    .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
-                    .build();
-
-            return Result.failure(data);
         }
         longInfo("result-server(Decrypted): " + result);
 

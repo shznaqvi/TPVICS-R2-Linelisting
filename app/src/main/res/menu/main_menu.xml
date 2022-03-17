@@ -20,6 +20,9 @@
             <item
                 android:id="@+id/action_view_listing"
                 android:title="View Listing" />
+            <item
+                android:id="@+id/changePassword"
+                android:title="Change Password" />
 
             <!--  <item
                   android:id="@+id/action_forms"

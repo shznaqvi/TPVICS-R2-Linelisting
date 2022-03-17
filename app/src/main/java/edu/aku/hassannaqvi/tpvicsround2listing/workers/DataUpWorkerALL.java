@@ -1,7 +1,5 @@
 package edu.aku.hassannaqvi.tpvicsround2listing.workers;
 
-import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.PROJECT_NAME;
-
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
@@ -63,7 +61,7 @@ public class DataUpWorkerALL extends Worker {
     private final String uploadTable;
     private final JSONArray uploadData;
     private final URL serverURL = null;
-    private final String nTitle = PROJECT_NAME + ": Data Upload";
+    private final String nTitle = MainApp.PROJECT_NAME + ": Data Upload";
     private final int position;
     private final String uploadWhere;
     HttpsURLConnection urlConnection;
@@ -104,7 +102,7 @@ public class DataUpWorkerALL extends Worker {
 
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             AssetManager assetManager = context.getAssets();
-            InputStream caInput = assetManager.open("star_aku_edu.crt");
+            InputStream caInput = assetManager.open("vcoe1_aku_edu.cer");
             Certificate ca;
             try {
                 ca = cf.generateCertificate(caInput);
@@ -177,7 +175,7 @@ public class DataUpWorkerALL extends Worker {
         NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), "scrlog")
                 .setContentTitle(title)
                 .setContentText(task)
-                .setSmallIcon(R.drawable.app_icon);
+                .setSmallIcon(R.mipmap.ic_launcher);
 
         final int maxProgress = 100;
         int curProgress = 0;
@@ -233,7 +231,7 @@ public class DataUpWorkerALL extends Worker {
         try {
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             AssetManager assetManager = mContext.getAssets();
-            caInput = assetManager.open("star_aku_edu.crt");
+            caInput = assetManager.open("vcoe1_aku_edu.cer");
 
 
             ca = cf.generateCertificate(caInput);
@@ -278,7 +276,6 @@ public class DataUpWorkerALL extends Worker {
             urlConnection.setRequestProperty("charset", "utf-8");
             urlConnection.setUseCaches(false);
             urlConnection.connect();
-            Log.d(TAG, "doInBackground: " + urlConnection.getResponseCode());
 
             Certificate[] certs = urlConnection.getServerCertificates();
 
@@ -362,7 +359,7 @@ public class DataUpWorkerALL extends Worker {
             Log.d(TAG, "doWork (Timeout): " + e.getMessage());
             displayNotification(nTitle, "Timeout Error: " + e.getMessage());
             data = new Data.Builder()
-                    .putString("error", String.valueOf(e.getMessage()))
+                    .putString("error", e.getMessage())
                     .putInt("position", this.position)
                     .build();
             return Result.failure(data);
@@ -371,7 +368,7 @@ public class DataUpWorkerALL extends Worker {
             Log.d(TAG, "doWork (IO Error): " + e.getMessage());
             displayNotification(nTitle, "IO Error: " + e.getMessage());
             data = new Data.Builder()
-                    .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
+                    .putString("error", e.getMessage())
                     .putInt("position", this.position)
                     .build();
 
@@ -382,54 +379,16 @@ public class DataUpWorkerALL extends Worker {
         }
         try {
             result = new StringBuilder(CipherSecure.decrypt(result.toString()));
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | InvalidAlgorithmParameterException | InvalidKeyException e) {
+            Log.d(TAG, "doWork (Encryption Error): " + e.getMessage());
+            displayNotification(nTitle, "Encryption Error: " + e.getMessage());
             data = new Data.Builder()
-                    .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
+                    .putString("error", e.getMessage())
                     .putInt("position", this.position)
                     .build();
 
             return Result.failure(data);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            data = new Data.Builder()
-                    .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
-                    .putInt("position", this.position)
-                    .build();
 
-            return Result.failure(data);
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-            data = new Data.Builder()
-                    .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
-                    .putInt("position", this.position)
-                    .build();
-
-            return Result.failure(data);
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-            data = new Data.Builder()
-                    .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
-                    .putInt("position", this.position)
-                    .build();
-
-            return Result.failure(data);
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-            data = new Data.Builder()
-                    .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
-                    .putInt("position", this.position)
-                    .build();
-
-            return Result.failure(data);
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-            data = new Data.Builder()
-                    .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
-                    .putInt("position", this.position)
-                    .build();
-
-            return Result.failure(data);
         }
 
         //Do something with the JSON string

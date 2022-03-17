@@ -30,6 +30,7 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.LoginActivity"
@@ -80,6 +81,18 @@
             android:name=".ui.lists.ListingsReporter"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.ChangePasswordActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize" />
+
+        <meta-data
+            android:name="YEK_REVRES"
+            android:value="3sA!ttiTuDPr%esENc3WmZq4t7w!zSCnF)J@NcRfUjXn2r5u8x/A?D*G-KaPdSgV" />
+        <meta-data
+            android:name="YEK_TRATS"
+            android:value="3" />
     </application>
 
 </manifest>

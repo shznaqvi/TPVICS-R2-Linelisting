@@ -53,6 +53,7 @@ public class CipherSecure {
     }
 
     public static String decrypt(String encoded) throws NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException, InvalidKeyException {
+        Log.d(TAG, "decrypt: encoded " + encoded);
         byte[] ivAndCipherText = Base64.decode(encoded, Base64.NO_WRAP);
         byte[] iv = Arrays.copyOfRange(ivAndCipherText, 0, 16);
         byte[] cipherText = Arrays.copyOfRange(ivAndCipherText, 16, ivAndCipherText.length);
@@ -68,7 +69,7 @@ public class CipherSecure {
 
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             AssetManager assetManager = context.getAssets();
-            InputStream caInput = assetManager.open("star_aku_edu.crt");
+            InputStream caInput = assetManager.open("vcoe1_aku_edu.cer");
             Certificate ca;
             try {
                 ca = cf.generateCertificate(caInput);

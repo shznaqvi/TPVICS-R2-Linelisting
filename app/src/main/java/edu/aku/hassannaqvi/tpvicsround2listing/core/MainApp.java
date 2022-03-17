@@ -1,19 +1,27 @@
 package edu.aku.hassannaqvi.tpvicsround2listing.core;
 
+import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.DATABASE_NAME;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 
 import com.edittextpicker.aliazaz.EditTextPicker;
 import com.validatorcrawler.aliazaz.Clear;
+
+import net.sqlcipher.database.SQLiteDatabase;
 
 import org.json.JSONArray;
 
@@ -36,12 +44,14 @@ public class MainApp extends Application {
     // public static final String _IP = "http://f49461:8080/prosystem";// .TEST server
     //public static final String _IP = "http://43.245.131.159:8080";// .TEST server
     public static final String _HOST_URL = MainApp._IP + "/tpvics_r2/api/";// .TEST server;
-    public static final String _SERVER_URL = "syncenc.php";
-    public static final String _SERVER_GET_URL = "getDataenc.php";
+    public static final String _SERVER_URL = "syncEnc.php";
+    public static final String _SERVER_GET_URL = "getDataEnc.php";
     public static final String _PHOTO_UPLOAD_URL = _HOST_URL + "uploads.php";
     public static final String _UPDATE_URL = MainApp._IP + "/tpvics_r2/app/listings";
     public static final String _EMPTY_ = "";
     public static final String _USER_URL = "resetpassword.php";
+    private static final String TAG = "MainApp";
+    public static String IBAHC = "";
 
     //COUNTRIES
     public static int PAKISTAN = 1;
@@ -86,7 +96,6 @@ public class MainApp extends Application {
     public static int maxStructure;
     public static int hhid;
     public static int HHCount = 0;
-    public static String IBAHC = "";
 
 
     public static void hideSystemUI(View decorView) {
@@ -158,6 +167,13 @@ public class MainApp extends Application {
     public void onCreate() {
         super.onCreate();
 
+                /*
+        RootBeer rootBeer = new RootBeer(this);
+        if (rootBeer.isRooted()) {
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(1);
+        }*/
+
         //Initiate DateTime
         //Initializ App info
         appInfo = new AppInfo(this);
@@ -168,6 +184,25 @@ public class MainApp extends Application {
                 .apply();
         deviceid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
+        initSecure();
+    }
+
+    private void initSecure() {
+        // Initialize SQLCipher library
+        SQLiteDatabase.loadLibs(this);
+
+        // Prepare encryption KEY
+        ApplicationInfo ai = null;
+        try {
+            ai = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+            Bundle bundle = ai.metaData;
+            int TRATS = bundle.getInt("YEK_TRATS");
+            IBAHC = bundle.getString("YEK_REVRES").substring(TRATS, TRATS + 16);
+            Log.d(TAG, "onCreate: YEK_REVRES = " + DATABASE_NAME);
+            Log.d(TAG, "onCreate: YEK_REVRES = " + IBAHC);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 }

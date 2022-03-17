@@ -47,8 +47,9 @@ import java.util.concurrent.TimeUnit;
 
 import edu.aku.hassannaqvi.tpvicsround2listing.R;
 import edu.aku.hassannaqvi.tpvicsround2listing.adapters.SyncListAdapter;
-import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts;
 import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.ClusterTable;
+import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.EntryLogTable;
+import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.FormTable;
 import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.UsersTable;
 import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.VersionTable;
 import edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp;
@@ -145,7 +146,7 @@ public class SyncActivity extends AppCompatActivity {
                 MainApp.uploadData.clear();
 
                 // Forms
-                uploadTables.add(new SyncModel(TableContracts.FormTable.TABLE_NAME));
+                uploadTables.add(new SyncModel(FormTable.TABLE_NAME));
                 try {
                     MainApp.uploadData.add(db.getUnsyncedForm());
                 } catch (JSONException e) {
@@ -197,7 +198,7 @@ public class SyncActivity extends AppCompatActivity {
                     select = " * ";
                     filter = " colflag != '1' AND dist_id = '" + MainApp.user.getDist_id() + "' ";
                     downloadTables.add(new SyncModel(ClusterTable.TABLE_NAME, select, filter));
-                    downloadTables.add(new SyncModel(RandomHHTable.TABLE_NAME, select, filter));
+//                    downloadTables.add(new SyncModel(RandomHHTable.TABLE_NAME, select, filter));
                 }
                 MainApp.downloadData = new String[downloadTables.size()];
                 setAdapter(downloadTables);

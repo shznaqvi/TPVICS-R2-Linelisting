@@ -2,6 +2,7 @@ package edu.aku.hassannaqvi.tpvicsround2listing.workers;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.text.Html;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -85,7 +86,7 @@ public class DataDownWorkerALL extends Worker {
 
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             AssetManager assetManager = context.getAssets();
-            InputStream caInput = assetManager.open("star_aku_edu.crt");
+            InputStream caInput = assetManager.open("vcoe1_aku_edu.cer");
             Certificate ca;
             try {
                 ca = cf.generateCertificate(caInput);
@@ -149,7 +150,7 @@ public class DataDownWorkerALL extends Worker {
         try {
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             AssetManager assetManager = mContext.getAssets();
-            caInput = assetManager.open("star_aku_edu.crt");
+            caInput = assetManager.open("vcoe1_aku_edu.cer");
 
 
             ca = cf.generateCertificate(caInput);
@@ -240,34 +241,16 @@ public class DataDownWorkerALL extends Worker {
 
                     }
                     Log.d(TAG + " : " + uploadTable, "doWork: result-server: " + result);
-
-                    if (result.toString().contains(" ")) {
+                    try {
+                        result = new StringBuilder(CipherSecure.decrypt(result.toString()));
+                    } catch (IllegalArgumentException e) {
                         data = new Data.Builder()
-                                .putString("error", String.valueOf(result))
+                                .putString("error", e.getMessage() + " | " + Html.fromHtml(String.valueOf(result)))
                                 .putInt("position", this.position)
                                 .build();
                         return Result.failure(data);
                     }
-
-
-                    result = new StringBuilder(CipherSecure.decrypt(result.toString()));
                     Log.d(TAG + " : " + uploadTable, "doWork: result-decrypt: " + result);
-
-                    // result = [{"status":0,"message":"No record found.","error":1}]
-
-                    JSONArray jsonArray = new JSONArray(result.toString());
-                    JSONObject jsonObject = jsonArray.getJSONObject(0);
-
-                    if (jsonObject.has("error") && jsonObject.getInt("error") > 0) {
-
-                        data = new Data.Builder()
-                                .putString("error", jsonObject.getString("message"))
-                                .putInt("position", this.position)
-                                .build();
-
-                        return Result.failure(data);
-                    }
-
 
                     if (result.toString().equals("[]")) {
                         data = new Data.Builder()
@@ -293,7 +276,7 @@ public class DataDownWorkerALL extends Worker {
             }
         } catch (java.net.SocketTimeoutException e) {
             data = new Data.Builder()
-                    .putString("error", String.valueOf(e.getMessage()))
+                    .putString("error", e.getMessage())
                     .putInt("position", this.position)
                     .build();
             return Result.failure(data);
@@ -301,14 +284,14 @@ public class DataDownWorkerALL extends Worker {
         } catch (SSLPeerUnverifiedException e) {
             Toast.makeText(mContext, "(SSLPeerUnverifiedException): %s" + e.getMessage(), Toast.LENGTH_SHORT).show();
             data = new Data.Builder()
-                    .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
+                    .putString("error", e.getMessage())
                     .putInt("position", this.position)
                     .build();
 
             return Result.failure(data);
         } catch (IOException | JSONException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
             data = new Data.Builder()
-                    .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
+                    .putString("error", e.getMessage())
                     .putInt("position", this.position)
                     .build();
 
@@ -318,7 +301,6 @@ public class DataDownWorkerALL extends Worker {
 
         ///BE CAREFULL DATA.BUILDER CAN HAVE ONLY 1024O BYTES. EACH CHAR HAS 8 bits
         MainApp.downloadData[this.position] = String.valueOf(result);
-
 
         data = new Data.Builder()
                 //     .putString("data", String.valueOf(result))

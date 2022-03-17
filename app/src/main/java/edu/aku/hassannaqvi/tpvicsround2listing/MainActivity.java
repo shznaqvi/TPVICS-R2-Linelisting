@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil;
 import edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp;
 import edu.aku.hassannaqvi.tpvicsround2listing.database.AndroidManager;
 import edu.aku.hassannaqvi.tpvicsround2listing.databinding.ActivityMainBinding;
+import edu.aku.hassannaqvi.tpvicsround2listing.ui.ChangePasswordActivity;
 import edu.aku.hassannaqvi.tpvicsround2listing.ui.SyncActivity;
 import edu.aku.hassannaqvi.tpvicsround2listing.ui.lists.ListingsReporter;
 import edu.aku.hassannaqvi.tpvicsround2listing.ui.sections.SectionAActivity;
@@ -63,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.action_view_listing:
                 intent = new Intent(MainActivity.this, ListingsReporter.class);
+                startActivity(intent);
+                break;
+            case R.id.changePassword:
+                intent = new Intent(MainActivity.this, ChangePasswordActivity.class);
                 startActivity(intent);
                 break;
 
