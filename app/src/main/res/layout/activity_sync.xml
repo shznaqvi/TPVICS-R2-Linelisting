@@ -9,12 +9,13 @@
 
         <variable
             name="callback"
-            type="edu.aku.hassannaqvi.tpvicsround2listing.ui.SyncActivity" />
+            type="edu.aku.hassannaqvi.tpvics_r2.ui.SyncActivity" />
     </data>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/app_bg_effect">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,6 +23,17 @@
             android:animateLayoutChanges="false"
             android:gravity="center"
             android:orientation="vertical">
+            <!-- CUSTOM TOOLBAR -->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layoutDirection="ltr"
+                android:textAlignment="center"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:title="Data Sync Screen"
+                app:titleTextColor="@color/grayDark" />
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Large"
@@ -35,20 +47,24 @@
                 android:shadowDy="2"
                 android:shadowRadius="2"
                 android:text="DATA SYNC ACTIVITY"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorPrimary"
+                android:visibility="gone" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:background="@color/colorAccentLightOverlay"
+                android:orientation="horizontal"
+                android:padding="24dp">
 
 
                 <Button
                     android:id="@+id/btnSync"
                     style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:layout_weight="1"
                     android:background="@color/colorPrimary"
                     android:elevation="2dp"
                     android:onClick="ProcessStart"
@@ -61,10 +77,11 @@
                     android:id="@+id/btnUpload"
                     style="@style/TextAppearance.AppCompat.Small"
 
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_marginTop="15dp"
+                    android:layout_weight="1"
                     android:background="@color/colorPrimary"
                     android:elevation="2dp"
                     android:onClick="ProcessStart"
@@ -76,10 +93,10 @@
                 <Button
                     android:id="@+id/btnUploadPhotos"
                     style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="wrap_content"
-
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:layout_weight="1"
                     android:background="@color/colorPrimary"
                     android:elevation="2dp"
                     android:onClick="UploadPhotos"
@@ -87,7 +104,7 @@
                     android:text="Upload Photos"
                     android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
@@ -191,25 +208,21 @@
 
                         <TextView
                             android:id="@+id/activityTitle"
+                            style="@style/labelsHead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="12dp"
-                            android:layout_marginBottom="1dp"
-                            android:background="@color/whiteOverlay"
-                            android:elevation="1dp"
-                            android:gravity="center_horizontal"
-                            android:paddingBottom="1dp"
-                            android:shadowColor="@color/grayLight"
-                            android:shadowDx="1"
-                            android:shadowDy="1"
-                            android:shadowRadius="1"
-                            android:text="Download Data" />
+                            android:gravity="center_horizontal|center_vertical"
+                            android:text="DATA SYNC"
+                            android:textColor="@color/colorPrimary" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_upload_list"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@color/grayLight"
+                            android:padding="12dp"
                             android:visibility="visible"
+                            tools:itemCount="4"
                             tools:listitem="@layout/sync_list_adapter">
 
                         </androidx.recyclerview.widget.RecyclerView>
@@ -223,16 +236,10 @@
                             android:text="No Activty"
                             android:textColor="@color/redLight"
                             android:visibility="gone" />
-
                     </LinearLayout>
-
                 </LinearLayout>
-
             </androidx.cardview.widget.CardView>
-
         </LinearLayout>
-
     </ScrollView>
-
 </layout>
 

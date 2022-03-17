@@ -3,6 +3,10 @@ package edu.aku.hassannaqvi.tpvicsround2listing.core;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
 import android.view.View;
@@ -11,7 +15,6 @@ import android.widget.CheckBox;
 import com.edittextpicker.aliazaz.EditTextPicker;
 import com.validatorcrawler.aliazaz.Clear;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 
 import java.io.File;
@@ -33,19 +36,25 @@ public class MainApp extends Application {
     // public static final String _IP = "http://f49461:8080/prosystem";// .TEST server
     //public static final String _IP = "http://43.245.131.159:8080";// .TEST server
     public static final String _HOST_URL = MainApp._IP + "/tpvics_r2/api/";// .TEST server;
-    public static final String _SERVER_URL = "sync.php";
-    public static final String _SERVER_GET_URL = "getData.php";
+    public static final String _SERVER_URL = "syncenc.php";
+    public static final String _SERVER_GET_URL = "getDataenc.php";
     public static final String _PHOTO_UPLOAD_URL = _HOST_URL + "uploads.php";
     public static final String _UPDATE_URL = MainApp._IP + "/tpvics_r2/app/listings";
-    @NotNull
     public static final String _EMPTY_ = "";
+    public static final String _USER_URL = "resetpassword.php";
+
     //COUNTRIES
     public static int PAKISTAN = 1;
     public static int TAJIKISTAN = 3;
+
     public static File sdDir;
     public static String[] downloadData;
+
+    // Tables
     public static Form form;
     public static Mwra mwra;
+
+
     public static String DeviceURL = "devices.php";
     public static AppInfo appInfo;
     public static Users user;
@@ -77,6 +86,8 @@ public class MainApp extends Application {
     public static int maxStructure;
     public static int hhid;
     public static int HHCount = 0;
+    public static String IBAHC = "";
+
 
     public static void hideSystemUI(View decorView) {
         // Enables regular immersive mode.
@@ -128,6 +139,20 @@ public class MainApp extends Application {
             }
         });
     }
+
+    public static Boolean isNetworkAvailable(Context c) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Network nw = connectivityManager.getActiveNetwork();
+            if (nw == null) return false;
+            NetworkCapabilities actNw = connectivityManager.getNetworkCapabilities(nw);
+            return actNw != null && (actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) || actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH));
+        } else {
+            NetworkInfo nwInfo = connectivityManager.getActiveNetworkInfo();
+            return nwInfo != null && nwInfo.isConnected();
+        }
+    }
+
 
     @Override
     public void onCreate() {

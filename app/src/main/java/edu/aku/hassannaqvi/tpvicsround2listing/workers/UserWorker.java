@@ -1,7 +1,5 @@
 package edu.aku.hassannaqvi.tpvicsround2listing.workers;
 
-import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.PROJECT_NAME;
-
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
@@ -28,9 +26,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -44,49 +39,33 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManagerFactory;
 
 import edu.aku.hassannaqvi.tpvicsround2listing.R;
 import edu.aku.hassannaqvi.tpvicsround2listing.core.CipherSecure;
 import edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp;
 
 
-public class DataUpWorkerALL extends Worker {
+public class UserWorker extends Worker {
 
     private static final String TAG = "DataWorkerEN()";
 
     // to be initialised by workParams
     private final Context mContext;
-    private final String uploadTable;
-    private final JSONArray uploadData;
     private final URL serverURL = null;
-    private final String nTitle = PROJECT_NAME + ": Data Upload";
-    private final int position;
-    private final String uploadWhere;
+    private final String newPassword;
     HttpsURLConnection urlConnection;
+    private String nTitle = "";
     private ProgressDialog pd;
     private int length;
     private Data data;
 
 
-    public DataUpWorkerALL(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public UserWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         mContext = context;
-        uploadTable = workerParams.getInputData().getString("table");
-        position = workerParams.getInputData().getInt("position", -2);
-        uploadData = MainApp.uploadData.get(position);
-
-
-        Log.d(TAG, "Upload Begins uploadData.length(): " + uploadData.length());
-        Log.d(TAG, "Upload Begins uploadData: " + uploadData);
-
-        Log.d(TAG, "DataDownWorkerALL: position " + position);
-        //uploadColumns = workerParams.getInputData().getString("columns");
-        uploadWhere = workerParams.getInputData().getString("where");
-
+        newPassword = workerParams.getInputData().getString("newPassword");
+        nTitle = mContext.getResources().getString(R.string.app_name) + ": Users";
     }
 
     /*
@@ -98,7 +77,7 @@ public class DataUpWorkerALL extends Worker {
      * It will display a notification
      * So that we will understand the work is executed
      * */
-    private static SSLSocketFactory buildSslSocketFactory(Context context) {
+    /*private static SSLSocketFactory buildSslSocketFactory(Context context) {
         try {
 
 
@@ -123,7 +102,7 @@ public class DataUpWorkerALL extends Worker {
             String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
             TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
             tmf.init(keyStore);
-/*
+*//*
 
             SSLContext context = SSLContext.getInstance("TLS");
             context.init(null, new X509TrustManager[]{new X509TrustManager() {
@@ -141,7 +120,7 @@ public class DataUpWorkerALL extends Worker {
             }}, new SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(
                     context.getSocketFactory());
-            */
+            *//*
             // Create an SSLContext that uses our TrustManager
             SSLContext context1 = SSLContext.getInstance("TLSv1.2");
             context1.init(null, tmf.getTrustManagers(), null);
@@ -150,7 +129,7 @@ public class DataUpWorkerALL extends Worker {
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
 
     public static void longInfo(String str) {
         if (str.length() > 4000) {
@@ -213,16 +192,8 @@ public class DataUpWorkerALL extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        if (uploadData.length() == 0) {
-            data = new Data.Builder()
-                    .putString("error", "No new records to upload")
-                    .putInt("position", this.position)
-                    .build();
 
-            return Result.failure(data);
-        }
-        Log.d(TAG, "doWork: Starting");
-        displayNotification(nTitle, "Starting upload");
+        displayNotification(nTitle, "Connenction server...");
 
         StringBuilder result = new StringBuilder();
 
@@ -252,11 +223,12 @@ public class DataUpWorkerALL extends Worker {
 
         try {
             if (serverURL == null) {
-                url = new URL(MainApp._HOST_URL + MainApp._SERVER_URL);
+                url = new URL(MainApp._HOST_URL + MainApp._USER_URL);
             } else {
                 url = serverURL;
             }
             Log.d(TAG, "doWork: Connecting...");
+            Log.d(TAG, "doWork: Connecting... " + url);
 
             HostnameVerifier allHostsValid = new HostnameVerifier() {
                 public boolean verify(String hostname, SSLSession session) {
@@ -268,7 +240,7 @@ public class DataUpWorkerALL extends Worker {
             //HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
 
             urlConnection = (HttpsURLConnection) url.openConnection();
-            urlConnection.setSSLSocketFactory(buildSslSocketFactory(mContext));
+            urlConnection.setSSLSocketFactory(CipherSecure.buildSslSocketFactory(mContext));
             urlConnection.setReadTimeout(100000 /* milliseconds */);
             urlConnection.setConnectTimeout(150000 /* milliseconds */);
             urlConnection.setRequestMethod("POST");
@@ -278,7 +250,6 @@ public class DataUpWorkerALL extends Worker {
             urlConnection.setRequestProperty("charset", "utf-8");
             urlConnection.setUseCaches(false);
             urlConnection.connect();
-            Log.d(TAG, "doInBackground: " + urlConnection.getResponseCode());
 
             Certificate[] certs = urlConnection.getServerCertificates();
 
@@ -291,16 +262,15 @@ public class DataUpWorkerALL extends Worker {
 
                 DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
 
-                JSONObject jsonTable = new JSONObject();
-                JSONArray jsonParam = new JSONArray();
+                JSONObject jsonParam = new JSONObject();
 
-                jsonTable.put("table", uploadTable);
+                jsonParam.put("userName", MainApp.user.getUserName());
+                jsonParam.put("oldPassword", MainApp.user.getPassword());
+                jsonParam.put("newPassword", newPassword);
                 //Log.d(TAG, "doWork: " + uploadData);
                 //System.out.print("doWork: " + uploadData);
                 //jsonSync.put(uploadData);
-                jsonParam
-                        .put(jsonTable)
-                        .put(uploadData);
+
 
                 Log.d(TAG, "Upload Begins Length: " + jsonParam.length());
                 Log.d(TAG, "Upload Begins: " + jsonParam);
@@ -339,21 +309,20 @@ public class DataUpWorkerALL extends Worker {
                     }
                     displayNotification(nTitle, "Received Data");
                     longInfo("result-server: " + writeEnc);
+                    longInfo("result-server: " + writeEnc);
 
                 } else {
 
                     Log.d(TAG, "Connection Response (Server Failure): " + urlConnection.getResponseCode());
 
                     data = new Data.Builder()
-                            .putString("error", String.valueOf(urlConnection.getResponseCode()))
-                            .putInt("position", this.position)
+                            .putString("error", "Connection Response (Server Failure): " + urlConnection.getResponseCode())
                             .build();
                     return Result.failure(data);
                 }
             } else {
                 data = new Data.Builder()
                         .putString("error", "Invalid Certificate")
-                        .putInt("position", this.position)
                         .build();
 
                 return Result.failure(data);
@@ -362,8 +331,7 @@ public class DataUpWorkerALL extends Worker {
             Log.d(TAG, "doWork (Timeout): " + e.getMessage());
             displayNotification(nTitle, "Timeout Error: " + e.getMessage());
             data = new Data.Builder()
-                    .putString("error", String.valueOf(e.getMessage()))
-                    .putInt("position", this.position)
+                    .putString("error", "Timeout Error: " + e.getMessage())
                     .build();
             return Result.failure(data);
 
@@ -372,7 +340,6 @@ public class DataUpWorkerALL extends Worker {
             displayNotification(nTitle, "IO Error: " + e.getMessage());
             data = new Data.Builder()
                     .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
-                    .putInt("position", this.position)
                     .build();
 
             return Result.failure(data);
@@ -386,7 +353,6 @@ public class DataUpWorkerALL extends Worker {
             e.printStackTrace();
             data = new Data.Builder()
                     .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
-                    .putInt("position", this.position)
                     .build();
 
             return Result.failure(data);
@@ -394,7 +360,6 @@ public class DataUpWorkerALL extends Worker {
             e.printStackTrace();
             data = new Data.Builder()
                     .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
-                    .putInt("position", this.position)
                     .build();
 
             return Result.failure(data);
@@ -402,7 +367,6 @@ public class DataUpWorkerALL extends Worker {
             e.printStackTrace();
             data = new Data.Builder()
                     .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
-                    .putInt("position", this.position)
                     .build();
 
             return Result.failure(data);
@@ -410,7 +374,6 @@ public class DataUpWorkerALL extends Worker {
             e.printStackTrace();
             data = new Data.Builder()
                     .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
-                    .putInt("position", this.position)
                     .build();
 
             return Result.failure(data);
@@ -418,7 +381,6 @@ public class DataUpWorkerALL extends Worker {
             e.printStackTrace();
             data = new Data.Builder()
                     .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
-                    .putInt("position", this.position)
                     .build();
 
             return Result.failure(data);
@@ -426,11 +388,11 @@ public class DataUpWorkerALL extends Worker {
             e.printStackTrace();
             data = new Data.Builder()
                     .putString("error", e.getClass().getSimpleName() + ": " + e.getMessage())
-                    .putInt("position", this.position)
                     .build();
 
             return Result.failure(data);
         }
+        longInfo("result-server(Decrypted): " + result);
 
         //Do something with the JSON string
         if (result != null) {
@@ -452,12 +414,10 @@ public class DataUpWorkerALL extends Worker {
                         .putInt("position", this.position)
                         .build();
             } else {*/
-            MainApp.downloadData[position] = result.toString();
 
 
             data = new Data.Builder()
-                    //  .putString("message", String.valueOf(result))
-                    .putInt("position", this.position)
+                    .putString("message", String.valueOf(result))
                     .build();
             /*   }*/
 
@@ -466,8 +426,7 @@ public class DataUpWorkerALL extends Worker {
 
         } else {
             data = new Data.Builder()
-                    .putString("error", String.valueOf(result))
-                    .putInt("position", this.position)
+                    .putString("error", "No data Received: " + result)
                     .build();
             displayNotification(nTitle, "Error Received");
             return Result.failure(data);
