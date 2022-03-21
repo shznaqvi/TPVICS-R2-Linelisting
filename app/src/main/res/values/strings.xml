@@ -185,7 +185,8 @@
     <string name="invalid_password">Invalid Password</string>
     <string name="username_required">Username Required</string>
     <string name="incorrect_username_or_password">Incorrect Username Or Password</string>
-
+    <string name="options" translatable="false">Options</string>
+    <string name="actiondatabase" translatable="false">Database Manager</string>
 
     <!--Error Messages-->
     <string name="upd_db_form" translatable="false"> updateDB(Form):\t </string>

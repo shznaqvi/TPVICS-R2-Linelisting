@@ -320,7 +320,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
             try {
-
+MainApp.user = new Users();
                 if ((username.equals("dmu@aku") && password.equals("aku?dmu"))
                         || (username.equals("test1234") && password.equals("test1234"))
                         || db.doLogin(username, password)

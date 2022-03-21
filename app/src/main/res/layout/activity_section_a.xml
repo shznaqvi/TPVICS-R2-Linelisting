@@ -30,7 +30,7 @@
             android:theme="@style/CustomToolbarTheme"
             app:popupTheme="@style/CustomPopupTheme"
             app:subtitleTextAppearance="@style/Toolbar.SubtitleText"
-            app:title="@string/listitle"
+            app:title="Cluster Selection"
             app:titleTextAppearance="@style/Toolbar.TitleText">
 
             <TextView

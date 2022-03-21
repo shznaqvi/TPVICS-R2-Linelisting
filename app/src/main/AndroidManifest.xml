@@ -89,10 +89,10 @@
 
         <meta-data
             android:name="YEK_REVRES"
-            android:value="3sA!ttiTuDPr%esENc3WmZq4t7w!zSCnF)J@NcRfUjXn2r5u8x/A?D*G-KaPdSgV" />
+            android:value="ThWmZq4t7w!zVaLu@b1ePeRcE!V3r5u8x/A?D*G-KaPdSgVkYp3s6v9y$BNE)H@M" />
         <meta-data
             android:name="YEK_TRATS"
-            android:value="3" />
+            android:value="12" />
     </application>
 
 </manifest>

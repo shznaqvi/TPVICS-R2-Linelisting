@@ -30,7 +30,7 @@
             android:theme="@style/CustomToolbarTheme"
             app:popupTheme="@style/CustomPopupTheme"
             app:subtitleTextAppearance="@style/Toolbar.SubtitleText"
-            app:title="@string/listitle"
+            app:title="Sructure Information"
             app:titleTextAppearance="@style/Toolbar.TitleText" />
 
         <androidx.cardview.widget.CardView

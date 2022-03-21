@@ -75,12 +75,12 @@ public class SyncActivity extends AppCompatActivity {
     private int totalFiles;
     private long tStart;
     private String progress;
+    RecyclerView.LayoutManager mLayoutManager2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bi = DataBindingUtil.setContentView(this, R.layout.activity_sync);
-        bi.setCallback(this);
         setSupportActionBar(bi.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -107,7 +107,7 @@ public class SyncActivity extends AppCompatActivity {
 
     void setAdapter(List<SyncModel> tables) {
         syncListAdapter = new SyncListAdapter(tables);
-        RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(getApplicationContext());
+        mLayoutManager2 = new LinearLayoutManager(getApplicationContext());
         bi.rvUploadList.setLayoutManager(mLayoutManager2);
         bi.rvUploadList.setItemAnimator(new DefaultItemAnimator());
         bi.rvUploadList.setAdapter(syncListAdapter);
@@ -241,6 +241,7 @@ public class SyncActivity extends AppCompatActivity {
             for (WorkInfo workInfo : workInfos) {
 
                 int position = workInfo.getOutputData().getInt("position", 0);
+                mLayoutManager2.scrollToPosition(position);
 
                 Log.d(TAG, "workInfo(getState): " + workInfo.getState());
                 Log.d(TAG, "workInfo(data): " + MainApp.downloadData[position]);
@@ -253,7 +254,6 @@ public class SyncActivity extends AppCompatActivity {
                         workInfo.getState() == WorkInfo.State.SUCCEEDED) {
 
                     String result = MainApp.downloadData[position];
-
                     //Do something with the JSON string
                     if (result != null) {
                         if (result.length() > 0) {
@@ -458,6 +458,7 @@ public class SyncActivity extends AppCompatActivity {
             for (WorkInfo workInfo : workInfos) {
 
                 int position = workInfo.getOutputData().getInt("position", 0);
+                mLayoutManager2.scrollToPosition(position);
 
                 Log.d(TAG, "workInfo(getState): " + workInfo.getState());
                 Log.d(TAG, "workInfo(data): " + MainApp.downloadData[position]);
@@ -801,6 +802,10 @@ public class SyncActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void btnContinue(View view) {
+        finish();
     }
 
 /*    private void downloadApp() throws MalformedURLException {

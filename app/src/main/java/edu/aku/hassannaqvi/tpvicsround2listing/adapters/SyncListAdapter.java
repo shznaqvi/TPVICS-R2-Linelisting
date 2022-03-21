@@ -75,8 +75,8 @@ public class SyncListAdapter extends RecyclerView.Adapter<SyncListAdapter.SyncLi
         }
 
         public void bindUser(SyncModel model) {
-            binding.syncBar.setMax(model.getMaxProgress());
-            binding.syncBar.setProgress(model.getCurProgress());
+       /*     binding.syncBar.setMax(model.getMaxProgress());
+            binding.syncBar.setProgress(model.getCurProgress());*/
             binding.statusColor.setBackgroundColor(checkStatus(model.getstatusID()));
             binding.tvTableName.setText(model.gettableName().toUpperCase());
             binding.tvStatus.setText(model.getstatus());

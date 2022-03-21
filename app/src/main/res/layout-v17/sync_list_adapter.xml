@@ -13,12 +13,12 @@
     <androidx.cardview.widget.CardView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
         android:layout_marginBottom="10dp"
         android:background="@color/white"
-        app:cardCornerRadius="2dp"
-        app:cardElevation="1dp">
+        app:cardCornerRadius="8dp"
+        app:cardElevation="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +34,7 @@
 
             <View
                 android:id="@+id/status_color"
-                android:layout_width="20dp"
+                android:layout_width="4dp"
                 android:layout_height="match_parent"
                 android:background="@color/redLight"
                 android:elevation="5.20dp" />
@@ -42,14 +42,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:paddingStart="8dp"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-
-                    android:layout_marginEnd="12dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -65,7 +64,7 @@
                         android:id="@+id/pb"
                         style="@android:style/Widget.ProgressBar.Small"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="match_parent" />
                 </LinearLayout>
 
                 <TextView
@@ -73,33 +72,28 @@
                     style="@style/TextAppearance.AppCompat.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:includeFontPadding="false"
                     android:layout_weight="1"
+                    android:textSize="13sp"
                     tools:text="Status" />
 
-                <LinearLayout
+                <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:layout_margin="12dp"
-                    android:background="#7f7f7f7f">
-
-                    <ProgressBar
-                        android:id="@+id/syncBar"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:indeterminate="false" />
-                </LinearLayout>
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="#7f7f7f7f" />
 
                 <TextView
                     android:id="@+id/tv_msg"
                     style="@style/TextAppearance.AppCompat.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="17.50dp"
-                    android:layout_marginEnd="17.50dp"
-                    android:layout_marginBottom="17.50dp"
-                    android:layout_weight="1"
-                    tools:text="Results:    " />
+                    android:layout_marginStart="12dp"
+                    android:includeFontPadding="false"
+                    android:textSize="13sp"
+
+                    tools:text="message here" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

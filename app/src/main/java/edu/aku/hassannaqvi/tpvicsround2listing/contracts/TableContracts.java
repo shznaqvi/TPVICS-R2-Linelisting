@@ -76,7 +76,7 @@ public class TableContracts {
 
     public static abstract class ClusterTable implements BaseColumns {
         public static final String COLUMN_NAME_NULLABLE = "NULLHACK";
-        public static final String TABLE_NAME = "Cluster";
+        public static final String TABLE_NAME = "Clusters";
         public static final String COLUMN_ID = "_id";
         public static final String COLUMN_DIST_ID = "dist_id";
         public static final String COLUMN_GEOAREA = "geoarea";
