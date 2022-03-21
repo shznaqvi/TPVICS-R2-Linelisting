@@ -143,7 +143,7 @@ public class FamilyListingActivity extends AppCompatActivity {
 
         form.setHh11(bi.hh11.getText().toString());
 
-        form.setHh12(bi.hh12.getText().toString());
+        //form.setHh12(bi.hh12.getText().toString());
 
         form.setHh13(bi.hh13.getText().toString());
         form.setHh13a(bi.hh13a.getText().toString());
@@ -175,7 +175,7 @@ public class FamilyListingActivity extends AppCompatActivity {
 
     public void btnEnd(View view) {
         bi.hh11.setText("Deleted");
-        bi.hh12.setText("Deleted");
+        //bi.hh12.setText("Deleted");
         bi.hh13.setText("Deleted");
         bi.hh14.clearCheck();
         bi.hh15.setText("00");

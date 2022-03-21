@@ -46,6 +46,12 @@ public class Form extends BaseObservable {
     // FIELD VARIABLES
     private String hh01 = StringUtils.EMPTY;
     private String hh02 = StringUtils.EMPTY;
+    private String hh02d1 = StringUtils.EMPTY;
+
+
+
+    private String hh02e = StringUtils.EMPTY;
+
     private String hh03 = StringUtils.EMPTY;
     private String hh04 = StringUtils.EMPTY;
     private String hh05 = StringUtils.EMPTY;
@@ -53,10 +59,15 @@ public class Form extends BaseObservable {
     private String hh07 = StringUtils.EMPTY;
     private String hh0717x = StringUtils.EMPTY;
     private String hh08 = StringUtils.EMPTY;
+    private String hh08a1 = StringUtils.EMPTY;
+
+
+
     private String hh09 = StringUtils.EMPTY;
     private String hh10 = StringUtils.EMPTY;
     private String hh11 = StringUtils.EMPTY;
     private String hh12 = StringUtils.EMPTY;
+    private String hh1202 = StringUtils.EMPTY;
     private String hh13 = StringUtils.EMPTY;
     private String hh13a = StringUtils.EMPTY;
     private String hh14 = StringUtils.EMPTY;
@@ -97,6 +108,26 @@ public class Form extends BaseObservable {
     public void setHh02(String hh02) {
         this.hh02 = hh02;
         notifyPropertyChanged(BR.hh02);
+    }
+
+    @Bindable
+    public String getHh02d1() {
+        return hh02d1;
+    }
+
+    public void setHh02d1(String hh02d1) {
+        this.hh02d1 = hh02d1;
+        notifyPropertyChanged(BR.hh02d1);
+    }
+
+    @Bindable
+    public String getHh02e() {
+        return hh02e;
+    }
+
+    public void setHh02e(String hh02e) {
+        this.hh02e = hh02e;
+        notifyPropertyChanged(BR.hh02e);
     }
 
     @Bindable
@@ -170,6 +201,16 @@ public class Form extends BaseObservable {
     }
 
     @Bindable
+    public String getHh08a1() {
+        return hh08a1;
+    }
+
+    public void setHh08a1(String hh08a1) {
+        this.hh08a1 = hh08a1;
+        notifyPropertyChanged(BR.hh08a1);
+    }
+
+    @Bindable
     public String getHh09() {
         return hh09;
     }
@@ -207,6 +248,16 @@ public class Form extends BaseObservable {
     public void setHh12(String hh12) {
         this.hh12 = hh12;
         notifyPropertyChanged(BR.hh12);
+    }
+
+    @Bindable
+    public String getHh1202() {
+        return hh1202;
+    }
+
+    public void setHh1202(String hh1202) {
+        this.hh1202 = hh1202;
+        notifyPropertyChanged(BR.hh1202);
     }
 
     @Bindable
@@ -493,6 +544,8 @@ public class Form extends BaseObservable {
             json = new JSONObject(string);
             this.hh01 = json.getString("hh01");
             this.hh02 = json.getString("hh02");
+            this.hh02d1 = json.getString("hh02d1");
+            this.hh02e = json.getString("hh02e");
             this.hh03 = json.getString("hh03");
             this.hh04 = json.getString("hh04");
             this.hh05 = json.getString("hh05");
@@ -509,9 +562,9 @@ public class Form extends BaseObservable {
             this.hh07 = json.getString("hh07");
             this.hh0717x = json.getString("hh0717x");
             this.hh08 = json.getString("hh08");
+            this.hh08a1 = json.getString("hh08a1");
             this.hh09 = json.getString("hh09");
             this.hh10 = json.getString("hh10");
-
             this.hh20 = json.getString("hh20");
 
         }
@@ -524,6 +577,7 @@ public class Form extends BaseObservable {
             json = new JSONObject(string);
             this.hh11 = json.getString("hh11");
             this.hh12 = json.getString("hh12");
+            this.hh1202 = json.getString("hh1202");
             this.hh13 = json.getString("hh13");
             this.hh13a = json.getString("hh13a");
             this.hh14 = json.getString("hh14");
@@ -546,7 +600,9 @@ public class Form extends BaseObservable {
                 .put("hh03", hh03)
                 .put("hh04", hh04)
                 .put("hh05", hh05)
-                .put("hh06", hh06);
+                .put("hh06", hh06)
+                .put("hh02d1", hh02d1)
+                .put("hh02e", hh02e);
 
         return json.toString();
     }
@@ -558,6 +614,8 @@ public class Form extends BaseObservable {
 
         json.put("hh07", hh07)
                 .put("hh08", hh08)
+                .put("hh08a1", hh08a1)
+
                 .put("hh0717x", hh0717x)
                 .put("hh09", hh09)
                 .put("hh10", hh10)
@@ -571,6 +629,7 @@ public class Form extends BaseObservable {
 
         json.put("hh11", hh11)
                 .put("hh12", hh12)
+                .put("hh1202", hh1202)
                 .put("hh13", hh13)
                 .put("hh13a", hh13a)
                 .put("hh14", hh14)

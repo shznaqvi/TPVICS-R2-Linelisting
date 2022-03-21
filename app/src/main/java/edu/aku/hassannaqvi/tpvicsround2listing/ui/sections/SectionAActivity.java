@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +39,7 @@ public class SectionAActivity extends AppCompatActivity {
     String st = "";
     private DatabaseHelper db;
     private ArrayList<String> ebCode, districtNames, tehsilNames, cityNames, headHH;
-
+    Cluster cluster = new Cluster();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +81,18 @@ public class SectionAActivity extends AppCompatActivity {
 
             }
         });
+
+        bi.hh02d1.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (!cluster.getEbcode().equals("") && b) {
+                 bi.openForm.setEnabled(true);
+                bi.openForm.setVisibility(View.VISIBLE);
+
+            }else{
+                bi.openForm.setEnabled(false);
+                bi.openForm.setVisibility(View.GONE);
+            }
+        });
+
     }
 
 
@@ -228,7 +241,7 @@ public class SectionAActivity extends AppCompatActivity {
         Cluster testEb = new Cluster();
         testEb.setEbcode("909090909");
         testEb.setGeoarea("|Test District|Test Tehsil|Test City");
-        Cluster cluster = new Cluster();
+
         if (!bi.hh01.getText().toString().equals(testEb.getEbcode())) {
             cluster = db.getClusters(bi.hh01.getText().toString());
             MainApp.selectedCluster = bi.hh01.getText().toString();
@@ -260,7 +273,9 @@ public class SectionAActivity extends AppCompatActivity {
             bi.hh05.setText(geoArea[2]);
             bi.hh06.setText(geoArea[3]);
 
-            bi.openForm.setEnabled(true);
+            if (bi.hh02d1.isChecked())
+                bi.openForm.setEnabled(true);
+                bi.openForm.setVisibility(View.VISIBLE);
 
             //     bi.fldGrpHH.setVisibility(View.VISIBLE);
 

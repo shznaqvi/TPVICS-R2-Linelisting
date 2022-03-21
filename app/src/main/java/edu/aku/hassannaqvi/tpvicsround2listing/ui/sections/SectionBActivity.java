@@ -54,32 +54,29 @@ public class SectionBActivity extends AppCompatActivity {
 
     private void setupSkips() {
 
-        bi.hh07.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                if (bi.hh0701.isChecked()) {
-                    Clear.clearAllFields(bi.fldGrpCVhh08);
-                } else {
-                    Clear.clearAllFields(bi.fldGrpCVhh09);
-                    Clear.clearAllFields(bi.fldGrpCVhh10);
-
-                }
-
-                if (bi.hh0713.isChecked() || bi.hh0714.isChecked() || bi.hh0715.isChecked() || bi.hh0716.isChecked()) {
-                    Clear.clearAllFields(bi.fldGrpCVhh08);
-                    Clear.clearAllFields(bi.fldGrpCVhh09);
-                    Clear.clearAllFields(bi.fldGrpCVhh10);
-                    bi.btnContinue.setText("Continue to Next");
-                }
-
-                if (bi.hh0718.isChecked() || bi.hh0719.isChecked()) {
-                    Clear.clearAllFields(bi.fldGrpCVhh08);
-                    Clear.clearAllFields(bi.fldGrpCVhh09);
-                    Clear.clearAllFields(bi.fldGrpCVhh10);
-                    bi.btnContinue.setText("Close Listing");
-                }
+        bi.hh07.setOnCheckedChangeListener((radioGroup, i) -> {
+            if (bi.hh0701.isChecked()) {
+                //Clear.clearAllFields(bi.fldGrpCVhh08);
+            } else {
+                Clear.clearAllFields(bi.fldGrpCVhh09);
+                Clear.clearAllFields(bi.fldGrpCVhh10);
 
             }
+
+            if (bi.hh0713.isChecked() || bi.hh0714.isChecked() || bi.hh0715.isChecked() || bi.hh0716.isChecked()) {
+                //Clear.clearAllFields(bi.fldGrpCVhh08);
+                Clear.clearAllFields(bi.fldGrpCVhh09);
+                Clear.clearAllFields(bi.fldGrpCVhh10);
+                bi.btnContinue.setText("Continue to Next");
+            }
+
+            if (bi.hh0718.isChecked() || bi.hh0719.isChecked()) {
+                //Clear.clearAllFields(bi.fldGrpCVhh08);
+                Clear.clearAllFields(bi.fldGrpCVhh09);
+                Clear.clearAllFields(bi.fldGrpCVhh10);
+                bi.btnContinue.setText("Close Listing");
+            }
+
         });
         bi.hh0902.setOnCheckedChangeListener((radioGroup, i) -> Clear.clearAllFields(bi.fldGrpCVhh10));
 
@@ -156,16 +153,6 @@ public class SectionBActivity extends AppCompatActivity {
         //form.setEndTime(new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
 
         form.setHh07(bi.hh0701.isChecked() ? "1"
-                : bi.hh0702.isChecked() ? "2"
-                : bi.hh0703.isChecked() ? "3"
-                : bi.hh0704.isChecked() ? "4"
-                : bi.hh0705.isChecked() ? "5"
-                : bi.hh0706.isChecked() ? "6"
-                : bi.hh0707.isChecked() ? "7"
-                : bi.hh0708.isChecked() ? "8"
-                : bi.hh0709.isChecked() ? "9"
-                : bi.hh0710.isChecked() ? "10"
-                : bi.hh0711.isChecked() ? "11"
                 : bi.hh0712.isChecked() ? "12"
                 : bi.hh0713.isChecked() ? "13"
                 : bi.hh0714.isChecked() ? "14"
@@ -177,7 +164,7 @@ public class SectionBActivity extends AppCompatActivity {
                 : "-1");
 
         form.setHh0717x(bi.hh0717x.getText().toString());
-        form.setHh08(bi.hh08.getText().toString());
+        //form.setHh08(bi.hh08.getText().toString());
 
         form.setHh09(bi.hh0901.isChecked() ? "1"
                 : bi.hh0902.isChecked() ? "2"
