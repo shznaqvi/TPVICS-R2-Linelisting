@@ -193,6 +193,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
+                                android:checked="@{form.hh14.equals(`1`)}"
+                                android:onClick="@{()->form.setHh14(`1`)}"
                                 android:text="@string/hh1401" />
 
                             <RadioButton
@@ -200,6 +202,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
+                                android:checked="@{form.hh14.equals(`2`)}"
+                                android:onClick="@{()->form.setHh14(`2`) + hh12.clearCheck()}"
                                 android:text="@string/hh1402" />
                         </RadioGroup>
                     </LinearLayout>
@@ -210,7 +214,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/fldGrpCVhh15"
                     style="@style/cardView"
-                    android:visibility="@{hh1401.checked?View.VISIBLE:View.GONE}">
+                    android:visibility="@{form.hh14.equals(`1`) ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -244,6 +248,7 @@
                             android:maxLength="2"
                             app:maxValue="99"
                             app:minValue="1"
+                            android:hint="@string/hh15"
                             app:type="range" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -252,12 +257,14 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/fldGrpCVhh12"
                     style="@style/cardView"
-                    >
+                    android:visibility="@{form.hh14.equals(`1`) ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical" ><LinearLayout
+                        android:orientation="vertical" >
+
+                        <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bottom"
@@ -288,7 +295,7 @@
                             android:layout_height="wrap_content"
                             android:checked="@{form.hh12.equals(`1`)}"
                             android:onClick="@{()->form.setHh12(`1`)}"
-                                android:layout_weight="1"
+                            android:layout_weight="1"
 
                                 />
                             <RadioButton
@@ -298,7 +305,7 @@
                             android:layout_height="wrap_content"
                             android:checked="@{form.hh12.equals(`2`)}"
                             android:onClick="@{()->form.setHh12(`2`)}"
-                                android:layout_weight="1"
+                            android:layout_weight="1"
 
                                 />
 
@@ -310,7 +317,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/fldGrpCVhh13"
                     style="@style/cardView"
-                    android:visibility="@{form.hh12.equals(`1`)  ? View.VISIBLE : View.GONE}">
+                    android:visibility="@{form.hh12.equals(`1`) ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -398,7 +405,6 @@
                         android:onClick="btnContinue"
                         android:text="Continue"
                         android:textColor="@color/white"
-
                         android:textSize="18sp"
                         android:textStyle="bold" />
 

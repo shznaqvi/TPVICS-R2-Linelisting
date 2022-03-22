@@ -175,7 +175,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/fldGrpCVhh08a1"
                     style="@style/cardView"
-                    android:visibility="@{hh0701.checked &amp;&amp; !hh0713.checked &amp;&amp;!hh0714.checked &amp;&amp;!hh0715.checked &amp;&amp;!hh0716.checked &amp;&amp;!hh0718.checked &amp;&amp; !hh0719.checked  ?View.VISIBLE:View.GONE}">>
+                    android:visibility="@{hh0701.checked || hh0712.checked || hh0713.checked || hh0714.checked || hh0715.checked || hh0716.checked || hh0717.checked ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -212,19 +212,21 @@
                             android:layout_height="wrap_content"
                             android:checked="@{form.hh08a1.equals(`1`)}"
                             android:onClick="@{()->form.setHh08a1(`1`)}"
-                                android:layout_weight="1"
+                            android:layout_weight="1"
 
-                                />
+                            />
+
                             <RadioButton
                             android:id="@+id/hh08a1b"
                             android:text="@string/hh08a1b"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:checked="@{form.hh08a1.equals(`2`)}"
-                            android:onClick="@{()->form.setHh08a1(`2`)}"
-                                android:layout_weight="1"
+                            android:onClick="@{()->form.setHh08a1(`2`) + hh09.clearCheck()}"
+                            android:layout_weight="1"
 
-                                />
+                            />
+
                         </RadioGroup>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -235,7 +237,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/fldGrpCVhh09"
                     style="@style/cardView"
-                    android:visibility="@{hh0701.checked &amp;&amp; !hh0713.checked &amp;&amp;!hh0714.checked &amp;&amp;!hh0715.checked &amp;&amp;!hh0716.checked &amp;&amp;!hh0718.checked &amp;&amp; !hh0719.checked  ?View.VISIBLE:View.GONE}">>
+                    android:visibility="@{form.hh08a1.equals(`1`) ? View.VISIBLE : View.GONE }">
 
                     <LinearLayout
                         android:layout_width="match_parent"

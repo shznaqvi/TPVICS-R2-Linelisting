@@ -39,6 +39,7 @@ public class SectionBActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         bi = DataBindingUtil.setContentView(this, R.layout.activity_section_b);
         bi.setCallback(this);
+        bi.setForm(form);
         st = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH).format(new Date().getTime());
         setupSkips();
         setSupportActionBar(bi.toolbar);
@@ -47,7 +48,16 @@ public class SectionBActivity extends AppCompatActivity {
         MainApp.maxStructure++;
         MainApp.hhid = 0;
 
-        bi.hhid.setText(MainApp.form.getHh01() + "\n" + String.format("%03d", MainApp.maxStructure));
+        String appendingChar = "";
+
+        if (!form.getHh02e().isEmpty()){
+            if (form.getHh02e().equals("1"))
+                appendingChar = "A";
+            else if (form.getHh02e().equals("2"))
+                appendingChar = "B";
+        }
+
+        bi.hhid.setText("TPV-"+ MainApp.form.getHh01() + "\n" + appendingChar + "-" + String.format("%04d", MainApp.maxStructure));
         Toast.makeText(this, "Staring Structure", Toast.LENGTH_SHORT).show();
 
     }
@@ -56,22 +66,22 @@ public class SectionBActivity extends AppCompatActivity {
 
         bi.hh07.setOnCheckedChangeListener((radioGroup, i) -> {
             if (bi.hh0701.isChecked()) {
-                //Clear.clearAllFields(bi.fldGrpCVhh08);
+                Clear.clearAllFields(bi.fldGrpCVhh08a1);
             } else {
                 Clear.clearAllFields(bi.fldGrpCVhh09);
                 Clear.clearAllFields(bi.fldGrpCVhh10);
 
             }
 
-            if (bi.hh0713.isChecked() || bi.hh0714.isChecked() || bi.hh0715.isChecked() || bi.hh0716.isChecked()) {
-                //Clear.clearAllFields(bi.fldGrpCVhh08);
+            if (bi.hh0701.isChecked() || bi.hh0712.isChecked() || bi.hh0713.isChecked() || bi.hh0714.isChecked() || bi.hh0715.isChecked() || bi.hh0716.isChecked() || bi.hh0717.isChecked()) {
+                Clear.clearAllFields(bi.fldGrpCVhh08a1);
                 Clear.clearAllFields(bi.fldGrpCVhh09);
                 Clear.clearAllFields(bi.fldGrpCVhh10);
                 bi.btnContinue.setText("Continue to Next");
             }
 
             if (bi.hh0718.isChecked() || bi.hh0719.isChecked()) {
-                //Clear.clearAllFields(bi.fldGrpCVhh08);
+                Clear.clearAllFields(bi.fldGrpCVhh08a1);
                 Clear.clearAllFields(bi.fldGrpCVhh09);
                 Clear.clearAllFields(bi.fldGrpCVhh10);
                 bi.btnContinue.setText("Close Listing");
@@ -125,11 +135,13 @@ public class SectionBActivity extends AppCompatActivity {
         if (insertRecord()) {
             finish();
             Intent i = null;
-            if (form.getHh07().equals("1")) {
+            if (bi.hh0718.isChecked() || bi.hh0719.isChecked() || form.getHh08a1().equals("2")) {
+                i = new Intent(this, MainActivity.class);
+
+            } else if (form.getHh08a1().equals("1")) {
                 i = new Intent(this, FamilyListingActivity.class);
                 MainApp.hhid = 0;
-            } else if (bi.hh0718.isChecked() || bi.hh0719.isChecked()) {
-                i = new Intent(this, MainActivity.class);
+
             } else {
                 i = new Intent(this, SectionBActivity.class);
             }
@@ -169,6 +181,10 @@ public class SectionBActivity extends AppCompatActivity {
         form.setHh09(bi.hh0901.isChecked() ? "1"
                 : bi.hh0902.isChecked() ? "2"
                 : "-1");
+
+//        form.setHh08a1(bi.hh08a1a.isChecked() ? "1"
+//                : bi.hh08a1b.isChecked() ? "2"
+//                : "-1");
         form.setHh10(bi.hh0701.isChecked() && bi.hh0902.isChecked() ? "1" : bi.hh10.getText().toString());
 
         form.setHh20(String.valueOf(MainApp.maxStructure));

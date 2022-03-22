@@ -45,6 +45,8 @@ public class SectionAActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         bi = DataBindingUtil.setContentView(this, R.layout.activity_section_a);
         bi.setCallback(this);
+        form = new Form();
+        bi.setForm(form);
         st = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH).format(new Date().getTime());
         setupSkips();
         setSupportActionBar(bi.toolbar);
@@ -187,7 +189,6 @@ public class SectionAActivity extends AppCompatActivity {
 
 
     private void saveDraft() {
-        form = new Form();
         form.setSysDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
         form.setUserName(MainApp.user.getUserName());
         form.setDeviceId(MainApp.appInfo.getDeviceID());
