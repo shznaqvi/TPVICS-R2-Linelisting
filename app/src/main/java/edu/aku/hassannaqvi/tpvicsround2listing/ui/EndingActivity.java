@@ -1,6 +1,6 @@
 package edu.aku.hassannaqvi.tpvicsround2listing.ui;
 
-import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.form;
+import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.listings;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,7 +31,7 @@ public class EndingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bi = DataBindingUtil.setContentView(this, R.layout.activity_ending);
-        bi.setForm(form);
+        bi.setListings(listings);
         setSupportActionBar(bi.toolbar);
         setSupportActionBar(bi.toolbar);
         //setTitle(R.string.section1_mainheading);
@@ -41,19 +41,19 @@ public class EndingActivity extends AppCompatActivity {
         //sectionMainCheck = getIntent().getIntExtra("status", 0);
 
 
-        bi.istatusa.setEnabled(check && !form.getiStatus().equals("9")); // form is complete and  patient not on hold
+        bi.istatusa.setEnabled(check && !listings.getiStatus().equals("9")); // listings is complete and  patient not on hold
         bi.istatusb.setEnabled(!check);
-        bi.istatusc.setEnabled(check && form.getiStatus().equals("9")); // form is complete and  patient not on hold
+        bi.istatusc.setEnabled(check && listings.getiStatus().equals("9")); // listings is complete and  patient not on hold
 
 
     }
 
     private void saveDraft() {
-        form.setiStatus(bi.istatusa.isChecked() ? "1"
+        listings.setiStatus(bi.istatusa.isChecked() ? "1"
                 : bi.istatusb.isChecked() ? "2"
                 : bi.istatusc.isChecked() ? "9"
                 : "-1");
-        // form.setEndTime(new SimpleDateFormat("dd-MM-yy HH:mm", Locale.ENGLISH).format(new Date().getTime()));
+        // listings.setEndTime(new SimpleDateFormat("dd-MM-yy HH:mm", Locale.ENGLISH).format(new Date().getTime()));
     }
 
 
@@ -75,12 +75,12 @@ public class EndingActivity extends AppCompatActivity {
 
 
     private void cleanupProcess() {
-        form = null;
+        listings = null;
     }
 
 
     private boolean UpdateDB() {
-        int updcount = db.updateFormColumn(TableContracts.FormTable.COLUMN_ISTATUS, form.getiStatus());
+        int updcount = db.updateFormColumn(TableContracts.ListingsTable.COLUMN_ISTATUS, listings.getiStatus());
         return updcount > 0;
     }
 

@@ -21,11 +21,11 @@ import edu.aku.hassannaqvi.tpvicsround2listing.adapters.ListingsAdapter;
 import edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp;
 import edu.aku.hassannaqvi.tpvicsround2listing.database.DatabaseHelper;
 import edu.aku.hassannaqvi.tpvicsround2listing.databinding.ActivityListingsReporterBinding;
-import edu.aku.hassannaqvi.tpvicsround2listing.models.Form;
+import edu.aku.hassannaqvi.tpvicsround2listing.models.Listings;
 
 public class ListingsReporter extends AppCompatActivity {
     DatabaseHelper db;
-    Collection<Form> fc;
+    Collection<Listings> fc;
     String sysdateToday = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
     ActivityListingsReporterBinding bi;
     private RecyclerView.Adapter formsAdapter;
@@ -52,12 +52,12 @@ public class ListingsReporter extends AppCompatActivity {
             fc = db.getListingsByCluster("");
         } catch (JSONException e) {
             e.printStackTrace();
-            Toast.makeText(this, "JSONException(Form): " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "JSONException(Listings): " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
         }
 
         // specify an adapter (see also next example)
-        formsAdapter = new ListingsAdapter((List<Form>) fc, this);
+        formsAdapter = new ListingsAdapter((List<Listings>) fc, this);
         bi.fcRecyclerView.setAdapter(formsAdapter);
     }
 
@@ -67,9 +67,9 @@ public class ListingsReporter extends AppCompatActivity {
             fc = db.getListingsByCluster(bi.clusterFilter.getText().toString());
         } catch (JSONException e) {
             e.printStackTrace();
-            Toast.makeText(this, "JSONException(Form): " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "JSONException(Listings): " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        formsAdapter = new ListingsAdapter((List<Form>) fc, this);
+        formsAdapter = new ListingsAdapter((List<Listings>) fc, this);
         formsAdapter.notifyDataSetChanged();
         bi.fcRecyclerView.setAdapter(formsAdapter);
 

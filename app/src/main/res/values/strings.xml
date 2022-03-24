@@ -213,7 +213,7 @@
     <string name="actiondatabase" translatable="false">Database Manager</string>
 
     <!--Error Messages-->
-    <string name="upd_db_form" translatable="false"> updateDB(Form):\t </string>
+    <string name="upd_db_form" translatable="false"> updateDB(Listings):\t </string>
     <string name="upd_db_food_consumption" translatable="false"> updateDB(FoodConsumption):\t </string>
     <string name="upd_db_error" translatable="false"> Updating Database… ERROR! </string>
     <string name="db_excp_error" translatable="false"> Database Exception... ERROR! </string>

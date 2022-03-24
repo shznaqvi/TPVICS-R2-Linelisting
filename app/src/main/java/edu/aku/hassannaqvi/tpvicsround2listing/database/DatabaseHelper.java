@@ -32,16 +32,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts;
 import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.ClusterTable;
 import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.EntryLogTable;
-import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.FormTable;
+import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.ListingsTable;
 import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.MwraTable;
 import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.UsersTable;
 import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.VersionTable;
 import edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp;
 import edu.aku.hassannaqvi.tpvicsround2listing.models.Cluster;
 import edu.aku.hassannaqvi.tpvicsround2listing.models.EntryLog;
-import edu.aku.hassannaqvi.tpvicsround2listing.models.Form;
+import edu.aku.hassannaqvi.tpvicsround2listing.models.Listings;
 import edu.aku.hassannaqvi.tpvicsround2listing.models.Mwra;
 import edu.aku.hassannaqvi.tpvicsround2listing.models.Users;
 import edu.aku.hassannaqvi.tpvicsround2listing.models.VersionApp;
@@ -90,35 +91,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //ADDITION in DB
-    public Long addForm(Form cr) throws JSONException {
+    public Long addForm(Listings cr) throws JSONException {
 
         // Gets the data repository in write mode
         SQLiteDatabase db = this.getWritableDatabase(DATABASE_PASSWORD);
 
 // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        values.put(FormTable.COLUMN_PROJECT_NAME, cr.getProjectName());
-        values.put(FormTable.COLUMN_UID, cr.getUid());
-        values.put(FormTable.COLUMN_USERNAME, cr.getUserName());
-        values.put(FormTable.COLUMN_CLUSTER, cr.getCluster());
-        values.put(FormTable.COLUMN_SYSDATE, cr.getSysDate());
-        values.put(FormTable.COLUMN_ISTATUS, cr.getiStatus());
-        values.put(FormTable.COLUMN_DEVICETAGID, cr.getDeviceTag());
-        values.put(FormTable.COLUMN_DEVICEID, cr.getDeviceId());
-        values.put(FormTable.COLUMN_APPVERSION, cr.getAppver());
-        values.put(FormTable.COLUMN_START_TIME, cr.getStartTime());
-        values.put(FormTable.COLUMN_END_TIME, cr.getEndTime());
+        values.put(TableContracts.ListingsTable.COLUMN_PROJECT_NAME, cr.getProjectName());
+        values.put(TableContracts.ListingsTable.COLUMN_UID, cr.getUid());
+        values.put(TableContracts.ListingsTable.COLUMN_USERNAME, cr.getUserName());
+        values.put(TableContracts.ListingsTable.COLUMN_CLUSTER, cr.getCluster());
+        values.put(ListingsTable.COLUMN_SYSDATE, cr.getSysDate());
+        values.put(ListingsTable.COLUMN_TAB_NO, cr.getTabNo());
+        values.put(TableContracts.ListingsTable.COLUMN_ISTATUS, cr.getiStatus());
+        values.put(TableContracts.ListingsTable.COLUMN_DEVICETAGID, cr.getDeviceTag());
+        values.put(ListingsTable.COLUMN_DEVICEID, cr.getDeviceId());
+        values.put(ListingsTable.COLUMN_APPVERSION, cr.getAppver());
+        values.put(TableContracts.ListingsTable.COLUMN_START_TIME, cr.getStartTime());
+        values.put(TableContracts.ListingsTable.COLUMN_END_TIME, cr.getEndTime());
 
         // Put all JSON as xxtoString()
-        values.put(FormTable.COLUMN_SA, cr.sAtoString());
-        values.put(FormTable.COLUMN_SB, cr.sBtoString());
-        // values.put(FormTable.COLUMN_LC, cr.lCtoString());
+        values.put(ListingsTable.COLUMN_SA, cr.sAtoString());
+        values.put(TableContracts.ListingsTable.COLUMN_SB, cr.sBtoString());
+        // values.put(ListingsTable.COLUMN_LC, cr.lCtoString());
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId;
         newRowId = db.insert(
-                FormTable.TABLE_NAME,
-                FormTable.COLUMN_NAME_NULLABLE,
+                ListingsTable.TABLE_NAME,
+                TableContracts.ListingsTable.COLUMN_NAME_NULLABLE,
                 values);
         return newRowId;
     }
@@ -189,10 +191,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(column, value);
 
-        String selection = FormTable._ID + " =? ";
-        String[] selectionArgs = {String.valueOf(MainApp.form.getId())};
+        String selection = ListingsTable._ID + " =? ";
+        String[] selectionArgs = {String.valueOf(MainApp.listings.getId())};
 
-        return db.update(FormTable.TABLE_NAME,
+        return db.update(TableContracts.ListingsTable.TABLE_NAME,
                 values,
                 selection,
                 selectionArgs);
@@ -204,13 +206,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // New value for one column
         ContentValues values = new ContentValues();
-        values.put(FormTable.COLUMN_ISTATUS, MainApp.form.getiStatus());
+        values.put(ListingsTable.COLUMN_ISTATUS, MainApp.listings.getiStatus());
 
         // Which row to update, based on the ID
-        String selection = FormTable.COLUMN_ID + " =? ";
-        String[] selectionArgs = {String.valueOf(MainApp.form.getId())};
+        String selection = TableContracts.ListingsTable.COLUMN_ID + " =? ";
+        String[] selectionArgs = {String.valueOf(MainApp.listings.getId())};
 
-        return db.update(FormTable.TABLE_NAME,
+        return db.update(TableContracts.ListingsTable.TABLE_NAME,
                 values,
                 selection,
                 selectionArgs);
@@ -308,29 +310,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<Form> getFormsByDate(String sysdate) {
+    public ArrayList<Listings> getFormsByDate(String sysdate) {
 
         SQLiteDatabase db = this.getReadableDatabase(DATABASE_PASSWORD);
         Cursor c = null;
         String[] columns = {
-                FormTable._ID,
-                FormTable.COLUMN_UID,
-                FormTable.COLUMN_SYSDATE,
-                FormTable.COLUMN_USERNAME,
-                FormTable.COLUMN_CLUSTER,
-                FormTable.COLUMN_ISTATUS,
-                FormTable.COLUMN_SYNCED,
+                TableContracts.ListingsTable._ID,
+                TableContracts.ListingsTable.COLUMN_UID,
+                TableContracts.ListingsTable.COLUMN_SYSDATE,
+                ListingsTable.COLUMN_TAB_NO,
+                TableContracts.ListingsTable.COLUMN_USERNAME,
+                TableContracts.ListingsTable.COLUMN_CLUSTER,
+                TableContracts.ListingsTable.COLUMN_ISTATUS,
+                ListingsTable.COLUMN_SYNCED,
 
         };
-        String whereClause = FormTable.COLUMN_SYSDATE + " Like ? ";
+        String whereClause = ListingsTable.COLUMN_SYSDATE + " Like ? ";
         String[] whereArgs = new String[]{"%" + sysdate + " %"};
         String groupBy = null;
         String having = null;
-        String orderBy = FormTable.COLUMN_ID + " ASC";
-        ArrayList<Form> allForms = new ArrayList<>();
+        String orderBy = ListingsTable.COLUMN_ID + " ASC";
+        ArrayList<Listings> allListings = new ArrayList<>();
         try {
             c = db.query(
-                    FormTable.TABLE_NAME,  // The table to query
+                    TableContracts.ListingsTable.TABLE_NAME,  // The table to query
                     columns,                   // The columns to return
                     whereClause,               // The columns for the WHERE clause
                     whereArgs,                 // The values for the WHERE clause
@@ -339,13 +342,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     orderBy                    // The sort order
             );
             while (c.moveToNext()) {
-                Form forms = new Form();
-                forms.setId(c.getString(c.getColumnIndexOrThrow(FormTable.COLUMN_ID)));
-                forms.setUid(c.getString(c.getColumnIndexOrThrow(FormTable.COLUMN_UID)));
-                forms.setSysDate(c.getString(c.getColumnIndexOrThrow(FormTable.COLUMN_SYSDATE)));
-                forms.setUserName(c.getString(c.getColumnIndexOrThrow(FormTable.COLUMN_USERNAME)));
-                forms.setCluster(c.getString(c.getColumnIndexOrThrow(FormTable.COLUMN_CLUSTER)));
-                allForms.add(forms);
+                Listings forms = new Listings();
+                forms.setId(c.getString(c.getColumnIndexOrThrow(ListingsTable.COLUMN_ID)));
+                forms.setUid(c.getString(c.getColumnIndexOrThrow(TableContracts.ListingsTable.COLUMN_UID)));
+                forms.setSysDate(c.getString(c.getColumnIndexOrThrow(TableContracts.ListingsTable.COLUMN_SYSDATE)));
+                forms.setTabNo(c.getString(c.getColumnIndexOrThrow(ListingsTable.COLUMN_TAB_NO)));
+                forms.setUserName(c.getString(c.getColumnIndexOrThrow(TableContracts.ListingsTable.COLUMN_USERNAME)));
+                forms.setCluster(c.getString(c.getColumnIndexOrThrow(TableContracts.ListingsTable.COLUMN_CLUSTER)));
+                allListings.add(forms);
             }
         } finally {
             if (c != null) {
@@ -355,31 +359,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 db.close();
             }
         }
-        return allForms;
+        return allListings;
     }
 
 
     // istatus examples: (1) or (1,9) or (1,3,5)
-    public Form getFormByAssessNo(String uid, String istatus) throws JSONException {
+    public Listings getFormByAssessNo(String uid, String istatus) throws JSONException {
         SQLiteDatabase db = this.getReadableDatabase(DATABASE_PASSWORD);
         Cursor c = null;
         String[] columns = null;
 
         String whereClause;
-        whereClause = FormTable.COLUMN_UID + "=? AND " +
-                FormTable.COLUMN_ISTATUS + " in " + istatus;
+        whereClause = TableContracts.ListingsTable.COLUMN_UID + "=? AND " +
+                ListingsTable.COLUMN_ISTATUS + " in " + istatus;
 
         String[] whereArgs = {uid};
 
         String groupBy = null;
         String having = null;
 
-        String orderBy = FormTable.COLUMN_ID + " ASC";
+        String orderBy = TableContracts.ListingsTable.COLUMN_ID + " ASC";
 
-        Form allFC = null;
+        Listings allFC = null;
         try {
             c = db.query(
-                    FormTable.TABLE_NAME,  // The table to query
+                    TableContracts.ListingsTable.TABLE_NAME,  // The table to query
                     columns,                   // The columns to return
                     whereClause,               // The columns for the WHERE clause
                     whereArgs,                 // The values for the WHERE clause
@@ -388,7 +392,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     orderBy                    // The sort order
             );
             while (c.moveToNext()) {
-                allFC = new Form().Hydrate(c);
+                allFC = new Listings().Hydrate(c);
             }
         } finally {
             if (c != null) {
@@ -585,19 +589,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String[] columns = null;
 
         String whereClause;
-        whereClause = FormTable.COLUMN_SYNCED + " is null ";
+        whereClause = TableContracts.ListingsTable.COLUMN_SYNCED + " is null ";
 
         String[] whereArgs = null;
 
         String groupBy = null;
         String having = null;
 
-        String orderBy = FormTable.COLUMN_ID + " ASC";
+        String orderBy = TableContracts.ListingsTable.COLUMN_ID + " ASC";
 
         JSONArray allForm = new JSONArray();
         try {
             c = db.query(
-                    FormTable.TABLE_NAME,  // The table to query
+                    TableContracts.ListingsTable.TABLE_NAME,  // The table to query
                     columns,                   // The columns to return
                     whereClause,               // The columns for the WHERE clause
                     whereArgs,                 // The values for the WHERE clause
@@ -607,11 +611,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             );
             while (c.moveToNext()) {
                 /** WorkManager Upload
-                 /*Form fc = new Form();
+                 /*Listings fc = new Listings();
                  allFC.add(fc.Hydrate(c));*/
                 Log.d(TAG, "getUnsyncedForm: " + c.getCount());
-                Form form = new Form();
-                allForm.put(form.Hydrate(c).toJSONObject());
+                Listings listings = new Listings();
+                allForm.put(listings.Hydrate(c).toJSONObject());
             }
         } finally {
             if (c != null) {
@@ -714,15 +718,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 // New value for one column
         ContentValues values = new ContentValues();
-        values.put(FormTable.COLUMN_SYNCED, true);
-        values.put(FormTable.COLUMN_SYNCED_DATE, new Date().toString());
+        values.put(TableContracts.ListingsTable.COLUMN_SYNCED, true);
+        values.put(TableContracts.ListingsTable.COLUMN_SYNCED_DATE, new Date().toString());
 
 // Which row to update, based on the title
-        String where = FormTable.COLUMN_ID + " = ?";
+        String where = TableContracts.ListingsTable.COLUMN_ID + " = ?";
         String[] whereArgs = {id};
 
         int count = db.update(
-                FormTable.TABLE_NAME,
+                TableContracts.ListingsTable.TABLE_NAME,
                 values,
                 where,
                 whereArgs);
@@ -892,24 +896,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public List<Form> getListingsByCluster(String cluster) throws JSONException {
+    public List<Listings> getListingsByCluster(String cluster) throws JSONException {
         SQLiteDatabase db = this.getReadableDatabase(DATABASE_PASSWORD);
         Cursor c = null;
         String[] columns = null;
 
         String whereClause;
-        whereClause = FormTable.COLUMN_CLUSTER + " =? ";
+        whereClause = TableContracts.ListingsTable.COLUMN_CLUSTER + " =? ";
 
         String[] whereArgs = {cluster};
 
         String groupBy = null;
         String having = null;
 
-        String orderBy = FormTable.COLUMN_ID + " ASC";
+        String orderBy = TableContracts.ListingsTable.COLUMN_ID + " ASC";
 
-        List<Form> allListing = new ArrayList<>();
+        List<Listings> allListing = new ArrayList<>();
         c = db.query(
-                FormTable.TABLE_NAME,  // The table to query
+                TableContracts.ListingsTable.TABLE_NAME,  // The table to query
                 columns,                   // The columns to return
                 whereClause,               // The columns for the WHERE clause
                 whereArgs,                 // The values for the WHERE clause
@@ -919,7 +923,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         );
         while (c.moveToNext()) {
 
-            allListing.add(new Form().Hydrate(c));
+            allListing.add(new Listings().Hydrate(c));
         }
         c.close();
         db.close();

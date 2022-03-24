@@ -1,6 +1,6 @@
 package edu.aku.hassannaqvi.tpvicsround2listing.ui.sections;
 
-import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.form;
+import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.listings;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,7 +24,6 @@ import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts;
 import edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp;
 import edu.aku.hassannaqvi.tpvicsround2listing.database.DatabaseHelper;
 import edu.aku.hassannaqvi.tpvicsround2listing.databinding.ActivityFamilyListingBinding;
-import edu.aku.hassannaqvi.tpvicsround2listing.models.Form;
 
 public class FamilyListingActivity extends AppCompatActivity {
     private static final String TAG = "FamilyListingActivity";
@@ -37,7 +36,7 @@ public class FamilyListingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         bi = DataBindingUtil.setContentView(this, R.layout.activity_family_listing);
         bi.setCallback(this);
-        bi.setForm(form);
+        bi.setListings(listings);
         st = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH).format(new Date().getTime());
         //       setupSkips();
         setSupportActionBar(bi.toolbar);
@@ -46,16 +45,16 @@ public class FamilyListingActivity extends AppCompatActivity {
         MainApp.hhid++;
         MainApp.mwraCount = 0;
 
-        String appendingChar = "";
+        MainApp.appendingChar = "";
 
-        if (!form.getHh02e().isEmpty()){
-            if (form.getHh02e().equals("1"))
+/*        if (!listings.getHh02e().isEmpty()){
+            if (listings.getHh02e().equals("1"))
                 appendingChar = "A";
-            else if ((form.getHh02e().equals("2")))
+            else if ((listings.getHh02e().equals("2")))
                 appendingChar = "B";
-        }
+        }*/
 
-        bi.hhid.setText("TPV-"+MainApp.form.getHh01() + "\n" + appendingChar + "-" + String.format("%04d", MainApp.maxStructure) + "-" + String.format("%03d", MainApp.hhid));
+        bi.hhid.setText("TPV-" + MainApp.listings.getHh01() + "\n" + MainApp.appendingChar + "-" + String.format("%04d", MainApp.maxStructure) + "-" + String.format("%03d", MainApp.hhid));
         Toast.makeText(this, "Staring Household", Toast.LENGTH_SHORT).show();
 
 
@@ -81,7 +80,7 @@ public class FamilyListingActivity extends AppCompatActivity {
     private boolean updateDB() {
         long updcount = 0;
         try {
-            updcount = db.updateFormColumn(TableContracts.FormTable.COLUMN_LC, form.lCtoString());
+            updcount = db.updateFormColumn(TableContracts.ListingsTable.COLUMN_LC, listings.lCtoString());
         } catch (JSONException e) {
             e.printStackTrace();
             Log.d(TAG, R.string.upd_db_form + e.getMessage());
@@ -98,15 +97,15 @@ public class FamilyListingActivity extends AppCompatActivity {
         long rowId = 0;
 
         try {
-            rowId = db.addForm(form);
+            rowId = db.addForm(listings);
 
             if (rowId > 0) {
                 long updCount = 0;
 
-                form.setId(String.valueOf(rowId));
-                form.setUid(form.getDeviceId() + form.getId());
+                listings.setId(String.valueOf(rowId));
+                listings.setUid(listings.getDeviceId() + listings.getId());
 
-                updCount = db.updateFormColumn(TableContracts.FormTable.COLUMN_UID, form.getUid());
+                updCount = db.updateFormColumn(TableContracts.ListingsTable.COLUMN_UID, listings.getUid());
 
                 if (updCount > 0) {
                     return updateDB();
@@ -131,10 +130,10 @@ public class FamilyListingActivity extends AppCompatActivity {
         //saveDraft();
         if (MainApp.hhid == 1 ? updateDB() : insertRecord()) {
             finish();
-            if (MainApp.hhid < Integer.parseInt(MainApp.form.getHh10())) {
+            if (MainApp.hhid < Integer.parseInt(MainApp.listings.getHh10())) {
                 //   Toast.makeText(this, "Staring Family", Toast.LENGTH_SHORT).show();
-                form.setHh12("");
-                form.setHh14("");
+                listings.setHh12("");
+                listings.setHh14("");
                 startActivity(new Intent(this, FamilyListingActivity.class));
 
             } else {
@@ -146,42 +145,42 @@ public class FamilyListingActivity extends AppCompatActivity {
     }
 
     private void saveDraft() {
-        // form = new Form();
-//        form.setSysDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
-//        //  form.setUserName(MainApp.user.getUserName());
-//        // form.setDeviceId(MainApp.appInfo.getDeviceID());
-//        // form.setDeviceTag(MainApp.appInfo.getTagName());
-//        // form.setAppver(MainApp.appInfo.getAppVersion());
-//        // form.setStartTime(st);
-//        // form.setEndTime(new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
+        // listings = new Listings();
+//        listings.setSysDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
+//        //  listings.setUserName(MainApp.user.getUserName());
+//        // listings.setDeviceId(MainApp.appInfo.getDeviceID());
+//        // listings.setDeviceTag(MainApp.appInfo.getTagName());
+//        // listings.setAppver(MainApp.appInfo.getAppVersion());
+//        // listings.setStartTime(st);
+//        // listings.setEndTime(new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
 //
-//        form.setHh11(bi.hh11.getText().toString());
+//        listings.setHh11(bi.hh11.getText().toString());
 //
-//        //form.setHh12(bi.hh12.getText().toString());
+//        //listings.setHh12(bi.hh12.getText().toString());
 //
-//        form.setHh13(bi.hh13.getText().toString());
-//        form.setHh13a(bi.hh13a.getText().toString());
+//        listings.setHh13(bi.hh13.getText().toString());
+//        listings.setHh13a(bi.hh13a.getText().toString());
 //
-//        form.setHh14(bi.hh1401.isChecked() ? "1"
+//        listings.setHh14(bi.hh1401.isChecked() ? "1"
 //                : bi.hh1402.isChecked() ? "2"
 //                : "-1");
 //
-//        form.setHh15(bi.hh15.getText().toString());
+//        listings.setHh15(bi.hh15.getText().toString());
 //
-///*        form.setHh16(bi.hh16.getText().toString());
+///*        listings.setHh16(bi.hh16.getText().toString());
 //
-//        form.setHh17(bi.hh17.getText().toString());
+//        listings.setHh17(bi.hh17.getText().toString());
 //
-//        form.setHh18(bi.hh18.getText().toString());
+//        listings.setHh18(bi.hh18.getText().toString());
 //
-//        form.setHh19(bi.hh19.getText().toString());*/
-//        form.setHh21(String.valueOf(MainApp.hhid));
+//        listings.setHh19(bi.hh19.getText().toString());*/
+//        listings.setHh21(String.valueOf(MainApp.hhid));
 //
 //        try {
-//            form.setlC(form.lCtoString());
+//            listings.setlC(listings.lCtoString());
 //        } catch (JSONException e) {
 //            e.printStackTrace();
-//            Toast.makeText(this, "JSONException(form): " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "JSONException(listings): " + e.getMessage(), Toast.LENGTH_SHORT).show();
 //        }
 
     }

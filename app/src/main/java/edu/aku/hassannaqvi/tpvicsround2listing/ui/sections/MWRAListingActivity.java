@@ -38,8 +38,8 @@ public class MWRAListingActivity extends AppCompatActivity {
         db = MainApp.appInfo.dbHelper;
 
         MainApp.mwraCount++;
-        bi.hhid.setText(MainApp.form.getHh01() + "\n" + String.format("%03d", MainApp.maxStructure) + "-" + String.format("%02d", MainApp.hhid));
-        bi.mwraSno.setText("MWRA#: " + MainApp.mwraCount + " of " + MainApp.form.getHh15());
+        bi.hhid.setText(MainApp.listings.getHh01() + "\n" + String.format("%03d", MainApp.maxStructure) + "-" + String.format("%02d", MainApp.hhid));
+        bi.mwraSno.setText("MWRA#: " + MainApp.mwraCount + " of " + MainApp.listings.getHh15());
 
         setupSkips();
         Toast.makeText(this, "Staring MWRA", Toast.LENGTH_SHORT).show();
@@ -49,10 +49,10 @@ public class MWRAListingActivity extends AppCompatActivity {
     private void setupSkips() {
 
         //   bi.hh14.setOnCheckedChangeListener((radioGroup, i) -> Clear.clearAllFields(bi.fldGrpa14a));
-        if (MainApp.form.getHh15() != null) {
-            if (MainApp.mwraCount < Integer.parseInt(MainApp.form.getHh15())) {
+        if (MainApp.listings.getHh15() != null) {
+            if (MainApp.mwraCount < Integer.parseInt(MainApp.listings.getHh15())) {
                 bi.addMWRA.setText("Add MWRA");
-            } else if (MainApp.hhid < Integer.parseInt(MainApp.form.getHh10())) {
+            } else if (MainApp.hhid < Integer.parseInt(MainApp.listings.getHh10())) {
                 bi.addMWRA.setText("Continue to Next");
             } else {
                 bi.addMWRA.setText("Continue to Next");
@@ -97,11 +97,11 @@ public class MWRAListingActivity extends AppCompatActivity {
         saveDraft();
         if (insertRecord()) {
             finish();
-            if (MainApp.mwraCount < Integer.parseInt(MainApp.form.getHh15())) {
+            if (MainApp.mwraCount < Integer.parseInt(MainApp.listings.getHh15())) {
                 startActivity(new Intent(this, MWRAListingActivity.class));
                 Toast.makeText(this, "" + MainApp.mwraCount, Toast.LENGTH_SHORT).show();
                 //     startActivity(new Intent(this, SectionBActivity.class));
-            } else if (MainApp.hhid < Integer.parseInt(MainApp.form.getHh10())) {
+            } else if (MainApp.hhid < Integer.parseInt(MainApp.listings.getHh10())) {
                 startActivity(new Intent(this, FamilyListingActivity.class));
 
             } else {
@@ -113,8 +113,8 @@ public class MWRAListingActivity extends AppCompatActivity {
 
     private void saveDraft() {
         mwra = new Mwra();
-        mwra.setUuid(MainApp.form.getUid());
-        mwra.setSysDate(MainApp.form.getSysDate());
+        mwra.setUuid(MainApp.listings.getUid());
+        mwra.setSysDate(MainApp.listings.getSysDate());
         mwra.setUserName(MainApp.user.getUserName());
         mwra.setDeviceId(MainApp.appInfo.getDeviceID());
         mwra.setDeviceTag(MainApp.appInfo.getTagName());

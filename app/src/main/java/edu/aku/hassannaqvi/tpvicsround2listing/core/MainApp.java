@@ -30,7 +30,7 @@ import java.util.List;
 
 import edu.aku.hassannaqvi.tpvicsround2listing.BuildConfig;
 import edu.aku.hassannaqvi.tpvicsround2listing.R;
-import edu.aku.hassannaqvi.tpvicsround2listing.models.Form;
+import edu.aku.hassannaqvi.tpvicsround2listing.models.Listings;
 import edu.aku.hassannaqvi.tpvicsround2listing.models.Mwra;
 import edu.aku.hassannaqvi.tpvicsround2listing.models.Users;
 
@@ -61,7 +61,7 @@ public class MainApp extends Application {
     public static String[] downloadData;
 
     // Tables
-    public static Form form;
+    public static Listings listings;
     public static Mwra mwra;
 
 
@@ -96,6 +96,7 @@ public class MainApp extends Application {
     public static int maxStructure;
     public static int hhid;
     public static int HHCount = 0;
+    public static String appendingChar = "";
 
 
     public static void hideSystemUI(View decorView) {

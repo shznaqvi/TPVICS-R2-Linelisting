@@ -4,8 +4,8 @@ import android.provider.BaseColumns;
 
 public class TableContracts {
 
-    public static abstract class FormTable implements BaseColumns {
-        public static final String TABLE_NAME = "Form";
+    public static abstract class ListingsTable implements BaseColumns {
+        public static final String TABLE_NAME = "Listings";
         public static final String COLUMN_NAME_NULLABLE = "NULLHACK";
         public static final String COLUMN_PROJECT_NAME = "projectName";
         public static final String COLUMN_ID = "_id";
@@ -13,6 +13,7 @@ public class TableContracts {
         public static final String COLUMN_USERNAME = "username";
         public static final String COLUMN_CLUSTER = "cluster";
         public static final String COLUMN_SYSDATE = "sysdate";
+        public static final String COLUMN_TAB_NO = "tabNo";
         public static final String COLUMN_SA = "sA";
         public static final String COLUMN_SB = "sB";
         public static final String COLUMN_LC = "lC";

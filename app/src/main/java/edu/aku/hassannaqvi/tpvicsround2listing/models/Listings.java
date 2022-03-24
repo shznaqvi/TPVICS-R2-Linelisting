@@ -16,12 +16,13 @@ import java.util.Date;
 import java.util.Locale;
 
 import edu.aku.hassannaqvi.tpvicsround2listing.BR;
-import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.FormTable;
+import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts;
+import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.ListingsTable;
 import edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp;
 
-public class Form extends BaseObservable {
+public class Listings extends BaseObservable {
 
-    private final String TAG = "Form";
+    private final String TAG = "Listings";
     private final transient PropertyChangeRegistry propertyChangeRegistry = new PropertyChangeRegistry();
     // APP VARIABLES
     private String projectName = MainApp.PROJECT_NAME;
@@ -31,6 +32,7 @@ public class Form extends BaseObservable {
     private String cluster = StringUtils.EMPTY;
     private String userName = StringUtils.EMPTY;
     private String sysDate = StringUtils.EMPTY;
+    private String tabNo = StringUtils.EMPTY;
     private String deviceId = StringUtils.EMPTY;
     private String deviceTag = StringUtils.EMPTY;
     private String appver = StringUtils.EMPTY;
@@ -49,7 +51,6 @@ public class Form extends BaseObservable {
     private String hh02d1 = StringUtils.EMPTY;
 
 
-
     private String hh02e = StringUtils.EMPTY;
 
     private String hh03 = StringUtils.EMPTY;
@@ -60,7 +61,6 @@ public class Form extends BaseObservable {
     private String hh0717x = StringUtils.EMPTY;
     private String hh08 = StringUtils.EMPTY;
     private String hh08a1 = StringUtils.EMPTY;
-
 
 
     private String hh09 = StringUtils.EMPTY;
@@ -79,7 +79,7 @@ public class Form extends BaseObservable {
     private String sB = StringUtils.EMPTY;
     private String lC = StringUtils.EMPTY;
 
-    public Form() {
+    public Listings() {
 
         setSysDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
         setUserName(MainApp.user.getUserName());
@@ -415,6 +415,14 @@ public class Form extends BaseObservable {
         this.sysDate = sysDate;
     }
 
+    public String getTabNo() {
+        return tabNo;
+    }
+
+    public void setTabNo(String tabNo) {
+        this.tabNo = tabNo;
+    }
+
     public String getDeviceId() {
         return deviceId;
     }
@@ -521,23 +529,24 @@ public class Form extends BaseObservable {
     }
 
 
-    public Form Hydrate(Cursor cursor) throws JSONException {
-        this.id = cursor.getString(cursor.getColumnIndexOrThrow(FormTable.COLUMN_ID));
-        this.uid = cursor.getString(cursor.getColumnIndexOrThrow(FormTable.COLUMN_UID));
-        this.userName = cursor.getString(cursor.getColumnIndexOrThrow(FormTable.COLUMN_USERNAME));
-        this.cluster = cursor.getString(cursor.getColumnIndexOrThrow(FormTable.COLUMN_CLUSTER));
-        this.sysDate = cursor.getString(cursor.getColumnIndexOrThrow(FormTable.COLUMN_SYSDATE));
-        this.deviceId = cursor.getString(cursor.getColumnIndexOrThrow(FormTable.COLUMN_DEVICEID));
-        this.deviceTag = cursor.getString(cursor.getColumnIndexOrThrow(FormTable.COLUMN_DEVICETAGID));
-        this.appver = cursor.getString(cursor.getColumnIndexOrThrow(FormTable.COLUMN_APPVERSION));
-        this.iStatus = cursor.getString(cursor.getColumnIndexOrThrow(FormTable.COLUMN_ISTATUS));
-        this.synced = cursor.getString(cursor.getColumnIndexOrThrow(FormTable.COLUMN_SYNCED));
-        this.syncDate = cursor.getString(cursor.getColumnIndexOrThrow(FormTable.COLUMN_SYNCED_DATE));
-        this.endTime = cursor.getString(cursor.getColumnIndexOrThrow(FormTable.COLUMN_END_TIME));
-        this.startTime = cursor.getString(cursor.getColumnIndexOrThrow(FormTable.COLUMN_START_TIME));
-        sAHydrate(cursor.getString(cursor.getColumnIndexOrThrow(FormTable.COLUMN_SA)));
-        sBHydrate(cursor.getString(cursor.getColumnIndexOrThrow(FormTable.COLUMN_SB)));
-        lCHydrate(cursor.getString(cursor.getColumnIndexOrThrow(FormTable.COLUMN_LC)));
+    public Listings Hydrate(Cursor cursor) throws JSONException {
+        this.id = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_ID));
+        this.uid = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_UID));
+        this.userName = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_USERNAME));
+        this.cluster = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_CLUSTER));
+        this.sysDate = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_SYSDATE));
+        this.tabNo = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_TAB_NO));
+        this.deviceId = cursor.getString(cursor.getColumnIndexOrThrow(TableContracts.ListingsTable.COLUMN_DEVICEID));
+        this.deviceTag = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_DEVICETAGID));
+        this.appver = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_APPVERSION));
+        this.iStatus = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_ISTATUS));
+        this.synced = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_SYNCED));
+        this.syncDate = cursor.getString(cursor.getColumnIndexOrThrow(TableContracts.ListingsTable.COLUMN_SYNCED_DATE));
+        this.endTime = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_END_TIME));
+        this.startTime = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_START_TIME));
+        sAHydrate(cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_SA)));
+        sBHydrate(cursor.getString(cursor.getColumnIndexOrThrow(TableContracts.ListingsTable.COLUMN_SB)));
+        lCHydrate(cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_LC)));
 
         return this;
     }
@@ -652,35 +661,36 @@ public class Form extends BaseObservable {
 
         JSONObject json = new JSONObject();
 
-        json.put(FormTable.COLUMN_ID, this.id);
-        json.put(FormTable.COLUMN_UID, this.uid);
-        json.put(FormTable.COLUMN_USERNAME, this.userName);
-        json.put(FormTable.COLUMN_CLUSTER, this.cluster);
-        json.put(FormTable.COLUMN_SYSDATE, this.sysDate);
-        json.put(FormTable.COLUMN_DEVICEID, this.deviceId);
-        json.put(FormTable.COLUMN_DEVICETAGID, this.deviceTag);
-        json.put(FormTable.COLUMN_ISTATUS, this.iStatus);
-        json.put(FormTable.COLUMN_APPVERSION, this.appver);
-        json.put(FormTable.COLUMN_SYNCED, this.synced);
-        json.put(FormTable.COLUMN_SYNCED_DATE, this.syncDate);
-        json.put(FormTable.COLUMN_SA, new JSONObject(sAtoString()));
-        json.put(FormTable.COLUMN_SB, new JSONObject(sBtoString()));
-        json.put(FormTable.COLUMN_LC, new JSONObject(lCtoString()));
-        json.put(FormTable.COLUMN_END_TIME, this.endTime);
-        json.put(FormTable.COLUMN_START_TIME, this.startTime);
+        json.put(ListingsTable.COLUMN_ID, this.id);
+        json.put(ListingsTable.COLUMN_UID, this.uid);
+        json.put(ListingsTable.COLUMN_USERNAME, this.userName);
+        json.put(ListingsTable.COLUMN_CLUSTER, this.cluster);
+        json.put(ListingsTable.COLUMN_SYSDATE, this.sysDate);
+        json.put(ListingsTable.COLUMN_TAB_NO, this.tabNo);
+        json.put(ListingsTable.COLUMN_DEVICEID, this.deviceId);
+        json.put(ListingsTable.COLUMN_DEVICETAGID, this.deviceTag);
+        json.put(ListingsTable.COLUMN_ISTATUS, this.iStatus);
+        json.put(ListingsTable.COLUMN_APPVERSION, this.appver);
+        json.put(ListingsTable.COLUMN_SYNCED, this.synced);
+        json.put(ListingsTable.COLUMN_SYNCED_DATE, this.syncDate);
+        json.put(ListingsTable.COLUMN_SA, new JSONObject(sAtoString()));
+        json.put(ListingsTable.COLUMN_SB, new JSONObject(sBtoString()));
+        json.put(ListingsTable.COLUMN_LC, new JSONObject(lCtoString()));
+        json.put(ListingsTable.COLUMN_END_TIME, this.endTime);
+        json.put(ListingsTable.COLUMN_START_TIME, this.startTime);
 
-      /*  json.put(FormTable.COLUMN_SA, this.sA);
-        json.put(FormTable.COLUMN_SB, this.sB);
-        json.put(FormTable.COLUMN_LC, this.lC);
+      /*  json.put(ListingsTable.COLUMN_SA, this.sA);
+        json.put(ListingsTable.COLUMN_SB, this.sB);
+        json.put(ListingsTable.COLUMN_LC, this.lC);
 */
 /*        if (this.sA != null && !this.sA.equals("")) {
-            json.put(FormTable.COLUMN_SA, new JSONObject(this.sA));
+            json.put(ListingsTable.COLUMN_SA, new JSONObject(this.sA));
         }
         if (this.sB != null && !this.sB.equals("")) {
-            json.put(FormTable.COLUMN_SB, new JSONObject(this.sB));
+            json.put(ListingsTable.COLUMN_SB, new JSONObject(this.sB));
         }
         if (this.lC != null && !this.lC.equals("")) {
-            json.put(FormTable.COLUMN_LC, new JSONObject(this.lC));
+            json.put(ListingsTable.COLUMN_LC, new JSONObject(this.lC));
         }*/
 
         return json;

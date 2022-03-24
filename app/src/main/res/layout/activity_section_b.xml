@@ -6,8 +6,8 @@
         <import type="android.view.View" />
 
              <variable
-                 name="form"
-                 type="edu.aku.hassannaqvi.tpvicsround2listing.models.Form" />
+                 name="listings"
+                 type="edu.aku.hassannaqvi.tpvicsround2listing.models.Listings" />
 
         <variable
             name="callback"
@@ -206,26 +206,26 @@
                             >
 
                             <RadioButton
-                            android:id="@+id/hh08a1a"
-                            android:text="@string/hh08a1a"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:checked="@{form.hh08a1.equals(`1`)}"
-                            android:onClick="@{()->form.setHh08a1(`1`)}"
-                            android:layout_weight="1"
+                                android:id="@+id/hh08a1a"
+                                android:text="@string/hh08a1a"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:checked="@{listings.hh08a1.equals(`1`)}"
+                                android:onClick="@{()->listings.setHh08a1(`1`)}"
+                                android:layout_weight="1"
 
-                            />
+                                />
 
                             <RadioButton
-                            android:id="@+id/hh08a1b"
-                            android:text="@string/hh08a1b"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:checked="@{form.hh08a1.equals(`2`)}"
-                            android:onClick="@{()->form.setHh08a1(`2`) + hh09.clearCheck()}"
-                            android:layout_weight="1"
+                                android:id="@+id/hh08a1b"
+                                android:text="@string/hh08a1b"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:checked="@{listings.hh08a1.equals(`2`)}"
+                                android:onClick="@{()->listings.setHh08a1(`2`) + hh09.clearCheck()}"
+                                android:layout_weight="1"
 
-                            />
+                                />
 
                         </RadioGroup>
                     </LinearLayout>
@@ -237,7 +237,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/fldGrpCVhh09"
                     style="@style/cardView"
-                    android:visibility="@{form.hh08a1.equals(`1`) ? View.VISIBLE : View.GONE }">
+                    android:visibility="@{listings.hh08a1.equals(`1`) ? View.VISIBLE : View.GONE }">
 
                     <LinearLayout
                         android:layout_width="match_parent"

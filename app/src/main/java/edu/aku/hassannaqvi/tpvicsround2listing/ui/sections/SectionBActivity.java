@@ -1,12 +1,11 @@
 package edu.aku.hassannaqvi.tpvicsround2listing.ui.sections;
 
 import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.editor;
-import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.form;
+import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.listings;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,7 +38,7 @@ public class SectionBActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         bi = DataBindingUtil.setContentView(this, R.layout.activity_section_b);
         bi.setCallback(this);
-        bi.setForm(form);
+        bi.setListings(listings);
         st = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH).format(new Date().getTime());
         setupSkips();
         setSupportActionBar(bi.toolbar);
@@ -48,16 +47,18 @@ public class SectionBActivity extends AppCompatActivity {
         MainApp.maxStructure++;
         MainApp.hhid = 0;
 
-        String appendingChar = "";
+        MainApp.appendingChar = "";
+/*
 
-        if (!form.getHh02e().isEmpty()){
-            if (form.getHh02e().equals("1"))
+        if (!listings.getHh02e().isEmpty()){
+            if (listings.getHh02e().equals("1"))
                 appendingChar = "A";
-            else if (form.getHh02e().equals("2"))
+            else if (listings.getHh02e().equals("2"))
                 appendingChar = "B";
         }
+*/
 
-        bi.hhid.setText("TPV-"+ MainApp.form.getHh01() + "\n" + appendingChar + "-" + String.format("%04d", MainApp.maxStructure));
+        bi.hhid.setText("TPV-" + MainApp.listings.getHh01() + "\n" + MainApp.appendingChar + "-" + String.format("%04d", MainApp.maxStructure));
         Toast.makeText(this, "Staring Structure", Toast.LENGTH_SHORT).show();
 
     }
@@ -98,15 +99,15 @@ public class SectionBActivity extends AppCompatActivity {
         long rowId = 0;
 
         try {
-            rowId = db.addForm(form);
+            rowId = db.addForm(listings);
 
             if (rowId > 0) {
                 long updCount = 0;
 
-                form.setId(String.valueOf(rowId));
-                form.setUid(form.getDeviceId() + form.getId());
+                listings.setId(String.valueOf(rowId));
+                listings.setUid(listings.getDeviceId() + listings.getId());
 
-                updCount = db.updateFormColumn(TableContracts.FormTable.COLUMN_UID, form.getUid());
+                updCount = db.updateFormColumn(TableContracts.ListingsTable.COLUMN_UID, listings.getUid());
 
                 if (updCount > 0) {
 
@@ -135,10 +136,10 @@ public class SectionBActivity extends AppCompatActivity {
         if (insertRecord()) {
             finish();
             Intent i = null;
-            if (bi.hh0718.isChecked() || bi.hh0719.isChecked() || form.getHh08a1().equals("2")) {
+            if (bi.hh0718.isChecked() || bi.hh0719.isChecked() || listings.getHh08a1().equals("2")) {
                 i = new Intent(this, MainActivity.class);
 
-            } else if (form.getHh08a1().equals("1")) {
+            } else if (listings.getHh08a1().equals("1")) {
                 i = new Intent(this, FamilyListingActivity.class);
                 MainApp.hhid = 0;
 
@@ -152,19 +153,19 @@ public class SectionBActivity extends AppCompatActivity {
 
 
     private void saveDraft() {
-        // form = new Form();
+        // listings = new Listings();
         if (bi.hh0718.isChecked() || bi.hh0719.isChecked()) {
             MainApp.maxStructure--;
         }
-        //form.setSysDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
-        //form.setUserName(MainApp.user.getUserName());
-        //form.setDeviceId(MainApp.appInfo.getDeviceID());
-        //form.setDeviceTag(MainApp.appInfo.getTagName());
-        //form.setAppver(MainApp.appInfo.getAppVersion());
-        //form.setStartTime(st);
-        //form.setEndTime(new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
+        //listings.setSysDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
+        //listings.setUserName(MainApp.user.getUserName());
+        //listings.setDeviceId(MainApp.appInfo.getDeviceID());
+        //listings.setDeviceTag(MainApp.appInfo.getTagName());
+        //listings.setAppver(MainApp.appInfo.getAppVersion());
+        //listings.setStartTime(st);
+        //listings.setEndTime(new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
 
-        form.setHh07(bi.hh0701.isChecked() ? "1"
+        listings.setHh07(bi.hh0701.isChecked() ? "1"
                 : bi.hh0712.isChecked() ? "12"
                 : bi.hh0713.isChecked() ? "13"
                 : bi.hh0714.isChecked() ? "14"
@@ -175,22 +176,22 @@ public class SectionBActivity extends AppCompatActivity {
                 : bi.hh0719.isChecked() ? "19"
                 : "-1");
 
-        form.setHh0717x(bi.hh0717x.getText().toString());
-        //form.setHh08(bi.hh08.getText().toString());
+        listings.setHh0717x(bi.hh0717x.getText().toString());
+        //listings.setHh08(bi.hh08.getText().toString());
 
-        form.setHh09(bi.hh0901.isChecked() ? "1"
+        listings.setHh09(bi.hh0901.isChecked() ? "1"
                 : bi.hh0902.isChecked() ? "2"
                 : "-1");
 
-//        form.setHh08a1(bi.hh08a1a.isChecked() ? "1"
+//        listings.setHh08a1(bi.hh08a1a.isChecked() ? "1"
 //                : bi.hh08a1b.isChecked() ? "2"
 //                : "-1");
-        form.setHh10(bi.hh0701.isChecked() && bi.hh0902.isChecked() ? "1" : bi.hh10.getText().toString());
+        listings.setHh10(bi.hh0701.isChecked() && bi.hh0902.isChecked() ? "1" : bi.hh10.getText().toString());
 
-        form.setHh20(String.valueOf(MainApp.maxStructure));
+        listings.setHh20(String.valueOf(MainApp.maxStructure));
 
         try {
-            form.setsA(form.sAtoString());
+            listings.setsA(listings.sAtoString());
         } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(this, "JSONException(SB): " + e.getMessage(), Toast.LENGTH_SHORT).show();

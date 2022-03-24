@@ -6,8 +6,8 @@
         <import type="android.view.View" />
 
         <!--        <variable
-                    name="form"
-                    type="edu.aku.hassannaqvi.tpvicsround2listing.models.Form" />-->
+                    name="listings"
+                    type="edu.aku.hassannaqvi.tpvicsround2listing.models.Listingsings" />-->
 
         <variable
             name="callback"

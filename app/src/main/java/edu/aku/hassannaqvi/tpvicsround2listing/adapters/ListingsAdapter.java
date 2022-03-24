@@ -14,7 +14,7 @@ import java.util.List;
 
 import edu.aku.hassannaqvi.tpvicsround2listing.R;
 import edu.aku.hassannaqvi.tpvicsround2listing.database.DatabaseHelper;
-import edu.aku.hassannaqvi.tpvicsround2listing.models.Form;
+import edu.aku.hassannaqvi.tpvicsround2listing.models.Listings;
 
 /**
  * Created by hassan.naqvi on 8/1/2016.
@@ -23,10 +23,10 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
     private static final String TAG = "ListingsAdapter";
     Context c;
     DatabaseHelper db;
-    private List<Form> fc = Collections.emptyList();
+    private List<Listings> fc = Collections.emptyList();
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ListingsAdapter(List<Form> fc, Context c) {
+    public ListingsAdapter(List<Listings> fc, Context c) {
         this.fc = fc;
         this.c = c;
 //        Log.d("TAG:count", String.valueOf(getItemCount()));
@@ -72,7 +72,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
             motherName = db.getWraName(fc.get(position).getUid());
         } catch (JSONException e) {
             e.printStackTrace();
-            Toast.makeText(c, "JSONException(Form): " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(c, "JSONException(Listings): " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         String childName = "";
@@ -80,7 +80,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
             childName = db.getChildName(fc.get(position).getUid());
         } catch (JSONException e) {
             e.printStackTrace();
-            Toast.makeText(c, "JSONException(Form): " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(c, "JSONException(Listings): " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }*/
 
       /*   String iStatus = "Status  Unknown";
@@ -115,7 +115,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
                 iColor = Color.RED;
                 break;
             default:
-                iStatus = "Open Form";
+                iStatus = "Open Listings";
                 iColor = Color.RED;
                 break;
 
@@ -141,9 +141,9 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
       /*  holder.itemView.setOnClickListener(v -> {
             // Get the current state of the item
 
-            MainApp.form = fc.get(position);
+            MainApp.listings = fc.get(position);
             //MainApp.households.setVisitNo(String.valueOf(Integer.parseInt(MainApp.households.getVisitNo())+1));
-            if (!MainApp.form.getiStatus().equals("1")) {
+            if (!MainApp.listings.getiStatus().equals("1")) {
 
                 editHousehold(position);
 
@@ -164,9 +164,9 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
     }
 
 /*    private void editHousehold(int position) {
-        MainApp.form = new Form();
+        MainApp.listings = new Listings();
         try {
-            List<Form> = db.getListingsByCluster(fc.get(position).getHh01());
+            List<Listings> = db.getListingsByCluster(fc.get(position).getHh01());
         } catch (JSONException e) {
             Log.d(TAG, c.getString(R.string.hh_exists_form) + e.getMessage());
             Toast.makeText(c, c.getString(R.string.hh_exists_form) + e.getMessage(), Toast.LENGTH_SHORT).show();

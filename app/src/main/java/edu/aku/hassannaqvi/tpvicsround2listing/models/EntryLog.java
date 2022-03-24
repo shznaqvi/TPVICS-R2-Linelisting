@@ -54,14 +54,14 @@ public class EntryLog extends BaseObservable implements Observable {
     public void populateMetaForm() {
 
         setProjectName(PROJECT_NAME);
-        setUuid(MainApp.form.getUid());  // not applicable in Form table
+        setUuid(MainApp.listings.getUid());  // not applicable in Listings table
         setUserName(MainApp.user.getUserName());
-        setSysDate(MainApp.form.getSysDate());
+        setSysDate(MainApp.listings.getSysDate());
         setEntryDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
-        setiStatus(MainApp.form.getiStatus());
-        setiStatus96x(MainApp.form.getiStatus96x());
+        setiStatus(MainApp.listings.getiStatus());
+        setiStatus96x(MainApp.listings.getiStatus96x());
         setAppver(MainApp.appInfo.getAppVersion());
-        setEntryType("Form");
+        setEntryType("Listings");
         setDeviceId(MainApp.deviceid);
 
     }
@@ -69,16 +69,16 @@ public class EntryLog extends BaseObservable implements Observable {
     /*public void populateMetaForm() {
 
         setProjectName(PROJECT_NAME);
-        setUuid(MainApp.Form.getUid());  // not applicable in Form table
+        setUuid(MainApp.Listings.getUid());  // not applicable in Listings table
         setUserName(MainApp.user.getUserName());
-        setSysDate(MainApp.Form.getSysDate());
+        setSysDate(MainApp.Listings.getSysDate());
         setEntryDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
-        setPsuCode(MainApp.Form.getCluster());
-        //setHhid(MainApp.Form.getHhid());
-        setiStatus(MainApp.Form.getiStatus());
-        setiStatus96x(MainApp.Form.getiStatus96x());
+        setPsuCode(MainApp.Listings.getCluster());
+        //setHhid(MainApp.Listings.getHhid());
+        setiStatus(MainApp.Listings.getiStatus());
+        setiStatus96x(MainApp.Listings.getiStatus96x());
         setAppver(MainApp.appInfo.getAppVersion());
-        setEntryType("Form");
+        setEntryType("Listings");
         setDeviceId(MainApp.deviceid);
 
     }*/

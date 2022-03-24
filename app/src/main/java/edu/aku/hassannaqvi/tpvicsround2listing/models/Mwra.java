@@ -60,8 +60,8 @@ public class Mwra extends BaseObservable {
 
     public Mwra() {
 
-//        setSysDate(MainApp.form.getSysDate());
-//        setSysDate(MainApp.form.getSysDate());
+//        setSysDate(MainApp.listings.getSysDate());
+//        setSysDate(MainApp.listings.getSysDate());
         setUserName(MainApp.user.getUserName());
         setDeviceId(MainApp.deviceid);
         setAppver(MainApp.appInfo.getAppVersion());
@@ -70,13 +70,13 @@ public class Mwra extends BaseObservable {
     }
 
     public void setIdentification() {
-        this.uuid = MainApp.form.getUid();
-        this.hh01 = MainApp.form.getHh01();
-        this.hh02 = MainApp.form.getHh02();
-        this.hh03 = MainApp.form.getHh03();
-        this.hh04 = MainApp.form.getHh04();
-        this.hh05 = MainApp.form.getHh05();
-        this.hh06 = MainApp.form.getHh06();
+        this.uuid = MainApp.listings.getUid();
+        this.hh01 = MainApp.listings.getHh01();
+        this.hh02 = MainApp.listings.getHh02();
+        this.hh03 = MainApp.listings.getHh03();
+        this.hh04 = MainApp.listings.getHh04();
+        this.hh05 = MainApp.listings.getHh05();
+        this.hh06 = MainApp.listings.getHh06();
     }
 
     @Bindable

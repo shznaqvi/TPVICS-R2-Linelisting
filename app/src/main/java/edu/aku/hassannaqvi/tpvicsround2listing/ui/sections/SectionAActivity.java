@@ -1,6 +1,6 @@
 package edu.aku.hassannaqvi.tpvicsround2listing.ui.sections;
 
-import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.form;
+import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.listings;
 import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.sharedPref;
 
 import android.content.Intent;
@@ -9,7 +9,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,10 +30,10 @@ import edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp;
 import edu.aku.hassannaqvi.tpvicsround2listing.database.DatabaseHelper;
 import edu.aku.hassannaqvi.tpvicsround2listing.databinding.ActivitySectionABinding;
 import edu.aku.hassannaqvi.tpvicsround2listing.models.Cluster;
-import edu.aku.hassannaqvi.tpvicsround2listing.models.Form;
+import edu.aku.hassannaqvi.tpvicsround2listing.models.Listings;
 
 public class SectionAActivity extends AppCompatActivity {
-    private static final String TAG = "SectionCRActivity";
+    private static final String TAG = "SectionAActivity";
     ActivitySectionABinding bi;
     String st = "";
     private DatabaseHelper db;
@@ -45,8 +44,8 @@ public class SectionAActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         bi = DataBindingUtil.setContentView(this, R.layout.activity_section_a);
         bi.setCallback(this);
-        form = new Form();
-        bi.setForm(form);
+        listings = new Listings();
+        bi.setListings(listings);
         st = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH).format(new Date().getTime());
         setupSkips();
         setSupportActionBar(bi.toolbar);
@@ -151,15 +150,15 @@ public class SectionAActivity extends AppCompatActivity {
        /* long rowId = 0;
 
         try {
-            rowId = db.addCR(form);
+            rowId = db.addCR(listings);
 
             if (rowId > 0) {
                 long updCount = 0;
 
-                form.setId(String.valueOf(rowId));
-                form.setUid(form.getDeviceId() + form.getId());
+                listings.setId(String.valueOf(rowId));
+                listings.setUid(listings.getDeviceId() + listings.getId());
 
-                updCount = db.updateCrColumn(TableContracts.FormTable.COLUMN_UID, form.getUid());
+                updCount = db.updateCrColumn(TableContracts.ListingsTable.COLUMN_UID, listings.getUid());
 
                 if (updCount > 0) {
                     return true;
@@ -189,29 +188,29 @@ public class SectionAActivity extends AppCompatActivity {
 
 
     private void saveDraft() {
-        form.setSysDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
-        form.setUserName(MainApp.user.getUserName());
-        form.setDeviceId(MainApp.appInfo.getDeviceID());
-        form.setDeviceTag(MainApp.appInfo.getTagName());
-        form.setAppver(MainApp.appInfo.getAppVersion());
-        form.setStartTime(st);
-        form.setEndTime(new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
+        listings.setSysDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
+        listings.setUserName(MainApp.user.getUserName());
+        listings.setDeviceId(MainApp.appInfo.getDeviceID());
+        listings.setDeviceTag(MainApp.appInfo.getTagName());
+        listings.setAppver(MainApp.appInfo.getAppVersion());
+        listings.setStartTime(st);
+        listings.setEndTime(new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
 
 
-        form.setHh01(bi.hh01.getText().toString());
+        listings.setHh01(bi.hh01.getText().toString());
 
-/*        form.setHh02(bi.hh02.getText().toString());
+/*        listings.setHh02(bi.hh02.getText().toString());
 
-        form.setHh03(bi.hh03.getText().toString());*/
+        listings.setHh03(bi.hh03.getText().toString());*/
 
-        form.setHh04(bi.hh04.getText().toString());
+        listings.setHh04(bi.hh04.getText().toString());
 
-        form.setHh05(bi.hh05.getText().toString());
+        listings.setHh05(bi.hh05.getText().toString());
 
-        form.setHh06(bi.hh06.getText().toString());
+        listings.setHh06(bi.hh06.getText().toString());
 
         try {
-            form.setsA(form.sAtoString());
+            listings.setsA(listings.sAtoString());
         } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(this, "JSONException(SA): " + e.getMessage(), Toast.LENGTH_SHORT).show();

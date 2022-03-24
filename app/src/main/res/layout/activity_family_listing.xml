@@ -6,8 +6,8 @@
         <import type="android.view.View" />
 
        <variable
-           name="form"
-           type="edu.aku.hassannaqvi.tpvicsround2listing.models.Form" />
+           name="listings"
+           type="edu.aku.hassannaqvi.tpvicsround2listing.models.Listings" />
 
         <variable
             name="callback"
@@ -193,8 +193,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:checked="@{form.hh14.equals(`1`)}"
-                                android:onClick="@{()->form.setHh14(`1`)}"
+                                android:checked="@{listings.hh14.equals(`1`)}"
+                                android:onClick="@{()->listings.setHh14(`1`)}"
                                 android:text="@string/hh1401" />
 
                             <RadioButton
@@ -202,8 +202,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:checked="@{form.hh14.equals(`2`)}"
-                                android:onClick="@{()->form.setHh14(`2`) + hh12.clearCheck()}"
+                                android:checked="@{listings.hh14.equals(`2`)}"
+                                android:onClick="@{()->listings.setHh14(`2`) + hh12.clearCheck()}"
                                 android:text="@string/hh1402" />
                         </RadioGroup>
                     </LinearLayout>
@@ -214,7 +214,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/fldGrpCVhh15"
                     style="@style/cardView"
-                    android:visibility="@{form.hh14.equals(`1`) ? View.VISIBLE : View.GONE}">
+                    android:visibility="@{listings.hh14.equals(`1`) ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -257,17 +257,17 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/fldGrpCVhh12"
                     style="@style/cardView"
-                    android:visibility="@{form.hh14.equals(`1`) ? View.VISIBLE : View.GONE}">
+                    android:visibility="@{listings.hh14.equals(`1`) ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical" >
+                        android:orientation="vertical">
 
                         <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bottom"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bottom"
                         android:orientation="horizontal">
 
                         <TextView
@@ -288,24 +288,26 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             >
+
                             <RadioButton
-                            android:id="@+id/hh1201"
-                            android:text="@string/hh1201"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:checked="@{form.hh12.equals(`1`)}"
-                            android:onClick="@{()->form.setHh12(`1`)}"
-                            android:layout_weight="1"
+                                android:id="@+id/hh1201"
+                                android:text="@string/hh1201"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:checked="@{listings.hh12.equals(`1`)}"
+                                android:onClick="@{()->listings.setHh12(`1`)}"
+                                android:layout_weight="1"
 
                                 />
+
                             <RadioButton
-                            android:id="@+id/hh1202"
-                            android:text="@string/hh1202"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:checked="@{form.hh12.equals(`2`)}"
-                            android:onClick="@{()->form.setHh12(`2`)}"
-                            android:layout_weight="1"
+                                android:id="@+id/hh1202"
+                                android:text="@string/hh1202"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:checked="@{listings.hh12.equals(`2`)}"
+                                android:onClick="@{()->listings.setHh12(`2`)}"
+                                android:layout_weight="1"
 
                                 />
 
@@ -317,18 +319,20 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/fldGrpCVhh13"
                     style="@style/cardView"
-                    android:visibility="@{form.hh12.equals(`1`) ? View.VISIBLE : View.GONE}">
+                    android:visibility="@{listings.hh12.equals(`1`) ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical" ><LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bottom"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
-                        <TextView
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bottom"
+                            android:orientation="horizontal">
+
+                            <TextView
                             style="@style/quesNum"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -340,6 +344,7 @@
                             android:text="@string/hh13" />
 
                     </LinearLayout>
+
                         <com.edittextpicker.aliazaz.EditTextPicker
                             android:id="@+id/hh13"
                             android:layout_width="match_parent"
@@ -350,7 +355,8 @@
                             app:maxValue="20"
                             app:minValue="1"
                             app:type="range"
-                            android:text="@={form.hh13}" /> </LinearLayout>
+                            android:text="@={listings.hh13}" />
+                    </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
                 <!-- isnewhh  Radio   -->

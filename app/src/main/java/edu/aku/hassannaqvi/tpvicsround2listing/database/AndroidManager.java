@@ -370,7 +370,7 @@ public class AndroidManager extends Activity implements OnItemClickListener {
                     //saving cursor to the static indexinfo class which can be resued by the other functions
                     indexInfo.maincursor = c2;
 
-                    // if the cursor returned form the database is not null we display the data in table layout
+                    // if the cursor returned listings the database is not null we display the data in table layout
                     if (c2 != null) {
                         int counts = c2.getCount();
                         indexInfo.isEmpty = false;
@@ -547,7 +547,7 @@ public class AndroidManager extends Activity implements OnItemClickListener {
                                     addnewlayout.setBackgroundColor(Color.WHITE);
                                     addrowsv.addView(addnewlayout);
                                     Log.d("Button Clicked", "");
-                                    //the above form layout which we have created above will be displayed in an alert dialog
+                                    //the above listings layout which we have created above will be displayed in an alert dialog
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -978,7 +978,7 @@ public class AndroidManager extends Activity implements OnItemClickListener {
         if (d == 1) {
             c3 = indexInfo.maincursor;
         }
-        // if the cursor returened form tha database is not null we display the data in table layout
+        // if the cursor returened listings tha database is not null we display the data in table layout
         if (c3 != null) {
             int counts = c3.getCount();
 

@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         switch (view.getId()) {
 
             case R.id.openChildForm:
-                //MainApp.cr = new Form();
+                //MainApp.cr = new Listings();
                 finish();
                 startActivity(new Intent(this, SectionAActivity.class));
                 break;
