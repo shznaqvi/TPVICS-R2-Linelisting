@@ -33,8 +33,6 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
-import net.sqlcipher.database.SQLiteException;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -449,11 +447,8 @@ MainApp.user = new Users();
         entryLog.setEntryType(entryType);
         entryLog.setDeviceId(MainApp.deviceid);
         Long rowId = null;
-        try {
             rowId = db.addEntryLog(entryLog);
-        } catch (SQLiteException e) {
-            Toast.makeText(this, "SQLiteException(EntryLog)" + entryLog, Toast.LENGTH_SHORT).show();
-        }
+
         if (rowId != -1) {
             entryLog.setId(String.valueOf(rowId));
             entryLog.setUid(entryLog.getDeviceId() + entryLog.getId());

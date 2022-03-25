@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.openChildForm:
                 //MainApp.cr = new Listings();
-                finish();
+                //    finish();
                 startActivity(new Intent(this, SectionAActivity.class));
                 break;
             case R.id.dbm:

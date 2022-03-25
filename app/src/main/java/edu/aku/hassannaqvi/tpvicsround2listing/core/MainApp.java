@@ -30,6 +30,7 @@ import java.util.List;
 
 import edu.aku.hassannaqvi.tpvicsround2listing.BuildConfig;
 import edu.aku.hassannaqvi.tpvicsround2listing.R;
+import edu.aku.hassannaqvi.tpvicsround2listing.models.Cluster;
 import edu.aku.hassannaqvi.tpvicsround2listing.models.Listings;
 import edu.aku.hassannaqvi.tpvicsround2listing.models.Mwra;
 import edu.aku.hassannaqvi.tpvicsround2listing.models.Users;
@@ -92,11 +93,12 @@ public class MainApp extends Application {
     public static int childCountComplete = 0;
     public static int pregCountComplete = 0;
     public static List<String> subjectNames;
-    public static String selectedCluster;
+    public static Cluster selectedCluster;
     public static int maxStructure;
     public static int hhid;
     public static int HHCount = 0;
-    public static String appendingChar = "";
+    public static String[] clusterInfo;
+    public static String selectedTab;
 
 
     public static void hideSystemUI(View decorView) {

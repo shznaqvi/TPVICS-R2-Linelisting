@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,14 +39,22 @@ public class FamilyListingActivity extends AppCompatActivity {
         bi.setCallback(this);
         bi.setListings(listings);
         st = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH).format(new Date().getTime());
-        //       setupSkips();
         setSupportActionBar(bi.toolbar);
         db = MainApp.appInfo.dbHelper;
 
         MainApp.hhid++;
         MainApp.mwraCount = 0;
-
-        MainApp.appendingChar = "";
+        listings.setHh05(String.valueOf(MainApp.hhid));
+        listings.setHh11("");
+        listings.setHh12("");
+        listings.setHh13("");
+        listings.setHh13a("");
+        listings.setHh14("");
+        listings.setHh14a("");
+        listings.setHh15("");
+        if (MainApp.hhid >= Integer.parseInt(MainApp.listings.getHh10())) {
+            bi.fldGrpCVhh15.setVisibility(View.VISIBLE);
+        }
 
 /*        if (!listings.getHh02e().isEmpty()){
             if (listings.getHh02e().equals("1"))
@@ -54,33 +63,67 @@ public class FamilyListingActivity extends AppCompatActivity {
                 appendingChar = "B";
         }*/
 
-        bi.hhid.setText("TPV-" + MainApp.listings.getHh01() + "\n" + MainApp.appendingChar + "-" + String.format("%04d", MainApp.maxStructure) + "-" + String.format("%03d", MainApp.hhid));
+        bi.hhid.setText("TPV-" + MainApp.listings.getHh01() + "\n" + MainApp.selectedTab + "-" + String.format("%04d", MainApp.maxStructure) + "-" + String.format("%03d", MainApp.hhid));
         Toast.makeText(this, "Staring Household", Toast.LENGTH_SHORT).show();
 
-
-    }
-
-/*    private void setupSkips() {
-
-        bi.hh14.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        bi.hh1301.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                if (bi.hh1401.isChecked()) {
-                    bi.addFamily.setText("Add MWRA");
-                } else {
-                    bi.addFamily.setText("Continue to Next");
-                    Clear.clearAllFields(bi.fldGrpCVhh15);
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                try {
+                    bi.hh13a.setMaxvalue(Float.parseFloat(bi.hh12.getText().toString()));
+                } catch (NumberFormatException e) {
+                    bi.hh13a.setMaxvalue(0f);
+                }
+
+            }
+        });
+
+        bi.hh1401.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                try {
+                    bi.hh14a.setMaxvalue(Float.parseFloat(bi.hh13a.getText().toString()));
+                } catch (NumberFormatException e) {
+                    bi.hh14a.setMaxvalue(0f);
                 }
             }
         });
 
 
+    }
+
+ /*   @Override
+    protected void onResume() {
+        super.onResume();
+
+        Animation bounceAnimation = AnimationUtils.loadAnimation(this, R.anim.bounce_out_animation);
+        bi.hhid.setText("TPV-" + MainApp.listings.getHh01() + "\n" + MainApp.selectedTab + "-" + String.format("%04d", MainApp.maxStructure) + "-");
+        bi.hhid.startAnimation(bounceAnimation);
+        bounceAnimation = AnimationUtils.loadAnimation(this, R.anim.bounce_animation);
+
+        bi.hhid.setText("TPV-" + MainApp.listings.getHh01() + "\n" + MainApp.selectedTab + "-" + String.format("%04d", MainApp.maxStructure) + "-" + String.format("%03d", MainApp.hhid));
+        bi.hhid.startAnimation(bounceAnimation);
+    }*/
+
+    /*   private void setupSkips() {
+
+        bi.hh13.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if (bi.hh1301.isChecked()) {
+                    bi.addFamily.setText("Add MWRA");
+                } else {
+                    bi.addFamily.setText("Continue to Next");
+                    Clear.clearAllFields(bi.fldGrpCVhh13a);
+                }
+            }
+        });
     }*/
 
     private boolean updateDB() {
         long updcount = 0;
         try {
-            updcount = db.updateFormColumn(TableContracts.ListingsTable.COLUMN_LC, listings.lCtoString());
+            updcount = db.updateFormColumn(TableContracts.ListingsTable.COLUMN_SC, listings.sCtoString());
         } catch (JSONException e) {
             e.printStackTrace();
             Log.d(TAG, R.string.upd_db_form + e.getMessage());
@@ -97,7 +140,7 @@ public class FamilyListingActivity extends AppCompatActivity {
         long rowId = 0;
 
         try {
-            rowId = db.addForm(listings);
+            rowId = db.addListings(listings);
 
             if (rowId > 0) {
                 long updCount = 0;
@@ -130,10 +173,9 @@ public class FamilyListingActivity extends AppCompatActivity {
         //saveDraft();
         if (MainApp.hhid == 1 ? updateDB() : insertRecord()) {
             finish();
-            if (MainApp.hhid < Integer.parseInt(MainApp.listings.getHh10())) {
+            if (MainApp.hhid < Integer.parseInt(MainApp.listings.getHh10()) || listings.getHh15().equals("1")) {
                 //   Toast.makeText(this, "Staring Family", Toast.LENGTH_SHORT).show();
-                listings.setHh12("");
-                listings.setHh14("");
+
                 startActivity(new Intent(this, FamilyListingActivity.class));
 
             } else {
@@ -156,16 +198,16 @@ public class FamilyListingActivity extends AppCompatActivity {
 //
 //        listings.setHh11(bi.hh11.getText().toString());
 //
-//        //listings.setHh12(bi.hh12.getText().toString());
+//        //listings.setHh14(bi.hh14.getText().toString());
 //
-//        listings.setHh13(bi.hh13.getText().toString());
-//        listings.setHh13a(bi.hh13a.getText().toString());
+//        listings.setHh14a(bi.hh14a.getText().toString());
+//        listings.sethh12(bi.hh12.getText().toString());
 //
-//        listings.setHh14(bi.hh1401.isChecked() ? "1"
-//                : bi.hh1402.isChecked() ? "2"
+//        listings.setHh13(bi.hh1301.isChecked() ? "1"
+//                : bi.hh1302.isChecked() ? "2"
 //                : "-1");
 //
-//        listings.setHh15(bi.hh15.getText().toString());
+//        listings.setHh13a(bi.hh13a.getText().toString());
 //
 ///*        listings.setHh16(bi.hh16.getText().toString());
 //
@@ -177,7 +219,7 @@ public class FamilyListingActivity extends AppCompatActivity {
 //        listings.setHh21(String.valueOf(MainApp.hhid));
 //
 //        try {
-//            listings.setlC(listings.lCtoString());
+//            listings.setsC(listings.lCtoString());
 //        } catch (JSONException e) {
 //            e.printStackTrace();
 //            Toast.makeText(this, "JSONException(listings): " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -188,10 +230,10 @@ public class FamilyListingActivity extends AppCompatActivity {
 
     public void btnEnd(View view) {
         bi.hh11.setText("Deleted");
-        //bi.hh12.setText("Deleted");
-        bi.hh13.setText("Deleted");
-        bi.hh14.clearCheck();
-        bi.hh15.setText("00");
+        //bi.hh14.setText("Deleted");
+        bi.hh14a.setText("Deleted");
+        bi.hh13.clearCheck();
+        bi.hh13a.setText("00");
 
         //saveDraft();
         if (updateDB()) {
@@ -205,24 +247,23 @@ public class FamilyListingActivity extends AppCompatActivity {
 
 
     private boolean formValidation() {
-        if (!Validator.emptyCheckingContainer(this, bi.GrpName)) {
-            return false;
-        }
+        return Validator.emptyCheckingContainer(this, bi.GrpName);
 
-        if (!bi.hh15.getText().toString().equals("") && !bi.hh13a.getText().toString().equals("")) {
-            if (Integer.parseInt(bi.hh15.getText().toString()) > Integer.parseInt(bi.hh13a.getText().toString())) {
-                Validator.emptyCustomTextBox(this, bi.hh15, "Number of children younger than 5 year old cannot be more than Total Members");
+
+/*        if (!bi.hh13a.getText().toString().equals("") && !bi.hh12.getText().toString().equals("")) {
+            if (Integer.parseInt(bi.hh13a.getText().toString()) > Integer.parseInt(bi.hh12.getText().toString())) {
+                Validator.emptyCustomTextBox(this, bi.hh13a, "Number of children younger than 5 year old cannot be more than Total Members");
                 return false;
             }
         }
 
-        if (!bi.hh13.getText().toString().equals("") && !bi.hh15.getText().toString().equals("")) {
-            if (Integer.parseInt(bi.hh13.getText().toString()) >= Integer.parseInt(bi.hh15.getText().toString())) {
-                Validator.emptyCustomTextBox(this, bi.hh13, "Number of 12 to 23 months old children cannot be more or equal to Number of children younger than 5 year old");
+        if (!bi.hh14a.getText().toString().equals("") && !bi.hh13a.getText().toString().equals("")) {
+            if (Integer.parseInt(bi.hh14a.getText().toString()) >= Integer.parseInt(bi.hh13a.getText().toString())) {
+                Validator.emptyCustomTextBox(this, bi.hh14a, "Number of 12 to 23 months old children cannot be more or equal to Number of children younger than 5 year old");
                 return false;
             }
         }
-        return true;
+        return true;*/
     }
 
     @Override

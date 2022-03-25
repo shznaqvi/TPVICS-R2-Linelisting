@@ -121,11 +121,11 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
 
         }*/
 
-        holder.hhno.setText(fc.get(position).getHh20() + "-" + fc.get(position).getHh20());
-        holder.psuCode.setText(fc.get(position).getHh01());
+        holder.hhno.setText(fc.get(position).getHh04() + "-" + fc.get(position).getHh05());
+        holder.ebCode.setText(fc.get(position).getHh01());
         holder.istatus.setText(fc.get(position).getHh10());
         holder.headName.setText(fc.get(position).getHh11());
-        holder.mwraCount.setText(fc.get(position).getHh15().equals("") ? "MWRA: " + fc.get(position).getHh15() : "");
+        holder.mwraCount.setText(fc.get(position).getHh13a().equals("") ? "MWRA: " + fc.get(position).getHh13a() : "");
         holder.familyCount.setImageResource(fc.get(position).getHh07().equals("1") ? R.drawable.ic_residential : R.drawable.ic_non_residential);
 
        /* holder.secStatusBlood.setText(bloodStatus == 2 ? "  Done   " : " Pending ");
@@ -179,7 +179,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public RecyclerView rv;
         public TextView sysdate;
-        public TextView psuCode;
+        public TextView ebCode;
         public TextView hhno;
         public TextView istatus;
         public TextView mwraCount;
@@ -193,7 +193,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
             super(v);
 //            rv = v.findViewById(R.id.FormsList);
             sysdate = v.findViewById(R.id.sysdate);
-            psuCode = v.findViewById(R.id.psuCode);
+            ebCode = v.findViewById(R.id.ebCode);
             hhno = v.findViewById(R.id.hhno);
             istatus = v.findViewById(R.id.istatus);
             headName = v.findViewById(R.id.headname);

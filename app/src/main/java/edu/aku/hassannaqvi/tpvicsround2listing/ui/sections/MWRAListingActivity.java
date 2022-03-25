@@ -39,7 +39,7 @@ public class MWRAListingActivity extends AppCompatActivity {
 
         MainApp.mwraCount++;
         bi.hhid.setText(MainApp.listings.getHh01() + "\n" + String.format("%03d", MainApp.maxStructure) + "-" + String.format("%02d", MainApp.hhid));
-        bi.mwraSno.setText("MWRA#: " + MainApp.mwraCount + " of " + MainApp.listings.getHh15());
+        bi.mwraSno.setText("MWRA#: " + MainApp.mwraCount + " of " + MainApp.listings.getHh13a());
 
         setupSkips();
         Toast.makeText(this, "Staring MWRA", Toast.LENGTH_SHORT).show();
@@ -48,9 +48,9 @@ public class MWRAListingActivity extends AppCompatActivity {
 
     private void setupSkips() {
 
-        //   bi.hh14.setOnCheckedChangeListener((radioGroup, i) -> Clear.clearAllFields(bi.fldGrpa14a));
-        if (MainApp.listings.getHh15() != null) {
-            if (MainApp.mwraCount < Integer.parseInt(MainApp.listings.getHh15())) {
+        //   bi.hh13.setOnCheckedChangeListener((radioGroup, i) -> Clear.clearAllFields(bi.fldGrpa14a));
+        if (MainApp.listings.getHh13a() != null) {
+            if (MainApp.mwraCount < Integer.parseInt(MainApp.listings.getHh13a())) {
                 bi.addMWRA.setText("Add MWRA");
             } else if (MainApp.hhid < Integer.parseInt(MainApp.listings.getHh10())) {
                 bi.addMWRA.setText("Continue to Next");
@@ -97,7 +97,7 @@ public class MWRAListingActivity extends AppCompatActivity {
         saveDraft();
         if (insertRecord()) {
             finish();
-            if (MainApp.mwraCount < Integer.parseInt(MainApp.listings.getHh15())) {
+            if (MainApp.mwraCount < Integer.parseInt(MainApp.listings.getHh13a())) {
                 startActivity(new Intent(this, MWRAListingActivity.class));
                 Toast.makeText(this, "" + MainApp.mwraCount, Toast.LENGTH_SHORT).show();
                 //     startActivity(new Intent(this, SectionBActivity.class));
@@ -125,15 +125,15 @@ public class MWRAListingActivity extends AppCompatActivity {
 
 /*        mwra.setHh11(bi.hh11.getText().toString());
 
-        mwra.setHh12(bi.hh12.getText().toString());
+        mwra.setHh14(bi.hh14.getText().toString());
 
-        mwra.setHh13(bi.hh13.getText().toString());
+        mwra.setHh14a(bi.hh14a.getText().toString());
 
-        mwra.setHh14(bi.hh1401.isChecked() ? "1"
-                : bi.hh1402.isChecked() ? "2"
+        mwra.setHh13(bi.hh1301.isChecked() ? "1"
+                : bi.hh1302.isChecked() ? "2"
                 : "-1");
 
-        mwra.setHh15(bi.hh15.getText().toString());*/
+        mwra.setHh13a(bi.hh13a.getText().toString());*/
 
         mwra.setHh16(bi.hh16.getText().toString());
 

@@ -2,6 +2,8 @@ package edu.aku.hassannaqvi.tpvicsround2listing.ui.sections;
 
 import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.editor;
 import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.listings;
+import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.maxStructure;
+import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.selectedCluster;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,10 +46,22 @@ public class SectionBActivity extends AppCompatActivity {
         setSupportActionBar(bi.toolbar);
         db = MainApp.appInfo.dbHelper;
 
-        MainApp.maxStructure++;
+        maxStructure++;
         MainApp.hhid = 0;
 
-        MainApp.appendingChar = "";
+        listings.setHh04(String.valueOf(maxStructure));
+        listings.setHh07("");
+        listings.setHh08("");
+        listings.setHh09("");
+        listings.setHh10("");
+        listings.setHh05("");
+        listings.setHh11("");
+        listings.setHh12("");
+        listings.setHh13("");
+        listings.setHh13a("");
+        listings.setHh14("");
+        listings.setHh14a("");
+        listings.setHh15("");
 /*
 
         if (!listings.getHh02e().isEmpty()){
@@ -58,7 +72,7 @@ public class SectionBActivity extends AppCompatActivity {
         }
 */
 
-        bi.hhid.setText("TPV-" + MainApp.listings.getHh01() + "\n" + MainApp.appendingChar + "-" + String.format("%04d", MainApp.maxStructure));
+        bi.hhid.setText("TPV-" + MainApp.listings.getHh01() + "\n" + MainApp.selectedTab + "-" + String.format("%04d", maxStructure));
         Toast.makeText(this, "Staring Structure", Toast.LENGTH_SHORT).show();
 
     }
@@ -67,7 +81,7 @@ public class SectionBActivity extends AppCompatActivity {
 
         bi.hh07.setOnCheckedChangeListener((radioGroup, i) -> {
             if (bi.hh0701.isChecked()) {
-                Clear.clearAllFields(bi.fldGrpCVhh08a1);
+                Clear.clearAllFields(bi.fldGrpCVhh08);
             } else {
                 Clear.clearAllFields(bi.fldGrpCVhh09);
                 Clear.clearAllFields(bi.fldGrpCVhh10);
@@ -75,14 +89,14 @@ public class SectionBActivity extends AppCompatActivity {
             }
 
             if (bi.hh0701.isChecked() || bi.hh0712.isChecked() || bi.hh0713.isChecked() || bi.hh0714.isChecked() || bi.hh0715.isChecked() || bi.hh0716.isChecked() || bi.hh0717.isChecked()) {
-                Clear.clearAllFields(bi.fldGrpCVhh08a1);
+                Clear.clearAllFields(bi.fldGrpCVhh08);
                 Clear.clearAllFields(bi.fldGrpCVhh09);
                 Clear.clearAllFields(bi.fldGrpCVhh10);
                 bi.btnContinue.setText("Continue to Next");
             }
 
             if (bi.hh0718.isChecked() || bi.hh0719.isChecked()) {
-                Clear.clearAllFields(bi.fldGrpCVhh08a1);
+                Clear.clearAllFields(bi.fldGrpCVhh08);
                 Clear.clearAllFields(bi.fldGrpCVhh09);
                 Clear.clearAllFields(bi.fldGrpCVhh10);
                 bi.btnContinue.setText("Close Listing");
@@ -95,24 +109,23 @@ public class SectionBActivity extends AppCompatActivity {
     }
 
 
-    private boolean insertRecord() {
+    private boolean insertRecord() throws JSONException {
         long rowId = 0;
+        MainApp.listings.populateMeta();
+        rowId = db.addListings(listings);
 
-        try {
-            rowId = db.addForm(listings);
+        if (rowId > 0) {
+            long updCount = 0;
 
-            if (rowId > 0) {
-                long updCount = 0;
+            listings.setId(String.valueOf(rowId));
+            listings.setUid(listings.getDeviceId() + listings.getId());
 
-                listings.setId(String.valueOf(rowId));
-                listings.setUid(listings.getDeviceId() + listings.getId());
+            updCount = db.updateFormColumn(TableContracts.ListingsTable.COLUMN_UID, listings.getUid());
 
-                updCount = db.updateFormColumn(TableContracts.ListingsTable.COLUMN_UID, listings.getUid());
+            if (updCount > 0) {
 
-                if (updCount > 0) {
-
-                    editor.putString(MainApp.selectedCluster, String.valueOf(MainApp.maxStructure));
-                    editor.apply();
+                editor.putString(selectedCluster.getEbcode(), maxStructure + "|" + listings.getTabNo());
+                editor.apply();
 
                     return true;
                 }
@@ -121,10 +134,6 @@ public class SectionBActivity extends AppCompatActivity {
                 Toast.makeText(this, "Updating Database… ERROR!", Toast.LENGTH_SHORT).show();
                 return false;
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "JSONException(CR):" + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
 
         return false;
     }
@@ -132,31 +141,37 @@ public class SectionBActivity extends AppCompatActivity {
 
     public void btnContinue(View view) {
         if (!formValidation()) return;
-        saveDraft();
-        if (insertRecord()) {
-            finish();
-            Intent i = null;
-            if (bi.hh0718.isChecked() || bi.hh0719.isChecked() || listings.getHh08a1().equals("2")) {
-                i = new Intent(this, MainActivity.class);
+        if (bi.hh0718.isChecked() || bi.hh0719.isChecked()) {
+            maxStructure--;
+            listings.setHh04("");
+        }
+        try {
+            if (insertRecord()) {
+                finish();
+                Intent i = null;
+                if (bi.hh0718.isChecked() || bi.hh0719.isChecked()) {
+                    i = new Intent(this, MainActivity.class);
 
-            } else if (listings.getHh08a1().equals("1")) {
-                i = new Intent(this, FamilyListingActivity.class);
-                MainApp.hhid = 0;
+                } else if (listings.getHh08().equals("1")) {
+                    i = new Intent(this, FamilyListingActivity.class);
+                    MainApp.hhid = 0;
 
-            } else {
-                i = new Intent(this, SectionBActivity.class);
-            }
+                } else {
+                    i = new Intent(this, SectionBActivity.class);
+                }
 
-            startActivity(i);
-        } else Toast.makeText(this, "Failed to Update Database!", Toast.LENGTH_SHORT).show();
+                startActivity(i);
+            } else Toast.makeText(this, "Failed to Update Database!", Toast.LENGTH_SHORT).show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "JSONException(Listings):" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
 
-    private void saveDraft() {
+    /*private void saveDraft() {
         // listings = new Listings();
-        if (bi.hh0718.isChecked() || bi.hh0719.isChecked()) {
-            MainApp.maxStructure--;
-        }
+
         //listings.setSysDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
         //listings.setUserName(MainApp.user.getUserName());
         //listings.setDeviceId(MainApp.appInfo.getDeviceID());
@@ -183,8 +198,8 @@ public class SectionBActivity extends AppCompatActivity {
                 : bi.hh0902.isChecked() ? "2"
                 : "-1");
 
-//        listings.setHh08a1(bi.hh08a1a.isChecked() ? "1"
-//                : bi.hh08a1b.isChecked() ? "2"
+//        listings.setHh08(bi.hh08a.isChecked() ? "1"
+//                : bi.hh08b.isChecked() ? "2"
 //                : "-1");
         listings.setHh10(bi.hh0701.isChecked() && bi.hh0902.isChecked() ? "1" : bi.hh10.getText().toString());
 
@@ -197,7 +212,7 @@ public class SectionBActivity extends AppCompatActivity {
             Toast.makeText(this, "JSONException(SB): " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
-    }
+    }*/
 
 
     public void btnEnd(View view) {

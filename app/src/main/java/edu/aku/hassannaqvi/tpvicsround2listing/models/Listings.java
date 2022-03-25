@@ -1,5 +1,7 @@
 package edu.aku.hassannaqvi.tpvicsround2listing.models;
 
+import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.PROJECT_NAME;
+
 import android.database.Cursor;
 import android.util.Log;
 
@@ -25,7 +27,7 @@ public class Listings extends BaseObservable {
     private final String TAG = "Listings";
     private final transient PropertyChangeRegistry propertyChangeRegistry = new PropertyChangeRegistry();
     // APP VARIABLES
-    private String projectName = MainApp.PROJECT_NAME;
+    private String projectName = PROJECT_NAME;
     // APP VARIABLES
     private String id = StringUtils.EMPTY;
     private String uid = StringUtils.EMPTY;
@@ -33,6 +35,7 @@ public class Listings extends BaseObservable {
     private String userName = StringUtils.EMPTY;
     private String sysDate = StringUtils.EMPTY;
     private String tabNo = StringUtils.EMPTY;
+    private String geoArea = StringUtils.EMPTY;
     private String deviceId = StringUtils.EMPTY;
     private String deviceTag = StringUtils.EMPTY;
     private String appver = StringUtils.EMPTY;
@@ -48,10 +51,7 @@ public class Listings extends BaseObservable {
     // FIELD VARIABLES
     private String hh01 = StringUtils.EMPTY;
     private String hh02 = StringUtils.EMPTY;
-    private String hh02d1 = StringUtils.EMPTY;
 
-
-    private String hh02e = StringUtils.EMPTY;
 
     private String hh03 = StringUtils.EMPTY;
     private String hh04 = StringUtils.EMPTY;
@@ -60,34 +60,48 @@ public class Listings extends BaseObservable {
     private String hh07 = StringUtils.EMPTY;
     private String hh0717x = StringUtils.EMPTY;
     private String hh08 = StringUtils.EMPTY;
-    private String hh08a1 = StringUtils.EMPTY;
 
 
     private String hh09 = StringUtils.EMPTY;
     private String hh10 = StringUtils.EMPTY;
     private String hh11 = StringUtils.EMPTY;
     private String hh12 = StringUtils.EMPTY;
-    private String hh1202 = StringUtils.EMPTY;
     private String hh13 = StringUtils.EMPTY;
     private String hh13a = StringUtils.EMPTY;
     private String hh14 = StringUtils.EMPTY;
+    private String hh14a = StringUtils.EMPTY;
     private String hh15 = StringUtils.EMPTY;
 
-    private String hh20 = StringUtils.EMPTY;  // Structure Number
-    private String hh21 = StringUtils.EMPTY; // Household ID
     private String sA = StringUtils.EMPTY;
     private String sB = StringUtils.EMPTY;
-    private String lC = StringUtils.EMPTY;
+    private String sC = StringUtils.EMPTY;
 
     public Listings() {
+
+/*        setSysDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
+        setUserName(MainApp.user.getUserName());
+        setDeviceId(MainApp.deviceid);
+        setAppver(MainApp.appInfo.getAppVersion());
+        setAppver(MainApp.appInfo.getAppVersion());*/
+
+    }
+
+    public void populateMeta() {
 
         setSysDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
         setUserName(MainApp.user.getUserName());
         setDeviceId(MainApp.deviceid);
+        //   setUuid(MainApp.form.getUid());  // not applicable in Form table
         setAppver(MainApp.appInfo.getAppVersion());
-        setAppver(MainApp.appInfo.getAppVersion());
+        setProjectName(PROJECT_NAME);
+
+        setUserName(MainApp.user.getUserName());
+        setSysDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
+        setDeviceId(MainApp.deviceid);
+        setAppver(MainApp.versionName + "." + MainApp.versionCode);
 
     }
+
 
     @Bindable
     public String getHh01() {
@@ -97,6 +111,8 @@ public class Listings extends BaseObservable {
     public void setHh01(String hh01) {
         this.hh01 = hh01;
         setCluster(hh01);
+        setHh02("");
+        setHh03("");
         notifyPropertyChanged(BR.hh01);
     }
 
@@ -107,27 +123,8 @@ public class Listings extends BaseObservable {
 
     public void setHh02(String hh02) {
         this.hh02 = hh02;
+
         notifyPropertyChanged(BR.hh02);
-    }
-
-    @Bindable
-    public String getHh02d1() {
-        return hh02d1;
-    }
-
-    public void setHh02d1(String hh02d1) {
-        this.hh02d1 = hh02d1;
-        notifyPropertyChanged(BR.hh02d1);
-    }
-
-    @Bindable
-    public String getHh02e() {
-        return hh02e;
-    }
-
-    public void setHh02e(String hh02e) {
-        this.hh02e = hh02e;
-        notifyPropertyChanged(BR.hh02e);
     }
 
     @Bindable
@@ -137,6 +134,7 @@ public class Listings extends BaseObservable {
 
     public void setHh03(String hh03) {
         this.hh03 = hh03;
+        setTabNo(hh03.equals("1") ? "A" : hh03.equals("2") ? "B" : "0");
         notifyPropertyChanged(BR.hh03);
     }
 
@@ -177,6 +175,8 @@ public class Listings extends BaseObservable {
 
     public void setHh07(String hh07) {
         this.hh07 = hh07;
+        setHh08("");
+
         notifyPropertyChanged(BR.hh07);
     }
 
@@ -190,6 +190,7 @@ public class Listings extends BaseObservable {
         notifyPropertyChanged(BR.hh0717x);
     }
 
+
     @Bindable
     public String getHh08() {
         return hh08;
@@ -197,18 +198,8 @@ public class Listings extends BaseObservable {
 
     public void setHh08(String hh08) {
         this.hh08 = hh08;
+        setHh09(hh08.equals("1") ? this.hh09 : "");
         notifyPropertyChanged(BR.hh08);
-    }
-
-    @Bindable
-    public String getHh08a1() {
-        return hh08a1;
-    }
-
-    public void setHh08a1(String hh08a1) {
-        this.hh08a1 = hh08a1;
-        setHh09(hh08a1.equals("1") ? this.hh08a1 : "");
-        notifyPropertyChanged(BR.hh08a1);
     }
 
     @Bindable
@@ -218,6 +209,7 @@ public class Listings extends BaseObservable {
 
     public void setHh09(String hh09) {
         this.hh09 = hh09;
+        setHh10(hh09.equals("1") ? this.hh10 : hh09.equals("2") ? "1" : "");
         notifyPropertyChanged(BR.hh09);
     }
 
@@ -242,56 +234,13 @@ public class Listings extends BaseObservable {
     }
 
     @Bindable
-    public String getHh12() {
-        return hh12;
-    }
-
-    public void setHh12(String hh12) {
-        this.hh12 = hh12;
-        setHh13(hh12.equals("1") ? this.hh13 : "");
-        notifyPropertyChanged(BR.hh12);
-    }
-
-    @Bindable
-    public String getHh1202() {
-        return hh1202;
-    }
-
-    public void setHh1202(String hh1202) {
-        this.hh1202 = hh1202;
-        notifyPropertyChanged(BR.hh1202);
-    }
-
-    @Bindable
-    public String getHh13() {
-        return hh13;
-    }
-
-    public void setHh13(String hh13) {
-        this.hh13 = hh13;
-        notifyPropertyChanged(BR.hh13);
-    }
-
-    @Bindable
-    public String getHh13a() {
-        return hh13a;
-    }
-
-    public void setHh13a(String hh13a) {
-        this.hh13a = hh13a;
-        notifyPropertyChanged(BR.hh13a);
-    }
-
-    @Bindable
     public String getHh14() {
         return hh14;
     }
 
     public void setHh14(String hh14) {
         this.hh14 = hh14;
-        setHh15(hh14.equals("1") ? this.hh15 : "");
-        setHh12(hh14.equals("1") ? this.hh12 : "");
-        setHh13(hh14.equals("1") ? this.hh13 : "");
+        setHh14a(hh14.equals("1") ? this.hh14a : "");
         notifyPropertyChanged(BR.hh14);
     }
 
@@ -303,6 +252,49 @@ public class Listings extends BaseObservable {
     public void setHh15(String hh15) {
         this.hh15 = hh15;
         notifyPropertyChanged(BR.hh15);
+    }
+
+    @Bindable
+    public String getHh14a() {
+        return hh14a;
+    }
+
+    public void setHh14a(String hh14a) {
+        this.hh14a = hh14a;
+        notifyPropertyChanged(BR.hh14a);
+    }
+
+    @Bindable
+    public String getHh12() {
+        return hh12;
+    }
+
+    public void setHh12(String hh12) {
+        this.hh12 = hh12;
+        notifyPropertyChanged(BR.hh12);
+    }
+
+    @Bindable
+    public String getHh13() {
+        return hh13;
+    }
+
+    public void setHh13(String hh13) {
+        this.hh13 = hh13;
+        setHh13a(hh13.equals("1") ? this.hh13a : "");
+/*        setHh14(hh13.equals("1") ? this.hh14 : "");
+        setHh14a(hh13.equals("1") ? this.hh14a : "");*/
+        notifyPropertyChanged(BR.hh13);
+    }
+
+    @Bindable
+    public String getHh13a() {
+        return hh13a;
+    }
+
+    public void setHh13a(String hh13a) {
+        this.hh13a = hh13a;
+        notifyPropertyChanged(BR.hh13a);
     }
 
     /*
@@ -346,25 +338,7 @@ public class Listings extends BaseObservable {
             notifyPropertyChanged(BR.hh19);
         }
     */
-    @Bindable
-    public String getHh20() {
-        return hh20;
-    }
 
-    public void setHh20(String hh20) {
-        this.hh20 = hh20;
-        notifyPropertyChanged(BR.hh20);
-    }
-
-    @Bindable
-    public String getHh21() {
-        return hh21;
-    }
-
-    public void setHh21(String hh21) {
-        this.hh21 = hh21;
-        notifyPropertyChanged(BR.hh21);
-    }
 
 
     public String getProjectName() {
@@ -421,6 +395,14 @@ public class Listings extends BaseObservable {
 
     public void setTabNo(String tabNo) {
         this.tabNo = tabNo;
+    }
+
+    public String getGeoArea() {
+        return geoArea;
+    }
+
+    public void setGeoArea(String geoArea) {
+        this.geoArea = geoArea;
     }
 
     public String getDeviceId() {
@@ -520,12 +502,12 @@ public class Listings extends BaseObservable {
         this.sB = sB;
     }
 
-    public String getlC() {
-        return lC;
+    public String getsC() {
+        return sC;
     }
 
-    public void setlC(String lC) {
-        this.lC = lC;
+    public void setsC(String sC) {
+        this.sC = sC;
     }
 
 
@@ -536,6 +518,7 @@ public class Listings extends BaseObservable {
         this.cluster = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_CLUSTER));
         this.sysDate = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_SYSDATE));
         this.tabNo = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_TAB_NO));
+        this.geoArea = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_GEOAREA));
         this.deviceId = cursor.getString(cursor.getColumnIndexOrThrow(TableContracts.ListingsTable.COLUMN_DEVICEID));
         this.deviceTag = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_DEVICETAGID));
         this.appver = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_APPVERSION));
@@ -546,7 +529,7 @@ public class Listings extends BaseObservable {
         this.startTime = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_START_TIME));
         sAHydrate(cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_SA)));
         sBHydrate(cursor.getString(cursor.getColumnIndexOrThrow(TableContracts.ListingsTable.COLUMN_SB)));
-        lCHydrate(cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_LC)));
+        sCHydrate(cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_SC)));
 
         return this;
     }
@@ -558,12 +541,7 @@ public class Listings extends BaseObservable {
             json = new JSONObject(string);
             this.hh01 = json.getString("hh01");
             this.hh02 = json.getString("hh02");
-            this.hh02d1 = json.getString("hh02d1");
-            this.hh02e = json.getString("hh02e");
             this.hh03 = json.getString("hh03");
-            this.hh04 = json.getString("hh04");
-            this.hh05 = json.getString("hh05");
-            this.hh06 = json.getString("hh06");
 
         }
     }
@@ -573,34 +551,31 @@ public class Listings extends BaseObservable {
         if (string != null) {
             JSONObject json = null;
             json = new JSONObject(string);
+            this.hh04 = json.getString("hh04");
             this.hh07 = json.getString("hh07");
             this.hh0717x = json.getString("hh0717x");
             this.hh08 = json.getString("hh08");
-            this.hh08a1 = json.getString("hh08a1");
+            this.hh08 = json.getString("hh08");
             this.hh09 = json.getString("hh09");
             this.hh10 = json.getString("hh10");
-            this.hh20 = json.getString("hh20");
 
         }
     }
 
-    public void lCHydrate(String string) throws JSONException {
-        Log.d(TAG, "lCHydrate: " + string);
+    public void sCHydrate(String string) throws JSONException {
+        Log.d(TAG, "sCHydrate: " + string);
         if (string != null) {
             JSONObject json = null;
             json = new JSONObject(string);
+            this.hh05 = json.getString("hh05");
             this.hh11 = json.getString("hh11");
             this.hh12 = json.getString("hh12");
-            this.hh1202 = json.getString("hh1202");
             this.hh13 = json.getString("hh13");
             this.hh13a = json.getString("hh13a");
             this.hh14 = json.getString("hh14");
+            this.hh14a = json.getString("hh14a");
             this.hh15 = json.getString("hh15");
-       /*     this.hh16 = json.getString("hh16");
-            this.hh17 = json.getString("hh17");
-            this.hh18 = json.getString("hh18");
-            this.hh19 = json.getString("hh19");*/
-            this.hh21 = json.getString("hh21");
+
 
         }
     }
@@ -611,12 +586,7 @@ public class Listings extends BaseObservable {
 
         json.put("hh01", hh01)
                 .put("hh02", hh02)
-                .put("hh03", hh03)
-                .put("hh04", hh04)
-                .put("hh05", hh05)
-                .put("hh06", hh06)
-                .put("hh02d1", hh02d1)
-                .put("hh02e", hh02e);
+                .put("hh03", hh03);
 
         return json.toString();
     }
@@ -626,33 +596,28 @@ public class Listings extends BaseObservable {
         Log.d(TAG, "sBtoString: ");
         JSONObject json = new JSONObject();
 
-        json.put("hh07", hh07)
-                .put("hh08", hh08)
-                .put("hh08a1", hh08a1)
-
+        json.put("hh04", hh04)
+                .put("hh07", hh07)
                 .put("hh0717x", hh0717x)
+                .put("hh08", hh08)
                 .put("hh09", hh09)
-                .put("hh10", hh10)
-                .put("hh20", hh20);
+                .put("hh10", hh10);
+
         return json.toString();
     }
 
-    public String lCtoString() throws JSONException {
-        Log.d(TAG, "lCtoString: ");
+    public String sCtoString() throws JSONException {
+        Log.d(TAG, "sCtoString: ");
         JSONObject json = new JSONObject();
 
-        json.put("hh11", hh11)
+        json.put("hh05", hh05)
+                .put("hh11", hh11)
                 .put("hh12", hh12)
-                .put("hh1202", hh1202)
                 .put("hh13", hh13)
                 .put("hh13a", hh13a)
                 .put("hh14", hh14)
-                .put("hh15", hh15)
-                /*  .put("hh16", hh16)
-                  .put("hh17", hh17)
-                  .put("hh18", hh18)
-                  .put("hh19", hh19)*/
-                .put("hh21", hh21);
+                .put("hh14a", hh14a)
+                .put("hh15", hh15);
         return json.toString();
     }
 
@@ -667,6 +632,7 @@ public class Listings extends BaseObservable {
         json.put(ListingsTable.COLUMN_CLUSTER, this.cluster);
         json.put(ListingsTable.COLUMN_SYSDATE, this.sysDate);
         json.put(ListingsTable.COLUMN_TAB_NO, this.tabNo);
+        json.put(ListingsTable.COLUMN_GEOAREA, this.geoArea);
         json.put(ListingsTable.COLUMN_DEVICEID, this.deviceId);
         json.put(ListingsTable.COLUMN_DEVICETAGID, this.deviceTag);
         json.put(ListingsTable.COLUMN_ISTATUS, this.iStatus);
@@ -675,13 +641,13 @@ public class Listings extends BaseObservable {
         json.put(ListingsTable.COLUMN_SYNCED_DATE, this.syncDate);
         json.put(ListingsTable.COLUMN_SA, new JSONObject(sAtoString()));
         json.put(ListingsTable.COLUMN_SB, new JSONObject(sBtoString()));
-        json.put(ListingsTable.COLUMN_LC, new JSONObject(lCtoString()));
+        json.put(ListingsTable.COLUMN_SC, new JSONObject(sCtoString()));
         json.put(ListingsTable.COLUMN_END_TIME, this.endTime);
         json.put(ListingsTable.COLUMN_START_TIME, this.startTime);
 
       /*  json.put(ListingsTable.COLUMN_SA, this.sA);
         json.put(ListingsTable.COLUMN_SB, this.sB);
-        json.put(ListingsTable.COLUMN_LC, this.lC);
+        json.put(ListingsTable.COLUMN_SC, this.sC);
 */
 /*        if (this.sA != null && !this.sA.equals("")) {
             json.put(ListingsTable.COLUMN_SA, new JSONObject(this.sA));
@@ -689,8 +655,8 @@ public class Listings extends BaseObservable {
         if (this.sB != null && !this.sB.equals("")) {
             json.put(ListingsTable.COLUMN_SB, new JSONObject(this.sB));
         }
-        if (this.lC != null && !this.lC.equals("")) {
-            json.put(ListingsTable.COLUMN_LC, new JSONObject(this.lC));
+        if (this.sC != null && !this.sC.equals("")) {
+            json.put(ListingsTable.COLUMN_SC, new JSONObject(this.sC));
         }*/
 
         return json;

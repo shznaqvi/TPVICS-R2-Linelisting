@@ -5,8 +5,7 @@ import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.PROJECT_NAME;
 import static edu.aku.hassannaqvi.tpvicsround2listing.core.UserAuth.checkPassword;
 import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_CREATE_CLUSTERS;
 import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_CREATE_ENTRYLOGS;
-import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_CREATE_FORM;
-import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_CREATE_MWRA;
+import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_CREATE_LISTINGS;
 import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_CREATE_USERS;
 import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_CREATE_VERSIONAPP;
 
@@ -19,7 +18,6 @@ import android.widget.Toast;
 
 import net.sqlcipher.SQLException;
 import net.sqlcipher.database.SQLiteDatabase;
-import net.sqlcipher.database.SQLiteException;
 import net.sqlcipher.database.SQLiteOpenHelper;
 
 import org.json.JSONArray;
@@ -74,8 +72,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_USERS);
         db.execSQL(SQL_CREATE_CLUSTERS);
-        db.execSQL(SQL_CREATE_FORM);
-        db.execSQL(SQL_CREATE_MWRA);
+        db.execSQL(SQL_CREATE_LISTINGS);
+        // db.execSQL(SQL_CREATE_MWRA);
         db.execSQL(SQL_CREATE_ENTRYLOGS);
         db.execSQL(SQL_CREATE_VERSIONAPP);
 
@@ -91,34 +89,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //ADDITION in DB
-    public Long addForm(Listings cr) throws JSONException {
+    public Long addListings(Listings ls) throws JSONException {
 
         // Gets the data repository in write mode
         SQLiteDatabase db = this.getWritableDatabase(DATABASE_PASSWORD);
 
 // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        values.put(TableContracts.ListingsTable.COLUMN_PROJECT_NAME, cr.getProjectName());
-        values.put(TableContracts.ListingsTable.COLUMN_UID, cr.getUid());
-        values.put(TableContracts.ListingsTable.COLUMN_USERNAME, cr.getUserName());
-        values.put(TableContracts.ListingsTable.COLUMN_CLUSTER, cr.getCluster());
-        values.put(ListingsTable.COLUMN_SYSDATE, cr.getSysDate());
-        values.put(ListingsTable.COLUMN_TAB_NO, cr.getTabNo());
-        values.put(TableContracts.ListingsTable.COLUMN_ISTATUS, cr.getiStatus());
-        values.put(TableContracts.ListingsTable.COLUMN_DEVICETAGID, cr.getDeviceTag());
-        values.put(ListingsTable.COLUMN_DEVICEID, cr.getDeviceId());
-        values.put(ListingsTable.COLUMN_APPVERSION, cr.getAppver());
-        values.put(TableContracts.ListingsTable.COLUMN_START_TIME, cr.getStartTime());
-        values.put(TableContracts.ListingsTable.COLUMN_END_TIME, cr.getEndTime());
+        values.put(TableContracts.ListingsTable.COLUMN_PROJECT_NAME, ls.getProjectName());
+        values.put(TableContracts.ListingsTable.COLUMN_UID, ls.getUid());
+        values.put(TableContracts.ListingsTable.COLUMN_USERNAME, ls.getUserName());
+        values.put(TableContracts.ListingsTable.COLUMN_CLUSTER, ls.getCluster());
+        values.put(ListingsTable.COLUMN_SYSDATE, ls.getSysDate());
+        values.put(ListingsTable.COLUMN_TAB_NO, ls.getTabNo());
+        values.put(ListingsTable.COLUMN_GEOAREA, ls.getGeoArea());
+        values.put(TableContracts.ListingsTable.COLUMN_ISTATUS, ls.getiStatus());
+        values.put(TableContracts.ListingsTable.COLUMN_DEVICETAGID, ls.getDeviceTag());
+        values.put(ListingsTable.COLUMN_DEVICEID, ls.getDeviceId());
+        values.put(ListingsTable.COLUMN_APPVERSION, ls.getAppver());
+        values.put(TableContracts.ListingsTable.COLUMN_START_TIME, ls.getStartTime());
+        values.put(TableContracts.ListingsTable.COLUMN_END_TIME, ls.getEndTime());
 
         // Put all JSON as xxtoString()
-        values.put(ListingsTable.COLUMN_SA, cr.sAtoString());
-        values.put(TableContracts.ListingsTable.COLUMN_SB, cr.sBtoString());
-        // values.put(ListingsTable.COLUMN_LC, cr.lCtoString());
+        values.put(ListingsTable.COLUMN_SA, ls.sAtoString());
+        values.put(TableContracts.ListingsTable.COLUMN_SB, ls.sBtoString());
+        values.put(ListingsTable.COLUMN_SC, ls.sCtoString());
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId;
-        newRowId = db.insert(
+        newRowId = db.insertOrThrow(
                 ListingsTable.TABLE_NAME,
                 TableContracts.ListingsTable.COLUMN_NAME_NULLABLE,
                 values);
@@ -157,12 +156,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public Long addEntryLog(EntryLog entryLog) throws SQLiteException {
+    public Long addEntryLog(EntryLog entryLog) {
         SQLiteDatabase db = this.getWritableDatabase(DATABASE_PASSWORD);
         ContentValues values = new ContentValues();
         values.put(EntryLogTable.COLUMN_PROJECT_NAME, entryLog.getProjectName());
         values.put(EntryLogTable.COLUMN_UUID, entryLog.getUuid());
-        values.put(EntryLogTable.COLUMN_PSU_CODE, entryLog.getPsuCode());
+        values.put(EntryLogTable.COLUMN_EB_CODE, entryLog.getEbCode());
         values.put(EntryLogTable.COLUMN_HHID, entryLog.getHhid());
         values.put(EntryLogTable.COLUMN_USERNAME, entryLog.getUserName());
         values.put(EntryLogTable.COLUMN_SYSDATE, entryLog.getSysDate());
@@ -319,6 +318,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 TableContracts.ListingsTable.COLUMN_UID,
                 TableContracts.ListingsTable.COLUMN_SYSDATE,
                 ListingsTable.COLUMN_TAB_NO,
+                ListingsTable.COLUMN_GEOAREA,
                 TableContracts.ListingsTable.COLUMN_USERNAME,
                 TableContracts.ListingsTable.COLUMN_CLUSTER,
                 TableContracts.ListingsTable.COLUMN_ISTATUS,
@@ -347,6 +347,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 forms.setUid(c.getString(c.getColumnIndexOrThrow(TableContracts.ListingsTable.COLUMN_UID)));
                 forms.setSysDate(c.getString(c.getColumnIndexOrThrow(TableContracts.ListingsTable.COLUMN_SYSDATE)));
                 forms.setTabNo(c.getString(c.getColumnIndexOrThrow(ListingsTable.COLUMN_TAB_NO)));
+                forms.setGeoArea(c.getString(c.getColumnIndexOrThrow(ListingsTable.COLUMN_GEOAREA)));
                 forms.setUserName(c.getString(c.getColumnIndexOrThrow(TableContracts.ListingsTable.COLUMN_USERNAME)));
                 forms.setCluster(c.getString(c.getColumnIndexOrThrow(TableContracts.ListingsTable.COLUMN_CLUSTER)));
                 allListings.add(forms);
@@ -713,7 +714,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //update SyncedTables
-    public void updateSyncedForm(String id) {
+    public void updateSyncedListings(String id) {
         SQLiteDatabase db = this.getReadableDatabase(DATABASE_PASSWORD);
 
 // New value for one column
@@ -752,6 +753,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 whereArgs);
     }
 
+    public void updateSyncedEntryLog(String id) {
+        SQLiteDatabase db = this.getReadableDatabase(DATABASE_PASSWORD);
+        ContentValues values = new ContentValues();
+        values.put(EntryLogTable.COLUMN_SYNCED, true);
+        values.put(EntryLogTable.COLUMN_SYNC_DATE, new Date().toString());
+        String where = EntryLogTable.COLUMN_ID + " = ?";
+        String[] whereArgs = {id};
+        int count = db.update(
+                EntryLogTable.TABLE_NAME,
+                values,
+                where,
+                whereArgs);
+    }
 
 /*    public void updateSyncedSamp(String id) {
         SQLiteDatabase db = this.getReadableDatabase(DATABASE_PASSWORD);
@@ -829,8 +843,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String orderBy = ClusterTable.COLUMN_EB_CODE + " ASC";
 
-        Cluster e = new Cluster();
-        try {
+        Cluster e = null;
             c = db.query(
                     ClusterTable.TABLE_NAME,  // The table to query
                     columns,                   // The columns to return
@@ -843,14 +856,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (c.moveToNext()) {
                 e = new Cluster().hydrate(c);
             }
-        } finally {
-            if (c != null) {
-                c.close();
-            }
-            if (db != null) {
-                db.close();
-            }
-        }
+
+        c.close();
+
+        db.close();
+
         return e;
 
     }

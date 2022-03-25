@@ -210,13 +210,23 @@ public class Mwra extends BaseObservable {
        }
    
        @Bindable
-       public String getHh12() {
-           return hh12;
+       public String getHh14() {
+           return hh14;
        }
    
-       public void setHh12(String hh12) {
-           this.hh12 = hh12;
-           notifyPropertyChanged(BR.hh12);
+       public void setHh14(String hh14) {
+           this.hh14 = hh14;
+           notifyPropertyChanged(BR.hh14);
+       }
+   
+       @Bindable
+       public String getHh14a() {
+           return hh14a;
+       }
+   
+       public void setHh14a(String hh14a) {
+           this.hh14a = hh14a;
+           notifyPropertyChanged(BR.hh14a);
        }
    
        @Bindable
@@ -230,23 +240,13 @@ public class Mwra extends BaseObservable {
        }
    
        @Bindable
-       public String getHh14() {
-           return hh14;
+       public String getHh13a() {
+           return hh13a;
        }
    
-       public void setHh14(String hh14) {
-           this.hh14 = hh14;
-           notifyPropertyChanged(BR.hh14);
-       }
-   
-       @Bindable
-       public String getHh15() {
-           return hh15;
-       }
-   
-       public void setHh15(String hh15) {
-           this.hh15 = hh15;
-           notifyPropertyChanged(BR.hh15);
+       public void setHh13a(String hh13a) {
+           this.hh13a = hh13a;
+           notifyPropertyChanged(BR.hh13a);
        }
    */
     @Bindable
@@ -542,7 +542,7 @@ public class Mwra extends BaseObservable {
             json.put(MwraTable.COLUMN_SB, new JSONObject(this.sMwra));
         }
         if (this.lC != null && !this.lC.equals("")) {
-            json.put(MwraTable.COLUMN_LC, new JSONObject(this.lC));
+            json.put(MwraTable.COLUMN_SC, new JSONObject(this.lC));
         }*/
 
         return json;

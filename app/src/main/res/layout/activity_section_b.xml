@@ -107,42 +107,56 @@
                                 android:id="@+id/hh0701"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:checked="@{listings.hh07.equals(`1`)}"
+                                android:onClick="@{()->listings.setHh07(`1`)}"
                                 android:text="@string/hh0701" />
 
                             <RadioButton
                                 android:id="@+id/hh0712"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:checked="@{listings.hh07.equals(`2`)}"
+                                android:onClick="@{()->listings.setHh07(`2`)}"
                                 android:text="@string/hh0712" />
 
                             <RadioButton
                                 android:id="@+id/hh0713"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:checked="@{listings.hh07.equals(`3`)}"
+                                android:onClick="@{()->listings.setHh07(`3`)}"
                                 android:text="@string/hh0713" />
 
                             <RadioButton
                                 android:id="@+id/hh0714"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:checked="@{listings.hh07.equals(`4`)}"
+                                android:onClick="@{()->listings.setHh07(`4`)}"
                                 android:text="@string/hh0714" />
 
                             <RadioButton
                                 android:id="@+id/hh0715"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:checked="@{listings.hh07.equals(`5`)}"
+                                android:onClick="@{()->listings.setHh07(`5`)}"
                                 android:text="@string/hh0715" />
 
                             <RadioButton
                                 android:id="@+id/hh0716"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:checked="@{listings.hh07.equals(`6`)}"
+                                android:onClick="@{()->listings.setHh07(`6`)}"
                                 android:text="@string/hh0716" />
 
                             <RadioButton
                                 android:id="@+id/hh0717"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:checked="@{listings.hh07.equals(`96`)}"
+                                android:onClick="@{()->listings.setHh07(`96`)}"
                                 android:text="@string/hh0717" />
 
                             <EditText
@@ -152,77 +166,88 @@
                                 android:digits="AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789,. "
                                 android:hint="@string/hh0717"
                                 android:tag="hh0717"
-                                android:text='@{hh0717.checked ? hh0717x.getText().toString() : ""}'
-                                android:visibility='@{hh0717.checked? View.VISIBLE : View.GONE}' />
+                                android:text="@={listings.hh0717x}"
+                                android:textDirection="ltr"
+                                android:visibility="@{listings.hh07.equals(`96`) ? View.VISIBLE : View.GONE}" />
 
                             <RadioButton
                                 android:id="@+id/hh0718"
                                 android:layout_width="match_parent"
+                                android:background="@color/redOverlay"
+                                android:checked="@{listings.hh07.equals(`8`)}"
                                 android:layout_height="wrap_content"
+                                android:onClick="@{()->listings.setHh07(`8`) + hh09.clearCheck()}"
+                                android:textColor="@color/redDark"
                                 android:text="@string/hh0718" />
 
                             <RadioButton
                                 android:id="@+id/hh0719"
                                 android:layout_width="match_parent"
+                                android:background="@color/redOverlay"
                                 android:layout_height="wrap_content"
+                                android:checked="@{listings.hh07.equals(`9`)}"
+                                android:onClick="@{()->listings.setHh07(`9`) + hh09.clearCheck()}"
+                                android:textColor="@color/redDark"
                                 android:text="@string/hh0719" />
                         </RadioGroup>
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView><!-- hh07  Radio   -->
 
-                <!-- hh08a1  Radio   -->
+                <!-- hh08  Radio   -->
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/fldGrpCVhh08a1"
+                    android:id="@+id/fldGrpCVhh08"
                     style="@style/cardView"
-                    android:visibility="@{hh0701.checked || hh0712.checked || hh0713.checked || hh0714.checked || hh0715.checked || hh0716.checked || hh0717.checked ? View.VISIBLE : View.GONE}">
+                    android:visibility="@{!listings.hh07.equals(`8`) &amp;&amp; !listings.hh07.equals(`9`) || listings.hh07.equals(`3`) || listings.hh07.equals(`4`) || listings.hh07.equals(`5`) || listings.hh07.equals(`6`) || listings.hh07.equals(`96`) ? View.VISIBLE : View.GONE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical" ><LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bottom"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
-                        <TextView
-                            style="@style/quesNum"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:text="@string/Q_hh08a1"  />
-
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="@string/hh08a1" />
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bottom"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/quesNum"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="@string/Q_hh08" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="@string/hh08" />
 
                     </LinearLayout>
                         <RadioGroup
-                            android:id="@+id/hh08a1"
+                            android:id="@+id/hh08"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             >
 
                             <RadioButton
-                                android:id="@+id/hh08a1a"
-                                android:text="@string/hh08a1a"
+                                android:id="@+id/hh08a"
+                                android:checked="@{listings.hh08.equals(`1`)}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:checked="@{listings.hh08a1.equals(`1`)}"
-                                android:onClick="@{()->listings.setHh08a1(`1`)}"
+                                android:onClick="@{()->listings.setHh08(`1`)}"
+                                android:text="@string/hh08a"
                                 android:layout_weight="1"
 
                                 />
 
                             <RadioButton
-                                android:id="@+id/hh08a1b"
-                                android:text="@string/hh08a1b"
+                                android:id="@+id/hh08b"
+                                android:checked="@{listings.hh08.equals(`2`)}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:checked="@{listings.hh08a1.equals(`2`)}"
-                                android:onClick="@{()->listings.setHh08a1(`2`) + hh09.clearCheck()}"
+                                android:onClick="@{()->listings.setHh08(`2`) + hh09.clearCheck()}"
+                                android:text="@string/hh08b"
                                 android:layout_weight="1"
 
                                 />
@@ -237,7 +262,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/fldGrpCVhh09"
                     style="@style/cardView"
-                    android:visibility="@{listings.hh08a1.equals(`1`) ? View.VISIBLE : View.GONE }">
+                    android:visibility="@{listings.hh08.equals(`1`) ? View.VISIBLE : View.GONE }">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -274,6 +299,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
+                                android:checked="@{listings.hh09.equals(`1`)}"
+                                android:onClick="@{()->listings.setHh09(`1`)}"
                                 android:text="@string/hh0801" />
 
                             <RadioButton
@@ -281,6 +308,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
+                                android:checked="@{listings.hh09.equals(`2`)}"
+                                android:onClick="@{()->listings.setHh09(`2`)}"
                                 android:text="@string/hh0802" />
                         </RadioGroup>
                     </LinearLayout>
@@ -323,6 +352,7 @@
                             android:hint="@string/hh10"
                             android:inputType="number"
                             android:maxLength="3"
+                            android:text="@={listings.hh10}"
                             app:maxValue="100"
                             app:minValue="2"
                             app:type="range" />

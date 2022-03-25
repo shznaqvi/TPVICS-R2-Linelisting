@@ -9,7 +9,7 @@ object CreateTable {
     const val DATABASE_COPY = "${PROJECT_NAME}_copy.db"
     const val DATABASE_VERSION = 1
 
-    const val SQL_CREATE_FORM = ("CREATE TABLE "
+    const val SQL_CREATE_LISTINGS = ("CREATE TABLE "
             + ListingsTable.TABLE_NAME + "("
             + ListingsTable.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + ListingsTable.COLUMN_PROJECT_NAME + " TEXT,"
@@ -18,6 +18,7 @@ object CreateTable {
             + ListingsTable.COLUMN_CLUSTER + " TEXT,"
             + ListingsTable.COLUMN_SYSDATE + " TEXT,"
             + ListingsTable.COLUMN_TAB_NO + " TEXT,"
+            + ListingsTable.COLUMN_GEOAREA + " TEXT,"
             + ListingsTable.COLUMN_START_TIME + " TEXT,"
             + ListingsTable.COLUMN_END_TIME + " TEXT,"
             + ListingsTable.COLUMN_ISTATUS + " TEXT,"
@@ -28,7 +29,7 @@ object CreateTable {
             + ListingsTable.COLUMN_APPVERSION + " TEXT,"
             + ListingsTable.COLUMN_SA + " TEXT,"
             + ListingsTable.COLUMN_SB + " TEXT,"
-            + ListingsTable.COLUMN_LC + " TEXT"
+            + ListingsTable.COLUMN_SC + " TEXT"
             + " );"
             )
 
@@ -92,7 +93,7 @@ object CreateTable {
             + EntryLogTable.COLUMN_PROJECT_NAME + " TEXT,"
             + EntryLogTable.COLUMN_UID + " TEXT,"
             + EntryLogTable.COLUMN_UUID + " TEXT,"
-            + EntryLogTable.COLUMN_PSU_CODE + " TEXT,"
+            + EntryLogTable.COLUMN_EB_CODE + " TEXT,"
             + EntryLogTable.COLUMN_HHID + " TEXT,"
             + EntryLogTable.COLUMN_USERNAME + " TEXT,"
             + EntryLogTable.COLUMN_SYSDATE + " TEXT,"
