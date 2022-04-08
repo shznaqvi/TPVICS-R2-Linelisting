@@ -32,6 +32,7 @@ public class Listings extends BaseObservable {
     private String id = StringUtils.EMPTY;
     private String uid = StringUtils.EMPTY;
     private String cluster = StringUtils.EMPTY;
+    private String enumCode = StringUtils.EMPTY;
     private String userName = StringUtils.EMPTY;
     private String sysDate = StringUtils.EMPTY;
     private String tabNo = StringUtils.EMPTY;
@@ -99,6 +100,7 @@ public class Listings extends BaseObservable {
         setSysDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(new Date().getTime()));
         setDeviceId(MainApp.deviceid);
         setAppver(MainApp.versionName + "." + MainApp.versionCode);
+        setEnumCode(MainApp.user.getDist_id());
 
     }
 
@@ -478,6 +480,14 @@ public class Listings extends BaseObservable {
         this.syncDate = syncDate;
     }
 
+    public String getEnumCode() {
+        return enumCode;
+    }
+
+    public void setEnumCode(String enumCode) {
+        this.enumCode = enumCode;
+    }
+
     public String getsH1() {
         return sH1;
     }
@@ -542,6 +552,7 @@ public class Listings extends BaseObservable {
             this.hh01 = json.getString("hh01");
             this.hh02 = json.getString("hh02");
             this.hh03 = json.getString("hh03");
+            this.enumCode = json.getString("enumCode");
 
         }
     }
@@ -586,7 +597,8 @@ public class Listings extends BaseObservable {
 
         json.put("hh01", hh01)
                 .put("hh02", hh02)
-                .put("hh03", hh03);
+                .put("hh03", hh03)
+                .put("enumCode", enumCode);
 
         return json.toString();
     }

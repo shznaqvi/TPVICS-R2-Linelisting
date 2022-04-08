@@ -369,13 +369,13 @@
                 <!-- hh15  Radio   -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/fldGrpCVhh15"
+                    android:visibility="gone"
                     style="@style/cardView">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone">
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"

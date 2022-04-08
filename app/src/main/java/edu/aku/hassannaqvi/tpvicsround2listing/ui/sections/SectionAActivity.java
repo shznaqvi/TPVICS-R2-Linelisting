@@ -122,7 +122,7 @@ public class SectionAActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, ebCode);
 
-        bi.hh01.setAdapter(adapter);
+      //  bi.hh01.setAdapter(adapter);
 
      /*   bi.hh03.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override

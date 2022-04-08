@@ -70,7 +70,7 @@ public class FamilyListingActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 try {
-                    bi.hh13a.setMaxvalue(Float.parseFloat(bi.hh12.getText().toString()));
+                    bi.hh13a.setMaxvalue(Float.parseFloat(bi.hh12.getText().toString()) - 1f);
                 } catch (NumberFormatException e) {
                     bi.hh13a.setMaxvalue(0f);
                 }
