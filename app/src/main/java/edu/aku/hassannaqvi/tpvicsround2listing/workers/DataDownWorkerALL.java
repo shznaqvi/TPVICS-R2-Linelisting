@@ -1,5 +1,7 @@
 package edu.aku.hassannaqvi.tpvicsround2listing.workers;
 
+import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp._UPDATE_URL;
+
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.text.Html;
@@ -210,7 +212,7 @@ public class DataDownWorkerALL extends Worker {
                 jsonTable.put("check", "");
 
                 if (uploadTable.equals(TableContracts.VersionTable.TABLE_NAME)) {
-                    jsonTable.put("folder", "/");
+                    jsonTable.put("folder", _UPDATE_URL);
                 }
 
                 //jsonTable.put("limit", "3");
