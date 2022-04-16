@@ -52,9 +52,12 @@ public class FamilyListingActivity extends AppCompatActivity {
         listings.setHh14("");
         listings.setHh14a("");
         listings.setHh15("");
+        bi.btnEnd.setVisibility(MainApp.hhid == 1 ? View.GONE : View.VISIBLE);
+
         if (MainApp.hhid >= Integer.parseInt(MainApp.listings.getHh10())) {
             bi.fldGrpCVhh15.setVisibility(View.VISIBLE);
         }
+
 
 /*        if (!listings.getHh02e().isEmpty()){
             if (listings.getHh02e().equals("1"))
@@ -236,7 +239,7 @@ public class FamilyListingActivity extends AppCompatActivity {
         bi.hh13a.setText("00");
 
         //saveDraft();
-        if (updateDB()) {
+        if (insertRecord()) {
             finish();
 
             //     Toast.makeText(this, "Staring Household", Toast.LENGTH_SHORT).show();

@@ -121,12 +121,26 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.ViewHo
 
         }*/
 
-        holder.hhno.setText(fc.get(position).getHh04() + "-" + fc.get(position).getHh05());
+        String structure = String.format("%04d", Integer.parseInt(fc.get(position).getHh04()));
+
+        String hhid = "";
+        if (!fc.get(position).getHh05().equals(""))
+            hhid = " - " + String.format("%03d", Integer.parseInt(fc.get(position).getHh05()));
+
+        holder.hhno.setText(structure + hhid);
         holder.ebCode.setText(fc.get(position).getHh01());
         holder.istatus.setText(fc.get(position).getHh10());
         holder.headName.setText(fc.get(position).getHh11());
-        holder.mwraCount.setText(fc.get(position).getHh13a().equals("") ? "MWRA: " + fc.get(position).getHh13a() : "");
-        holder.familyCount.setImageResource(fc.get(position).getHh07().equals("1") ? R.drawable.ic_residential : R.drawable.ic_non_residential);
+
+
+        holder.mwraCount.setText(fc.get(position).getHh08().equals("1") && !fc.get(position).getHh11().equals("Deleted") ?
+                "Total Members:\t\t " + fc.get(position).getHh12()
+                        + "\t\t•\t\t U-5:\t\t" + fc.get(position).getHh13a()
+                        + "\t\t•\t\t 12-23: \t" + fc.get(position).getHh14a() : "");
+        holder.familyCount.setImageResource(fc.get(position).getHh08().equals("1") ? R.drawable.ic_residential : R.drawable.ic_non_residential);
+        if (fc.get(position).getHh11().equals("Deleted"))
+            holder.familyCount.setImageResource(android.R.drawable.ic_menu_delete);
+
 
        /* holder.secStatusBlood.setText(bloodStatus == 2 ? "  Done   " : " Pending ");
         holder.secStatusStool.setText(stoolStatus == 2 ? "  Done   " : " Pending ");

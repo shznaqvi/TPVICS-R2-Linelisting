@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/parentLayout"
@@ -121,9 +122,9 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-condensed"
                         android:paddingEnd="12dp"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/grayLight"
+                        android:textSize="14sp"
+                        tools:text="Total members:\t\t1 \t\t•\t\t U-5:\t\t1 \t\t•\t\t 12-23: \t1" />
 
                     <!--
                                         <TextView
