@@ -1,5 +1,7 @@
 package edu.aku.hassannaqvi.tpvicsround2listing;
 
+import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.sharedPref;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,6 +36,16 @@ public class MainActivity extends AppCompatActivity {
         bi.username.setText("Welcome, " + MainApp.user.getFullname() + "!");
 
 
+        String latestVersionName = sharedPref.getString("versionName", "");
+        int latestVersionCode = Integer.parseInt(sharedPref.getString("versionCode", "0"));
+
+        if (MainApp.appInfo.getVersionCode() < latestVersionCode) {
+            bi.newApp.setVisibility(View.VISIBLE);
+            bi.newApp.setText("NOTICE: There is a newer version of this app available on server (" + latestVersionName + latestVersionCode + "). \nPlease download update the app now.");
+        } else {
+            bi.newApp.setVisibility(View.GONE);
+
+        }
     }
 
     public void sectionPress(View view) {

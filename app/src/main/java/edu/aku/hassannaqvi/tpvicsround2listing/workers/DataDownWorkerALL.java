@@ -1,6 +1,6 @@
 package edu.aku.hassannaqvi.tpvicsround2listing.workers;
 
-import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp._UPDATE_URL;
+import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp._APP_FOLDER;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -48,7 +48,6 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 
-import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts;
 import edu.aku.hassannaqvi.tpvicsround2listing.core.CipherSecure;
 import edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp;
 
@@ -184,8 +183,8 @@ public class DataDownWorkerALL extends Worker {
 
             urlConnection = (HttpsURLConnection) url.openConnection();
             urlConnection.setSSLSocketFactory(buildSslSocketFactory(mContext));
-            urlConnection.setReadTimeout(5000 /* milliseconds */);
-            urlConnection.setConnectTimeout(5000 /* milliseconds */);
+            urlConnection.setReadTimeout(15000 /* milliseconds */);
+            urlConnection.setConnectTimeout(15000 /* milliseconds */);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
             urlConnection.setDoInput(true);
@@ -211,8 +210,8 @@ public class DataDownWorkerALL extends Worker {
 
                 jsonTable.put("check", "");
 
-                if (uploadTable.equals(TableContracts.VersionTable.TABLE_NAME)) {
-                    jsonTable.put("folder", _UPDATE_URL);
+                if (uploadTable.equals("versionApp")) {
+                    jsonTable.put("folder", _APP_FOLDER);
                 }
 
                 //jsonTable.put("limit", "3");

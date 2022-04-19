@@ -51,7 +51,6 @@ import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts;
 import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.ClusterTable;
 import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.EntryLogTable;
 import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.UsersTable;
-import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.VersionTable;
 import edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp;
 import edu.aku.hassannaqvi.tpvicsround2listing.database.DatabaseHelper;
 import edu.aku.hassannaqvi.tpvicsround2listing.databinding.ActivitySyncBinding;
@@ -72,10 +71,10 @@ public class SyncActivity extends AppCompatActivity {
     Boolean listActivityCreated;
     Boolean uploadlistActivityCreated;
     String campCode;
+    RecyclerView.LayoutManager mLayoutManager2;
     private int totalFiles;
     private long tStart;
     private String progress;
-    RecyclerView.LayoutManager mLayoutManager2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,7 +191,7 @@ public class SyncActivity extends AppCompatActivity {
                     filter = " enabled = '1' ";
 
                     downloadTables.add(new SyncModel(UsersTable.TABLE_NAME));
-                    downloadTables.add(new SyncModel(VersionTable.TABLE_NAME));
+                    downloadTables.add(new SyncModel("versionApp"));
                 } else {
 
                     select = " * ";
@@ -286,11 +285,16 @@ public class SyncActivity extends AppCompatActivity {
                             }
                             if (method != null) {
                                 try {
+                                    JSONObject jsonObject;
+                                    if (!downloadTables.get(position).gettableName().equals("versionApp")) {
+                                        jsonArray = new JSONArray(result);
+                                        Log.d(TAG, "onChanged: " + jsonArray.getString(0));
 
-                                    jsonArray = new JSONArray(result);
-
-                                    JSONObject jsonObject = new JSONObject(jsonArray.getString(0));
-                                    Log.d(TAG, "onChanged: " + jsonArray.getString(0));
+                                        jsonObject = new JSONObject(jsonArray.getString(0));
+                                    } else {
+                                        jsonObject = new JSONObject(result);
+                                        jsonArray.put(jsonObject);
+                                    }
                                     if (jsonObject.has("error")) {
                                         downloadTables.get(position).setstatus("Process Failed");
                                         downloadTables.get(position).setstatusID(1);
@@ -308,11 +312,11 @@ public class SyncActivity extends AppCompatActivity {
                                     }
 
 
-                                } catch (JSONException | IllegalAccessException | InvocationTargetException ite) {
+                                } catch (JSONException | IllegalArgumentException | IllegalAccessException | InvocationTargetException ite) {
                                     ite.printStackTrace();
                                     downloadTables.get(position).setstatus("Process Failed2");
                                     downloadTables.get(position).setstatusID(1);
-                                    downloadTables.get(position).setmessage(ite.getCause().getMessage());
+                                    downloadTables.get(position).setmessage(ite.getClass().getSimpleName() + "(" + downloadTables.get(position).gettableName() + "): " + ite.getMessage());
                                     syncListAdapter.updatesyncList(downloadTables);
                                 }
                             } else {

@@ -7,7 +7,6 @@ import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_C
 import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_CREATE_ENTRYLOGS;
 import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_CREATE_LISTINGS;
 import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_CREATE_USERS;
-import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_CREATE_VERSIONAPP;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -36,14 +35,12 @@ import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.EntryLog
 import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.ListingsTable;
 import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.MwraTable;
 import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.UsersTable;
-import edu.aku.hassannaqvi.tpvicsround2listing.contracts.TableContracts.VersionTable;
 import edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp;
 import edu.aku.hassannaqvi.tpvicsround2listing.models.Cluster;
 import edu.aku.hassannaqvi.tpvicsround2listing.models.EntryLog;
 import edu.aku.hassannaqvi.tpvicsround2listing.models.Listings;
 import edu.aku.hassannaqvi.tpvicsround2listing.models.Mwra;
 import edu.aku.hassannaqvi.tpvicsround2listing.models.Users;
-import edu.aku.hassannaqvi.tpvicsround2listing.models.VersionApp;
 
 
 
@@ -75,7 +72,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_LISTINGS);
         // db.execSQL(SQL_CREATE_MWRA);
         db.execSQL(SQL_CREATE_ENTRYLOGS);
-        db.execSQL(SQL_CREATE_VERSIONAPP);
 
     }
 
@@ -463,28 +459,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }*/
 
 
-    public int syncVersionApp(JSONObject VersionList) {
+    public int syncversionApp(JSONArray VersionList) throws JSONException {
         SQLiteDatabase db = this.getWritableDatabase(DATABASE_PASSWORD);
-        db.delete(VersionTable.TABLE_NAME, null, null);
         long count = 0;
-        try {
-            JSONObject jsonObjectCC = ((JSONArray) VersionList.get(VersionTable.COLUMN_VERSION_PATH)).getJSONObject(0);
-            VersionApp Vc = new VersionApp();
-            Vc.sync(jsonObjectCC);
 
-            ContentValues values = new ContentValues();
+        JSONObject jsonObjectVersion = ((JSONArray) VersionList.getJSONObject(0).get("elements")).getJSONObject(0);
 
-            values.put(VersionTable.COLUMN_PATH_NAME, Vc.getPathname());
-            values.put(VersionTable.COLUMN_VERSION_CODE, Vc.getVersioncode());
-            values.put(VersionTable.COLUMN_VERSION_NAME, Vc.getVersionname());
+        String appPath = jsonObjectVersion.getString("outputFile");
+        String versionCode = jsonObjectVersion.getString("versionCode");
 
-            count = db.insert(VersionTable.TABLE_NAME, null, values);
-            if (count > 0) count = 1;
+        MainApp.editor.putString("outputFile", jsonObjectVersion.getString("outputFile"));
+        MainApp.editor.putString("versionCode", jsonObjectVersion.getString("versionCode"));
+        MainApp.editor.putString("versionName", jsonObjectVersion.getString("versionName") + ".");
+        MainApp.editor.apply();
+        count++;
+              /*  VersionApp Vc = new VersionApp();
+                Vc.sync(jsonObjectVersion);
 
-        } catch (Exception ignored) {
-        } finally {
-            db.close();
-        }
+                ContentValues values = new ContentValues();
+
+                values.put(VersionTable.COLUMN_PATH_NAME, Vc.getPathname());
+                values.put(VersionTable.COLUMN_VERSION_CODE, Vc.getVersioncode());
+                values.put(VersionTable.COLUMN_VERSION_NAME, Vc.getVersionname());
+
+                count = db.insert(VersionTable.TABLE_NAME, null, values);
+                if (count > 0) count = 1;
+
+            } catch (Exception ignored) {
+            } finally {
+                db.close();
+            }*/
 
         return (int) count;
     }

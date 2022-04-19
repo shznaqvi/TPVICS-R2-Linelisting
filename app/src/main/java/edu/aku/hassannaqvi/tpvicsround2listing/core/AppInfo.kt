@@ -45,7 +45,7 @@ class AppInfo {
             deviceID =
                 Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
             appVersion = "$versionName.$versionCode"
-            tagName = getTagName(context)
+            tagName = ""
             synchronized(this) {
                 dbHelper = DatabaseHelper(context)
             }
@@ -60,14 +60,14 @@ class AppInfo {
         this.versionCode = versionCode
     }
 
-    private fun getTagName(mContext: Context): String? {
+/*    private fun getTagName(mContext: Context): String? {
         val sharedPref = mContext.getSharedPreferences("tagName", Context.MODE_PRIVATE)
         return sharedPref.getString("tagName", null)
-    }
+    }*/
 
-    fun updateTagName(mContext: Context) {
+/*    fun updateTagName(mContext: Context) {
         tagName = getTagName(mContext)
-    }
+    }*/
 
     fun getInfo(): AppInfo {
         return AppInfo(versionName, installedOn, versionCode)

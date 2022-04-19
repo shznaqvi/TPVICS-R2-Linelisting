@@ -48,7 +48,8 @@ public class MainApp extends Application {
     public static final String _SERVER_URL = "syncEnc.php";
     public static final String _SERVER_GET_URL = "getDataEnc.php";
     public static final String _PHOTO_UPLOAD_URL = _HOST_URL + "uploads.php";
-    public static final String _UPDATE_URL = MainApp._IP + "/tpvics_r2/app/listings";
+    public static final String _UPDATE_URL = MainApp._IP + "/tpvics_r2/app/listing";
+    public static final String _APP_FOLDER = "../app/listing";
     public static final String _EMPTY_ = "";
     public static final String _USER_URL = "resetpassword.php";
     private static final String TAG = "MainApp";

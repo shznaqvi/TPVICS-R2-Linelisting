@@ -64,17 +64,16 @@ public class TableContracts {
 
     }
 
-    public static abstract class VersionTable implements BaseColumns {
+  /*  public static abstract class VersionTable implements BaseColumns {
         public static final String COLUMN_NAME_NULLABLE = "NULLHACK";
-        public static final String TABLE_NAME = "versionApp";
-        public static final String COLUMN_ID = "_id";
-        public static final String COLUMN_VERSION_PATH = "elements";
+        public static final String TABLE_NAME = "version";
+        public static final String COLUMN_APPLICATION_ID = "applicationId";
         public static final String COLUMN_VERSION_CODE = "versionCode";
         public static final String COLUMN_VERSION_NAME = "versionName";
         public static final String COLUMN_PATH_NAME = "outputFile";
         public static final String SERVER_URI = "output-metadata.json";
 
-    }
+    }*/
 
     public static abstract class ClusterTable implements BaseColumns {
         public static final String COLUMN_NAME_NULLABLE = "NULLHACK";

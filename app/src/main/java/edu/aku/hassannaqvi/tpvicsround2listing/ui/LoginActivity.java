@@ -2,13 +2,15 @@ package edu.aku.hassannaqvi.tpvicsround2listing.ui;
 
 import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.PROJECT_NAME;
 import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.TAJIKISTAN;
+import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.editor;
+import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.sharedPref;
 import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.DATABASE_COPY;
 import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.DATABASE_NAME;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
@@ -24,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
@@ -75,8 +78,6 @@ public class LoginActivity extends AppCompatActivity {
 
     ActivityLoginBinding bi;
     Spinner spinnerDistrict;
-    SharedPreferences sharedPref;
-    SharedPreferences.Editor editor;
     String DirectoryName;
     DatabaseHelper db;
     ArrayAdapter<String> provinceAdapter;
@@ -144,8 +145,6 @@ public class LoginActivity extends AppCompatActivity {
         bi.setCallback(this);
 
         db = MainApp.appInfo.getDbHelper();
-        sharedPref = getSharedPreferences(PROJECT_NAME, MODE_PRIVATE);
-        editor = sharedPref.edit();
 
         settingCountryCode();
 
@@ -156,6 +155,36 @@ public class LoginActivity extends AppCompatActivity {
         dbBackup();
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+        String latestVersionName = sharedPref.getString("versionName", "");
+        int latestVersionCode = Integer.parseInt(sharedPref.getString("versionCode", "0"));
+
+
+        if (MainApp.appInfo.getVersionCode() < latestVersionCode) {
+            bi.txtinstalldate.setText(bi.txtinstalldate.getText() + "\n Available on Server: " + latestVersionName + latestVersionCode);
+            new AlertDialog.Builder(this)
+                    .setTitle("New Update Available")
+                    .setMessage("There is a newer version of this app available (" + latestVersionName + latestVersionCode + "). \nPlease download and update the app now.")
+
+                    // Specifying a listener allows you to take an action before dismissing the dialog.
+                    // The dialog is automatically dismissed when a dialog button is clicked.
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Continue with delete operation
+                            //     addMoreMWRA();
+                        }
+                    })
+
+                    // A null listener allows the button to dismiss the dialog and take no further action.
+                    .setIcon(R.drawable.ic_alert_24)
+                    .show();
+        }
     }
 
     private void settingCountryCode() {
@@ -305,12 +334,12 @@ public class LoginActivity extends AppCompatActivity {
 
         Toast.makeText(this, String.valueOf(attemptCounter), Toast.LENGTH_SHORT).show();
 
-        if (MainApp.sharedPref.contains(bi.username.getText().toString())) {
-            long startTimeout = MainApp.sharedPref.getLong(bi.username.getText().toString(), timeNowInMillis);
+        if (sharedPref.contains(bi.username.getText().toString())) {
+            long startTimeout = sharedPref.getLong(bi.username.getText().toString(), timeNowInMillis);
             long timeElapsed = TimeUnit.MILLISECONDS.toMinutes(timeNowInMillis - startTimeout);
             Log.d(TAG, "attemptLogin(timeleft): " + timeElapsed);
             if (timeElapsed > 15) {
-                MainApp.editor.remove(bi.username.getText().toString()).commit();
+                editor.remove(bi.username.getText().toString()).commit();
             } else {
                 bi.username.setError("This user has been blocked.");
                 Toast.makeText(this, "This user has been blocked. Please try again after some time.", Toast.LENGTH_LONG).show();
@@ -320,8 +349,8 @@ public class LoginActivity extends AppCompatActivity {
         }
         if (attemptCounter > 5) {
 
-            if (!MainApp.sharedPref.contains(bi.username.getText().toString())) {
-                MainApp.editor.putLong(bi.username.getText().toString(), timeNowInMillis).commit();
+            if (!sharedPref.contains(bi.username.getText().toString())) {
+                editor.putLong(bi.username.getText().toString(), timeNowInMillis).commit();
                 Toast.makeText(this, "This user has been blocked.", Toast.LENGTH_LONG).show();
                 return;
             }
