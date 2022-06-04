@@ -2,11 +2,13 @@ package edu.aku.hassannaqvi.tpvicsround2listing.core;
 
 import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.DATABASE_NAME;
 
+import android.Manifest;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -17,6 +19,8 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+
+import androidx.core.app.ActivityCompat;
 
 import com.edittextpicker.aliazaz.EditTextPicker;
 import com.validatorcrawler.aliazaz.Clear;
@@ -80,6 +84,9 @@ public class MainApp extends Application {
     public static int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 2;
     public static long TWO_MINUTES = 1000 * 60 * 2;
     public static boolean permissionCheck = false;
+    private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 1; // in Meters
+    private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000; // in Milliseconds
+    protected static LocationManager locationManager;
     public static int idType = 0;
     public static boolean mwraComplete;
     public static boolean childComplete;
@@ -187,6 +194,25 @@ public class MainApp extends Application {
                 .putString("mh01", "")
                 .apply();
         deviceid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                MINIMUM_TIME_BETWEEN_UPDATES,
+                MINIMUM_DISTANCE_CHANGE_FOR_UPDATES,
+                new GPSLocationListener(this) // Implement this class from code
+
+        );
 
         initSecure();
     }

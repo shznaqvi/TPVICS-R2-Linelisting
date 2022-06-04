@@ -24,6 +24,10 @@ object CreateTable {
             + ListingsTable.COLUMN_ISTATUS + " TEXT,"
             + ListingsTable.COLUMN_DEVICEID + " TEXT,"
             + ListingsTable.COLUMN_DEVICETAGID + " TEXT,"
+            + ListingsTable.COLUMN_GPSLAT + " TEXT,"
+            + ListingsTable.COLUMN_GPSLNG + " TEXT,"
+            + ListingsTable.COLUMN_GPSDATE + " TEXT,"
+            + ListingsTable.COLUMN_GPSACC + " TEXT,"
             + ListingsTable.COLUMN_SYNCED + " TEXT,"
             + ListingsTable.COLUMN_SYNCED_DATE + " TEXT,"
             + ListingsTable.COLUMN_APPVERSION + " TEXT,"
@@ -107,4 +111,13 @@ object CreateTable {
             + EntryLogTable.COLUMN_APPVERSION + " TEXT"
             + " );"
             )
+
+    const val SQL_ALTER_LISTING_GPS_LAT =
+        ("ALTER TABLE " + ListingsTable.TABLE_NAME + " ADD " + ListingsTable.COLUMN_GPSLAT + " TEXT; ")
+    const val SQL_ALTER_LISTING_GPS_LNG =
+        ("ALTER TABLE " + ListingsTable.TABLE_NAME + " ADD " + ListingsTable.COLUMN_GPSLNG + " TEXT; ")
+    const val SQL_ALTER_LISTING_GPS_DATE =
+        ("ALTER TABLE " + ListingsTable.TABLE_NAME + " ADD " + ListingsTable.COLUMN_GPSDATE + " TEXT; ")
+    const val SQL_ALTER_LISTING_GPS_ACC =
+        ("ALTER TABLE " + ListingsTable.TABLE_NAME + " ADD " + ListingsTable.COLUMN_GPSACC + " TEXT; ")
 }

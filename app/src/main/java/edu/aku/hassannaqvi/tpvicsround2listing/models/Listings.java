@@ -46,6 +46,10 @@ public class Listings extends BaseObservable {
     private String iStatus96x = StringUtils.EMPTY;
     private String synced = StringUtils.EMPTY;
     private String syncDate = StringUtils.EMPTY;
+    private String gpsLat = StringUtils.EMPTY;
+    private String gpsLng = StringUtils.EMPTY;
+    private String gpsDT = StringUtils.EMPTY;
+    private String gpsAcc = StringUtils.EMPTY;
 
     // SECTION VARIABLES
     private String sH1 = StringUtils.EMPTY;
@@ -299,6 +303,47 @@ public class Listings extends BaseObservable {
         notifyPropertyChanged(BR.hh13a);
     }
 
+
+    @Bindable
+    public String getGpsLat() {
+        return gpsLat;
+    }
+
+    public void setGpsLat(String gpsLat) {
+        this.gpsLat = gpsLat;
+        notifyPropertyChanged(BR.gpsLat);
+    }
+
+    @Bindable
+    public String getGpsLng() {
+        return gpsLng;
+    }
+
+    public void setGpsLng(String gpsLng) {
+        this.gpsLng = gpsLng;
+        notifyPropertyChanged(BR.gpsLng);
+    }
+
+    @Bindable
+    public String getGpsDT() {
+        return gpsDT;
+    }
+
+    public void setGpsDT(String gpsDT) {
+        this.gpsDT = gpsDT;
+        notifyPropertyChanged(BR.gpsDT);
+    }
+
+    @Bindable
+    public String getGpsAcc() {
+        return gpsAcc;
+    }
+
+    public void setGpsAcc(String gpsAcc) {
+        this.gpsAcc = gpsAcc;
+        notifyPropertyChanged(BR.gpsAcc);
+    }
+
     /*
         @Bindable
         public String getHh16() {
@@ -521,6 +566,7 @@ public class Listings extends BaseObservable {
     }
 
 
+
     public Listings Hydrate(Cursor cursor) throws JSONException {
         this.id = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_ID));
         this.uid = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_UID));
@@ -537,6 +583,10 @@ public class Listings extends BaseObservable {
         this.syncDate = cursor.getString(cursor.getColumnIndexOrThrow(TableContracts.ListingsTable.COLUMN_SYNCED_DATE));
         this.endTime = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_END_TIME));
         this.startTime = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_START_TIME));
+        this.gpsLat = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_GPSLAT));
+        this.gpsLng = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_GPSLNG));
+        this.gpsDT = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_GPSDATE));
+        this.gpsAcc = cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_GPSACC));
         sAHydrate(cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_SA)));
         sBHydrate(cursor.getString(cursor.getColumnIndexOrThrow(TableContracts.ListingsTable.COLUMN_SB)));
         sCHydrate(cursor.getString(cursor.getColumnIndexOrThrow(ListingsTable.COLUMN_SC)));
@@ -651,6 +701,10 @@ public class Listings extends BaseObservable {
         json.put(ListingsTable.COLUMN_APPVERSION, this.appver);
         json.put(ListingsTable.COLUMN_SYNCED, this.synced);
         json.put(ListingsTable.COLUMN_SYNCED_DATE, this.syncDate);
+        json.put(ListingsTable.COLUMN_GPSLAT, this.gpsLat);
+        json.put(ListingsTable.COLUMN_GPSLNG, this.gpsLng);
+        json.put(ListingsTable.COLUMN_GPSDATE, this.gpsDT);
+        json.put(ListingsTable.COLUMN_GPSACC, this.gpsAcc);
         json.put(ListingsTable.COLUMN_SA, new JSONObject(sAtoString()));
         json.put(ListingsTable.COLUMN_SB, new JSONObject(sBtoString()));
         json.put(ListingsTable.COLUMN_SC, new JSONObject(sCtoString()));

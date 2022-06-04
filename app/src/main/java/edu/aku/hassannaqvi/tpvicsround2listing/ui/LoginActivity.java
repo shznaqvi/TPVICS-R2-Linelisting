@@ -126,7 +126,9 @@ public class LoginActivity extends AppCompatActivity {
                         Manifest.permission.ACCESS_NETWORK_STATE,
                         Manifest.permission.WAKE_LOCK,
                         Manifest.permission.INTERNET,
-                        Manifest.permission.READ_PHONE_STATE
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
                 ).withListener(new MultiplePermissionsListener() {
             @Override
             public void onPermissionsChecked(MultiplePermissionsReport report) {

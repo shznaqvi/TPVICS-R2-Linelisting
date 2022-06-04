@@ -5,12 +5,17 @@ import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.selectedClust
 import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.selectedTab;
 import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.sharedPref;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -49,6 +54,7 @@ public class SectionAActivity extends AppCompatActivity {
         bi.setListings(listings);
         st = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH).format(new Date().getTime());
         setupSkips();
+        setGPS();
         setSupportActionBar(bi.toolbar);
 
         populateSpinner();
@@ -298,6 +304,34 @@ public class SectionAActivity extends AppCompatActivity {
             bi.hh01b.setError("Not Found!");
             bi.hh01c.setText("Not Found!");
 
+        }
+
+    }
+
+    public void setGPS() {
+        SharedPreferences GPSPref = getSharedPreferences("GPSCoordinates", Context.MODE_PRIVATE);
+        try {
+            String lat = GPSPref.getString("Latitude", "0");
+            String lang = GPSPref.getString("Longitude", "0");
+            String acc = GPSPref.getString("Accuracy", "0");
+
+            if (lat == "0" && lang == "0") {
+                Toast.makeText(this, "Could not obtained points", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Points set", Toast.LENGTH_SHORT).show();
+            }
+
+            String date = DateFormat.format("dd-MM-yyyy HH:mm", Long.parseLong(GPSPref.getString("Time", "0"))).toString();
+
+            listings.setGpsLat(lat);
+            listings.setGpsLng(lang);
+            listings.setGpsAcc(acc);
+            listings.setGpsDT(date); // Timestamp is converted to date above
+
+//            Toast.makeText(this, "GPS set", Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            Log.e(TAG, "setGPS: " + e.getMessage());
         }
 
     }

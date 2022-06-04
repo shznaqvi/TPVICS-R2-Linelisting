@@ -3,6 +3,10 @@ package edu.aku.hassannaqvi.tpvicsround2listing.database;
 import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.IBAHC;
 import static edu.aku.hassannaqvi.tpvicsround2listing.core.MainApp.PROJECT_NAME;
 import static edu.aku.hassannaqvi.tpvicsround2listing.core.UserAuth.checkPassword;
+import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_ALTER_LISTING_GPS_ACC;
+import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_ALTER_LISTING_GPS_DATE;
+import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_ALTER_LISTING_GPS_LAT;
+import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_ALTER_LISTING_GPS_LNG;
 import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_CREATE_CLUSTERS;
 import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_CREATE_ENTRYLOGS;
 import static edu.aku.hassannaqvi.tpvicsround2listing.database.CreateTable.SQL_CREATE_LISTINGS;
@@ -55,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = PROJECT_NAME + ".db";
     public static final String DATABASE_COPY = PROJECT_NAME + "_copy.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private final String TAG = "DatabaseHelper";
     private static final String DATABASE_PASSWORD = IBAHC;
     private final Context mContext;
@@ -79,7 +83,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         switch (oldVersion) {
             case 1:
-            case 2:
+                db.execSQL(SQL_ALTER_LISTING_GPS_LAT);
+                db.execSQL(SQL_ALTER_LISTING_GPS_LNG);
+                db.execSQL(SQL_ALTER_LISTING_GPS_DATE);
+                db.execSQL(SQL_ALTER_LISTING_GPS_ACC);
         }
     }
 
@@ -105,6 +112,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(ListingsTable.COLUMN_APPVERSION, ls.getAppver());
         values.put(TableContracts.ListingsTable.COLUMN_START_TIME, ls.getStartTime());
         values.put(TableContracts.ListingsTable.COLUMN_END_TIME, ls.getEndTime());
+        values.put(TableContracts.ListingsTable.COLUMN_GPSLAT, ls.getGpsLat());
+        values.put(TableContracts.ListingsTable.COLUMN_GPSLNG, ls.getGpsLng());
+        values.put(TableContracts.ListingsTable.COLUMN_GPSDATE, ls.getGpsDT());
+        values.put(TableContracts.ListingsTable.COLUMN_GPSACC, ls.getGpsAcc());
 
         // Put all JSON as xxtoString()
         values.put(ListingsTable.COLUMN_SA, ls.sAtoString());
@@ -848,18 +859,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String orderBy = ClusterTable.COLUMN_EB_CODE + " ASC";
 
         Cluster e = null;
-            c = db.query(
-                    ClusterTable.TABLE_NAME,  // The table to query
-                    columns,                   // The columns to return
-                    whereClause,               // The columns for the WHERE clause
-                    whereArgs,                 // The values for the WHERE clause
-                    groupBy,                   // don't group the rows
-                    having,                    // don't filter by row groups
-                    orderBy
-            );
-            while (c.moveToNext()) {
-                e = new Cluster().hydrate(c);
-            }
+        c = db.query(
+                ClusterTable.TABLE_NAME,  // The table to query
+                columns,                   // The columns to return
+                whereClause,               // The columns for the WHERE clause
+                whereArgs,                 // The values for the WHERE clause
+                groupBy,                   // don't group the rows
+                having,                    // don't filter by row groups
+                orderBy
+        );
+        while (c.moveToNext()) {
+            e = new Cluster().hydrate(c);
+        }
 
         c.close();
 
