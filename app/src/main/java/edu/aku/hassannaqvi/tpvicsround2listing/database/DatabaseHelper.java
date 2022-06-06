@@ -61,7 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_COPY = PROJECT_NAME + "_copy.db";
     private static final int DATABASE_VERSION = 2;
     private final String TAG = "DatabaseHelper";
-    private static final String DATABASE_PASSWORD = IBAHC;
+    public static final String DATABASE_PASSWORD = IBAHC;
     private final Context mContext;
 
     public DatabaseHelper(Context context) {
@@ -299,9 +299,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         }
 
-        c.close();
+        if (c != null && !c.isClosed()) {
+            c.close();
+        }
 
-        db.close();
         if (loggedInUser.getPassword().equals("")) {
             Toast.makeText(mContext, "Stored password is invalid", Toast.LENGTH_SHORT).show();
             return false;
@@ -338,7 +339,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String having = null;
         String orderBy = ListingsTable.COLUMN_ID + " ASC";
         ArrayList<Listings> allListings = new ArrayList<>();
-        try {
+
             c = db.query(
                     TableContracts.ListingsTable.TABLE_NAME,  // The table to query
                     columns,                   // The columns to return
@@ -348,6 +349,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     having,                    // don't filter by row groups
                     orderBy                    // The sort order
             );
+
             while (c.moveToNext()) {
                 Listings forms = new Listings();
                 forms.setId(c.getString(c.getColumnIndexOrThrow(ListingsTable.COLUMN_ID)));
@@ -359,13 +361,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 forms.setCluster(c.getString(c.getColumnIndexOrThrow(TableContracts.ListingsTable.COLUMN_CLUSTER)));
                 allListings.add(forms);
             }
-        } finally {
-            if (c != null) {
-                c.close();
-            }
-            if (db != null) {
-                db.close();
-            }
+
+        if (c != null && !c.isClosed()) {
+            c.close();
         }
         return allListings;
     }
@@ -389,7 +387,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String orderBy = TableContracts.ListingsTable.COLUMN_ID + " ASC";
 
         Listings allFC = null;
-        try {
             c = db.query(
                     TableContracts.ListingsTable.TABLE_NAME,  // The table to query
                     columns,                   // The columns to return
@@ -402,13 +399,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (c.moveToNext()) {
                 allFC = new Listings().Hydrate(c);
             }
-        } finally {
-            if (c != null) {
-                c.close();
-            }
-            if (db != null) {
-                db.close();
-            }
+        if (c != null && !c.isClosed()) {
+            c.close();
         }
         return allFC;
     }
@@ -504,18 +496,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return (int) count;
     }
 
-    public int syncAppUser(JSONArray userList) {
+    public int syncAppUser(JSONArray userList) throws JSONException {
         SQLiteDatabase db = this.getWritableDatabase(DATABASE_PASSWORD);
         db.delete(UsersTable.TABLE_NAME, null, null);
         int insertCount = 0;
-        try {
-            for (int i = 0; i < userList.length(); i++) {
+        for (int i = 0; i < userList.length(); i++) {
 
-                JSONObject jsonObjectUser = userList.getJSONObject(i);
+            JSONObject jsonObjectUser = userList.getJSONObject(i);
 
-                Users user = new Users();
-                user.sync(jsonObjectUser);
-                ContentValues values = new ContentValues();
+            Users user = new Users();
+            user.sync(jsonObjectUser);
+            ContentValues values = new ContentValues();
 
                 values.put(UsersTable.COLUMN_USERNAME, user.getUserName());
                 values.put(UsersTable.COLUMN_PASSWORD, user.getPassword());
@@ -529,12 +520,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 if (rowID != -1) insertCount++;
             }
 
-        } catch (Exception e) {
-            Log.d(TAG, "syncUser(e): " + e);
-            db.close();
-        } finally {
-            db.close();
-        }
+
         return insertCount;
     }
 
@@ -560,7 +546,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
 
-        db.close();
 
         return insertCount;
     }
@@ -590,7 +575,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.d(TAG, "syncRandom(e): " + e);
             db.close();
         } finally {
-            db.close();
+            versi();
         }
         return insertCount;
     }
@@ -599,7 +584,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //get UnSyncedTables
-    public JSONArray getUnsyncedForm() throws JSONException {
+    public JSONArray getUnsyncedListing() throws JSONException {
         SQLiteDatabase db = this.getReadableDatabase(DATABASE_PASSWORD);
         Cursor c = null;
         String[] columns = null;
@@ -615,7 +600,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String orderBy = TableContracts.ListingsTable.COLUMN_ID + " ASC";
 
         JSONArray allForm = new JSONArray();
-        try {
             c = db.query(
                     TableContracts.ListingsTable.TABLE_NAME,  // The table to query
                     columns,                   // The columns to return
@@ -633,13 +617,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Listings listings = new Listings();
                 allForm.put(listings.Hydrate(c).toJSONObject());
             }
-        } finally {
-            if (c != null) {
-                c.close();
-            }
-            if (db != null) {
-                db.close();
-            }
+        if (c != null && !c.isClosed()) {
+            c.close();
         }
         Log.d(TAG, "getUnsyncedForm: " + allForm.toString().length());
         Log.d(TAG, "getUnsyncedForm: " + allForm);
@@ -663,7 +642,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String orderBy = MwraTable.COLUMN_ID + " ASC";
 
         JSONArray allMwra = new JSONArray();
-        try {
             c = db.query(
                     MwraTable.TABLE_NAME,  // The table to query
                     columns,                   // The columns to return
@@ -681,13 +659,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Mwra mwra = new Mwra();
                 allMwra.put(mwra.Hydrate(c).toJSONObject());
             }
-        } finally {
-            if (c != null) {
-                c.close();
-            }
-            if (db != null) {
-                db.close();
-            }
+        if (c != null && !c.isClosed()) {
+            c.close();
         }
         Log.d(TAG, "getUnsyncedMwraCR: " + allMwra.toString().length());
         Log.d(TAG, "getUnsyncedMwraCR: " + allMwra);
@@ -872,9 +845,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             e = new Cluster().hydrate(c);
         }
 
-        c.close();
-
-        db.close();
+        if (c != null && !c.isClosed()) {
+            c.close();
+        }
 
         return e;
 
@@ -895,7 +868,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String orderBy = ClusterTable.COLUMN_EB_CODE + " ASC";
 
         List<Cluster> e = new ArrayList<>();
-        try {
             c = db.query(
                     ClusterTable.TABLE_NAME,  // The table to query
                     columns,                   // The columns to return
@@ -909,13 +881,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 e.add(new Cluster().hydrate(c));
 
             }
-        } finally {
-            if (c != null) {
-                c.close();
-            }
-            if (db != null) {
-                db.close();
-            }
+        if (c != null && !c.isClosed()) {
+            c.close();
         }
         return e;
 
@@ -950,8 +917,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             allListing.add(new Listings().Hydrate(c));
         }
-        c.close();
-        db.close();
+        if (c != null && !c.isClosed()) {
+            c.close();
+        }
 
 
         return allListing;
