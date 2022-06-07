@@ -155,7 +155,7 @@ public class CipherSecure {
                     context.getSocketFactory());
             */
             // Create an SSLContext that uses our TrustManager
-            SSLContext context1 = SSLContext.getInstance("TLSv1.3");
+            SSLContext context1 = SSLContext.getInstance("TLSv1.2");
             context1.init(null, tmf.getTrustManagers(), null);
             return context1.getSocketFactory();
         } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException | CertificateException | IOException e) {
