@@ -35,6 +35,7 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.scottyab.rootbeer.RootBeer;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -120,6 +121,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
+        RootBeer rootBeer = new RootBeer(this);
+        if (rootBeer.isRooted()) {
+            android.os.Process.killProcess(android.os.Process.myPid());
+            throw new RuntimeException("This is a crash");
+
+            //System.exit(1);
+        }
         initializingCountry();
         Dexter.withContext(this)
                 .withPermissions(
@@ -298,10 +306,13 @@ public class LoginActivity extends AppCompatActivity {
         if (bi.password.getTransformationMethod() == null) {
             bi.password.setTransformationMethod(new PasswordTransformationMethod());
             bi.password.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_lock_close, 0, 0, 0);
+            bi.password.setEnabled(false);
         } else {
             bi.password.setTransformationMethod(null);
             bi.password.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_lock_open, 0, 0, 0);
+            bi.password.setEnabled(true);
         }
+
     }
 
     public void onSyncDataClick(View view) {
@@ -380,6 +391,12 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
+            // Check for a same username and password.
+            if (username.equals(password)) {
+                bi.username.setError(getString(R.string.username_password_same));
+                focusView = bi.username;
+                return;
+            }
             //if(!Validator.emptySpinner(this, bi.countrySwitch)) return;
             /*if (bi.countrySwitch.getSelectedItemPosition() == 0) {
                 bi.as1q01.setError(getString(R.string.as1q01));

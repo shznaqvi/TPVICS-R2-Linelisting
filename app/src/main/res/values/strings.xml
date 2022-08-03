@@ -205,6 +205,7 @@
     <string name="network_conn_error">Network Connection Error</string>
     <string name="invalid_password">Invalid Password</string>
     <string name="username_required">Username Required</string>
+    <string name="username_password_same" translatable="false"> Username and Password cannot be same. </string>
     <string name="incorrect_username_or_password">Incorrect Username Or Password</string>
     <string name="options" translatable="false">Options</string>
     <string name="actiondatabase" translatable="false">Database Manager</string>

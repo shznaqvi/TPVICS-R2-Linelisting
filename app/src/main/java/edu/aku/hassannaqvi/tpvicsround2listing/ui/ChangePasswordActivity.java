@@ -200,6 +200,24 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private boolean formValidation() {
         // return Validator.emptyCheckingContainer(this, bi.GrpName);
 
+        String hashedPasswordOld = "";
+        try {
+            hashedPasswordOld = generatePassword(bi.passwordOld.getText().toString(), null);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+
+        if (!MainApp.user.getPassword().equals(hashedPasswordOld)) {
+            bi.passwordOld.setError("Old password do not match.");
+            Toast.makeText(this, "Old password do not match.", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            bi.passwordOld.setError(null);
+
+        }
+
         if (bi.password1.getText().toString().length() < 8) {
             bi.password1.setError("Password should be at least 8 characters long.");
             Toast.makeText(this, "Passwords is empty.", Toast.LENGTH_SHORT).show();
@@ -220,6 +238,15 @@ public class ChangePasswordActivity extends AppCompatActivity {
         if (!isValidPassword(bi.password1.getText().toString())) {
             //   bi.password1.setError("Passwords do not match.");
             Toast.makeText(this, "Password do not match criteria", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            bi.password1.setError(null);
+
+        }
+
+        if (bi.password1.getText().toString().equals(MainApp.user.getNewUser())) {
+            //   bi.password1.setError("Passwords do not match.");
+            Toast.makeText(this, "Password cannot be same as username.", Toast.LENGTH_SHORT).show();
             return false;
         } else {
             bi.password1.setError(null);

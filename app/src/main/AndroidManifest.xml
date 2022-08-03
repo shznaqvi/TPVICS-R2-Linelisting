@@ -49,45 +49,52 @@
         </activity>
         <activity
             android:name=".database.AndroidManager"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.sections.SectionAActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeUrdu"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.sections.SectionBActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeUrdu"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.sections.FamilyListingActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeUrdu"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.sections.MWRAListingActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeUrdu"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.SyncActivity"
-            android:exported="true"
+            android:exported="false"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".MainActivity"
+            android:exported="false"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.lists.ListingsReporter"
+            android:exported="false"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.ChangePasswordActivity"
-            android:exported="true"
             android:theme="@style/AppTheme"
+            android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
         <meta-data
