@@ -35,7 +35,6 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.scottyab.rootbeer.RootBeer;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -121,13 +120,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        RootBeer rootBeer = new RootBeer(this);
-        if (rootBeer.isRooted()) {
-            android.os.Process.killProcess(android.os.Process.myPid());
-            throw new RuntimeException("This is a crash");
-
-            //System.exit(1);
-        }
         initializingCountry();
         Dexter.withContext(this)
                 .withPermissions(
