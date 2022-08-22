@@ -111,6 +111,8 @@ public class MainApp extends Application {
     public static String[] clusterInfo;
     public static String selectedTab;
 
+    public static NoMenuEditText noMenuEditText;
+
 
     public static void hideSystemUI(View decorView) {
         // Enables regular immersive mode.

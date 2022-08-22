@@ -105,7 +105,7 @@
                                 android:layout_margin="20dp"
                                 android:orientation="vertical">
 
-                                <EditText
+                                <edu.aku.hassannaqvi.tpvicsround2listing.core.NoMenuEditText
                                     android:longClickable="false"
                                     android:id="@+id/username"
                                     android:layout_width="match_parent"
@@ -136,7 +136,7 @@
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal">
 
-                                    <EditText
+                                    <edu.aku.hassannaqvi.tpvicsround2listing.core.NoMenuEditText
                                         android:longClickable="false"
                                         android:id="@+id/password"
                                         android:layout_width="0dp"

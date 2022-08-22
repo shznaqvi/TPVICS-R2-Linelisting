@@ -21,6 +21,11 @@ import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Base64;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -116,48 +121,13 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
-        super.onCreate(savedInstanceState);
-        initializingCountry();
-        Dexter.withContext(this)
-                .withPermissions(
-                        Manifest.permission.ACCESS_NETWORK_STATE,
-                        Manifest.permission.WAKE_LOCK,
-                        Manifest.permission.INTERNET,
-                        Manifest.permission.READ_PHONE_STATE,
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                ).withListener(new MultiplePermissionsListener() {
-            @Override
-            public void onPermissionsChecked(MultiplePermissionsReport report) {
-                if (report.areAllPermissionsGranted()) {
-                    MainApp.permissionCheck = true;
-                }
-            }
-
-            @Override
-            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                token.continuePermissionRequest();
-            }
-        }).check();
-
-        bi = DataBindingUtil.setContentView(this, R.layout.activity_login);
-        bi.setCallback(this);
-
-        db = MainApp.appInfo.getDbHelper();
-
-        settingCountryCode();
-
-        MainApp.appInfo = new AppInfo(this);
-        MainApp.user = new Users();
-        bi.txtinstalldate.setText(MainApp.appInfo.getAppInfo());
-
-        dbBackup();
-
-
-    }
+    final GestureDetector gestureDetector = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
+        public void onLongPress(MotionEvent e) {
+            /*Toast.makeText(getApplicationContext(),
+                    "You are not allowed to copy :)", Toast.LENGTH_SHORT).show();*/
+            setResult(RESULT_CANCELED);
+        }
+    });
 
     @Override
     protected void onResume() {
@@ -514,6 +484,100 @@ public class LoginActivity extends AppCompatActivity {
         this.getResources().updateConfiguration(config, this.getResources().getDisplayMetrics());
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
+        super.onCreate(savedInstanceState);
+        initializingCountry();
+        Dexter.withContext(this)
+                .withPermissions(
+                        Manifest.permission.ACCESS_NETWORK_STATE,
+                        Manifest.permission.WAKE_LOCK,
+                        Manifest.permission.INTERNET,
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                ).withListener(new MultiplePermissionsListener() {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport report) {
+                if (report.areAllPermissionsGranted()) {
+                    MainApp.permissionCheck = true;
+                }
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                token.continuePermissionRequest();
+            }
+        }).check();
+
+        bi = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        bi.setCallback(this);
+
+        db = MainApp.appInfo.getDbHelper();
+
+        settingCountryCode();
+
+        MainApp.appInfo = new AppInfo(this);
+        MainApp.user = new Users();
+        bi.txtinstalldate.setText(MainApp.appInfo.getAppInfo());
+
+        dbBackup();
+
+
+        // Disable every mode to disable copy
+        bi.username.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
+
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+
+            public void onDestroyActionMode(ActionMode mode) {
+                // TODO Auto-generated method stub
+
+            }
+
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+
+            public boolean onActionItemClicked(ActionMode mode,
+                                               MenuItem item) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+        });
+
+        // Disable every mode to disable copy
+
+        bi.password.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
+
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+
+            public void onDestroyActionMode(ActionMode mode) {
+                // TODO Auto-generated method stub
+
+            }
+
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+
+            public boolean onActionItemClicked(ActionMode mode,
+                                               MenuItem item) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+        });
+
+    }
+
     private void recordEntry(String entryType) {
 
         EntryLog entryLog = new EntryLog();
@@ -524,7 +588,7 @@ public class LoginActivity extends AppCompatActivity {
         entryLog.setEntryType(entryType);
         entryLog.setDeviceId(MainApp.deviceid);
         Long rowId = null;
-            rowId = db.addEntryLog(entryLog);
+        rowId = db.addEntryLog(entryLog);
 
         if (rowId != -1) {
             entryLog.setId(String.valueOf(rowId));
@@ -536,5 +600,12 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        gestureDetector.onTouchEvent(event);
+        return super.dispatchTouchEvent(event);
+    }
+
 }
 
